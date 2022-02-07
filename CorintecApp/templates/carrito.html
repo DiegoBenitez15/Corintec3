@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <body>
+        <div align="center" style="width: 98%;font-family: Arial">
+            <h1>Mi lista</h1>
+            <p>Todos sus productos seleccionados</p>
+        </div>
+
+        <table style="width: 98%" class="table">
+            <thead class="table-dark" align="center" >
+                <tr class="card-body" >
+                    <td>Foto</td>
+                    <td>Nombre</td>
+                    <td>Fabricante</td>
+                    <td>Cantidad</td>
+                    <td>Precio</td>
+                    <td></td>
+                </tr>
+            </thead>
+
+            <tbody align="center" style="align-content: center">
+                <tr style="vertical-align: middle"  class="card-body" >
+                    <td><img style="width: 150px;height: 150px" src="../../CorintecApp/static/img/sinfoto.jpg"></td>
+                    <td><p>Taladro</p></td>
+                    <td><p>Cartepilar</p></td>
+                    <td><p>1</p></td>
+                    <td><p>$700</p></td>
+                    <td><button class="btn btn-danger">Quitar</button></td>
+                </tr>
+
+                <tr class="card-body">
+                    <td><img style="width: 150px;height: 150px" src="../../CorintecApp/static/img/sinfoto.jpg"></td>
+                    <td><p>Motor</p></td>
+                    <td><p>Cartepilar</p></td>
+                    <td><p>1</p></td>
+                    <td><p>$1200</p></td>
+                    <td><button class="btn btn-danger">Quitar</button></td>
+                </tr>
+
+                <tr class="card-body" >
+                    <td><img style="width: 150px;height: 150px" style="width: 50px;height: 50px" src="../../CorintecApp/static/img/sinfoto.jpg"></td>
+                    <td><p>Martillo</p></td>
+                    <td><p>Stanley</p></td>
+                    <td><p>2</p></td>
+                    <td><p>$300</p></td>
+                    <td><button class="btn btn-danger">Quitar</button></td>
+                </tr>
+
+                <tr class="card-body" >
+                    <td><img style="width: 150px;height: 150px" src="../../CorintecApp/static/img/sinfoto.jpg"></td>
+                    <td><p>Taladro</p></td>
+                    <td><p>Cartepilar</p></td>
+                    <td><p>3</p></td>
+                    <td><p>$100</p></td>
+                    <td><button class="btn btn-danger">Quitar</button></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <div style="width: 98%" align="center">
+            <button style="width: 40%;height: 50px" class="btn btn-primary">Cotizar Pedido</button>
+            <span>    </span>
+            <button style="width: 40%;height: 50px" class="btn btn-success">Facturar Pedido</button>
+            <p style="height: 10px"></p>
+        </div>
+
+    </body>
+{% endblock content %}

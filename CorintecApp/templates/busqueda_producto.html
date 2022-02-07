@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <head>
+        <style>
+        div.card-body {
+            width: 100px;
+            height: 100px;
+        }
+        </style>
+    </head>
+
+    <body>
+        <div align="center" style="width: 97%;font-family: Arial">
+            <h1>Busqueda Producto</h1>
+            <p>Resultado de la busqueda realizada</p>
+            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
+        </div>
+
+        <div class="container row" style="width: 97%;padding-left: 165px">
+            {% for i in '012345678'|make_list %}
+                <div style="padding-bottom: 20px;padding-right: 20px">
+                    <div style="width:300px" class="card" align="center">
+                        <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
+                        <h5 class="card-title">Nombre del Producto</h5>
+                        <h6 class="card-title">Nombre del Fabricante</h6>
+                        <p class="card-text">$999</p>
+                        <p><input style="width: 50px" type="number" value = "0"></p>
+                        <a href="#" class="btn btn-primary">Agregar Producto</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+
+{% endblock content %}

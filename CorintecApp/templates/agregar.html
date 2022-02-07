@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% crispy example_form example_form.helper %}
+
+{% block content %}
+
+    <head>
+        <style>
+            input {
+                align-content: center;
+                width: 91%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
+            }
+
+            select {
+                width: 91%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
+            }
+
+            textarea {
+                width: 91%;
+                height: 150px;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <form action="" method="post">
+            {% if menu_active == 'Agregar Cliente' %}
+                <div align="center" style="width: 98%;font-family: Arial">
+                    <h1>Agregar Cliente</h1>
+                    <p>Añadir un nuevo cliente a tu lista</p>
+                </div>
+            {% endif %}
+
+            {% if menu_active == 'Agregar Distribuidor' %}
+                <div align="center" style="width: 98%;font-family: Arial">
+                    <h1>Agregar Distribuidor</h1>
+                    <p>Añadir un nuevo distribuidor a tu lista</p>
+                </div>
+            {% endif %}
+
+            <div align="center" style="width: 98%" class="card">
+                <span style="padding-top: 30px"></span>
+                {% crispy form %}
+                <span style="padding-bottom: 30px"></span>
+                <button style="height: 50px" type="submit" class="btn btn-success"> Guardar</button>
+            </div>
+            <p style="padding-bottom: 20px"></p>
+        </form>
+    </body>
+
+{% endblock content %}

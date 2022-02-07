@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <head>
+        <style>
+            .ibusqueda {
+                align-content: center;
+                margin: 0 20px 30px 0;
+                box-sizing: border-box;
+            }
+            .sbusqueda {
+                align-content: center;
+                margin: 0 20px 30px 0;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+
+    <body>
+        {% if menu_active == 'Busqueda Cliente' %}
+            <div align="center" style="width: 97%;font-family: Arial">
+            <h1>Busqueda Cliente</h1>
+            <p>Consulte sobre un cliente registrado</p>
+            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
+            <label>Codigo</label>
+            <input class="ibusqueda" style="width: 10%" type="text">
+            <label>Nombre</label>
+            <input class="ibusqueda" style="width: 20%" type="text">
+            <label>Edad</label>
+            <input class="ibusqueda" style="width: 5%" type="number">
+            <label>Sexo</label>
+            <select class="sbusqueda" style="width: 8%;height: 35px">
+                <option>Masculino</option>
+                <option>Femenino</option>
+                <option>Otro</option>
+            </select>
+            <a href="#" class="btn btn-primary">Buscar</a>
+        </div>
+        {% elif menu_active == 'Busqueda Distribuidor' %}
+            <div align="center" style="width: 97%;font-family: Arial">
+            <h1>Busqueda Distribuidor</h1>
+            <p>Consulte sobre un distribuidor registrado
+            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
+            <label>Codigo</label>
+            <input style="width: 10%" type="text">
+            <label>Nombre</label>
+            <input style="width: 20%" type="text">
+            <a href="#" class="btn btn-primary">Buscar</a>
+        </div>
+        {% endif %}
+
+        <div class="container row" style="width: 97%;padding-left: 165px">
+            {% for article in object_list %}
+                <div style="padding-bottom: 20px;padding-right: 20px">
+                    <div style="width:300px" class="card" align="center">
+                        {% if menu_active == 'Busqueda Cliente' %}
+                            <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
+                            <h5 class="card-title">{{ article.nombre }} {{ article.apellido }}</h5>
+                            <div align="center" style="width: 100%">
+                                    <p class="card-text">Tel: {{ article.telefono }}</p>
+                                    <p class="card-text">Correo: {{ article.correo }}</p>
+                                    <p class="card-text">Genero: {{ article.genero }}</p>
+                                    <p class="card-text">Fecha Nacimiento: {{ article.fecha_nacimiento|date:"d/M/Y"}}</p>
+                                    <p class="card-text">Direccion: {{ article.direccion }}</p>
+                                    <br>
+                            </div>
+
+                        {% elif menu_active == 'Busqueda Distribuidor' %}
+
+                            <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
+                            <h5 class="card-title">{{ article.nombre }} {{ article.apellido }}</h5>
+                            <div align="center" style="width: 100%">
+                                    <p class="card-text">Tel: {{ article.telefono }}</p>
+                                    <p class="card-text">Correo: {{ article.correo }}</p>
+                                    <p class="card-text">Genero: {{ article.genero }}</p>
+                                    <p class="card-text">Fecha Nacimiento: {{ article.fecha_nacimiento|date:"d/M/Y"}}</p>
+                                    <p class="card-text">Direccion: {{ article.direccion }}</p>
+                                    <br>
+                            </div>
+
+                        {% endif %}
+                        <a href="#" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+             {% empty %}
+                <div align="center" style="width: 100%">
+                    <p style="padding-top: 150px;padding-left: 50px">* No hay ninguno disponible *</p>
+                </div>
+             {% endfor %}
+
+        </div>
+    </body>
+
+{% endblock content %}
