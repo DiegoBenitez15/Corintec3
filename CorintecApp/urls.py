@@ -4,7 +4,7 @@ from CorintecApp import views
 from django.urls import include, path
 
 urlpatterns = [
-    path('',views.bienvenido, name='bienvenido'),
+    path('',views.Login, name='login'),
     path('home/', views.home, name='home'),
     path('registrarse/', views.Registrarse, name='registrar'),
     path('carrito/', views.carrito, name='carrito'),

@@ -1,95 +1,122 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    <head>
-        <style>
-            .ibusqueda {
-                align-content: center;
-                margin: 0 20px 30px 0;
-                box-sizing: border-box;
-            }
-            .sbusqueda {
-                align-content: center;
-                margin: 0 20px 30px 0;
-                box-sizing: border-box;
-            }
-        </style>
-    </head>
-
     <body>
-        {% if menu_active == 'Busqueda Cliente' %}
-            <div align="center" style="width: 97%;font-family: Arial">
-            <h1>Busqueda Cliente</h1>
-            <p>Consulte sobre un cliente registrado</p>
-            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
-            <label>Codigo</label>
-            <input class="ibusqueda" style="width: 10%" type="text">
-            <label>Nombre</label>
-            <input class="ibusqueda" style="width: 20%" type="text">
-            <label>Edad</label>
-            <input class="ibusqueda" style="width: 5%" type="number">
-            <label>Sexo</label>
-            <select class="sbusqueda" style="width: 8%;height: 35px">
-                <option>Masculino</option>
-                <option>Femenino</option>
-                <option>Otro</option>
-            </select>
-            <a href="#" class="btn btn-primary">Buscar</a>
+
+    <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Tabla de Clientes</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                {% if menu_active == 'Busqueda Cliente' %}
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Nacimiento</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+                {% endif %}
+                {% if menu_active == 'Busqueda Distribuidor' %}
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+                {% endif %}
+
+                </thead>
+                <tbody>
+                  {% for article in object_list %}
+                  {% if menu_active == 'Busqueda Cliente' %}
+
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div>
+                          <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+                          <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
+                    <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+                    <td class="align-middle text-center text-sm"><p class="text-xs font-weight-bold mb-0">{{ article.fecha_nacimiento|date:"d/M/Y"}}</p></td>
+                    <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+                    <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
+                  </tr>
+
+                  {% endif %}
+
+
+                  {% if menu_active == 'Busqueda Distribuidor' %}
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div>
+                          <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+                          <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+                    <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+                    <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
+                  </tr>
+
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        {% elif menu_active == 'Busqueda Distribuidor' %}
-            <div align="center" style="width: 97%;font-family: Arial">
-            <h1>Busqueda Distribuidor</h1>
-            <p>Consulte sobre un distribuidor registrado
-            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
-            <label>Codigo</label>
-            <input style="width: 10%" type="text">
-            <label>Nombre</label>
-            <input style="width: 20%" type="text">
-            <a href="#" class="btn btn-primary">Buscar</a>
+      </div>
+    </div>
+
+    <footer class="footer pt-3  ">
+      <div class="container-fluid">
+        <div class="row align-items-center justify-content-lg-between">
+          <div class="col-lg-6 mb-lg-0 mb-4">
+            <div class="copyright text-center text-sm text-muted text-lg-start">
+              © <a href="https://bit.ly/3fKQZaL" class="font-weight-bold" target="_blank">Creative Tim</a>
+              coded by AppSeed.
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+              <li class="nav-item">
+                <a href="https://appseed.us/product/django-soft-ui-dashboard" class="nav-link text-muted" target="_blank">Download</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://appseed.us/support" class="nav-link text-muted" target="_blank">Support</a>
+              </li>
+              <li class="nav-item">
+                <a href="https://bit.ly/3fKQZaL" class="nav-link text-muted" target="_blank">Creative-Tim</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        {% endif %}
+      </div>
+    </footer>
 
-        <div class="container row" style="width: 97%;padding-left: 165px">
-            {% for article in object_list %}
-                <div style="padding-bottom: 20px;padding-right: 20px">
-                    <div style="width:300px" class="card" align="center">
-                        {% if menu_active == 'Busqueda Cliente' %}
-                            <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
-                            <h5 class="card-title">{{ article.nombre }} {{ article.apellido }}</h5>
-                            <div align="center" style="width: 100%">
-                                    <p class="card-text">Tel: {{ article.telefono }}</p>
-                                    <p class="card-text">Correo: {{ article.correo }}</p>
-                                    <p class="card-text">Genero: {{ article.genero }}</p>
-                                    <p class="card-text">Fecha Nacimiento: {{ article.fecha_nacimiento|date:"d/M/Y"}}</p>
-                                    <p class="card-text">Direccion: {{ article.direccion }}</p>
-                                    <br>
-                            </div>
 
-                        {% elif menu_active == 'Busqueda Distribuidor' %}
+  </div>
 
-                            <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
-                            <h5 class="card-title">{{ article.nombre }} {{ article.apellido }}</h5>
-                            <div align="center" style="width: 100%">
-                                    <p class="card-text">Tel: {{ article.telefono }}</p>
-                                    <p class="card-text">Correo: {{ article.correo }}</p>
-                                    <p class="card-text">Genero: {{ article.genero }}</p>
-                                    <p class="card-text">Fecha Nacimiento: {{ article.fecha_nacimiento|date:"d/M/Y"}}</p>
-                                    <p class="card-text">Direccion: {{ article.direccion }}</p>
-                                    <br>
-                            </div>
-
-                        {% endif %}
-                        <a href="#" class="btn btn-danger">Eliminar</a>
-                    </div>
-                </div>
-             {% empty %}
-                <div align="center" style="width: 100%">
-                    <p style="padding-top: 150px;padding-left: 50px">* No hay ninguno disponible *</p>
-                </div>
-             {% endfor %}
-
-        </div>
-    </body>
+</body>
 
 {% endblock content %}
