@@ -9,9 +9,6 @@ from .forms import *
 
 # Create your views here.
 
-def bienvenido(request):
-    return render(request, 'bienvenido.html')
-
 def home(request):
     return render(request, 'inicio.html')
 

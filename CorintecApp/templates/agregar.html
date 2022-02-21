@@ -35,29 +35,76 @@
     </head>
 
     <body>
-        <form action="" method="post">
-            {% if menu_active == 'Agregar Cliente' %}
-                <div align="center" style="width: 98%;font-family: Arial">
-                    <h1>Agregar Cliente</h1>
-                    <p>Añadir un nuevo cliente a tu lista</p>
-                </div>
-            {% endif %}
+         <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            {% if menu_active == 'Agregar Cliente' %}
+                                <div class="card-header">
+                                    <h5>Agregar Cliente</h5>
+                                </div>
+                            {% endif %}
 
-            {% if menu_active == 'Agregar Distribuidor' %}
-                <div align="center" style="width: 98%;font-family: Arial">
-                    <h1>Agregar Distribuidor</h1>
-                    <p>Añadir un nuevo distribuidor a tu lista</p>
-                </div>
-            {% endif %}
 
-            <div align="center" style="width: 98%" class="card">
-                <span style="padding-top: 30px"></span>
-                {% crispy form %}
-                <span style="padding-bottom: 30px"></span>
-                <button style="height: 50px" type="submit" class="btn btn-success"> Guardar</button>
+                            {% if menu_active == 'Agregar Distribuidor' %}
+                                 <div class="card-header">
+                                    <h5>Agregar Distribuidor</h5>
+                                </div>
+                            {% endif %}
+
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email address</label>
+                                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Password</label>
+                                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                            </div>
+                                            <div class="form-group form-check">
+                                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form>
+                                            <div class="form-group">
+                                                <label>Text</label>
+                                                <input type="text" class="form-control" placeholder="Text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Example select</label>
+                                                <select class="form-control" id="exampleFormControlSelect1">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlTextarea1">Example textarea</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p style="padding-bottom: 20px"></p>
-        </form>
-    </body>
+        </div>
+    </div>
+</body>
 
 {% endblock content %}

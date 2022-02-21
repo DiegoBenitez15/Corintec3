@@ -1,55 +1,93 @@
 <!DOCTYPE html>
+{% extends './base_registros.html' %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-<html lang="es">
-
-    <head>
-        <title>Iniciar Sesion</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
-        <style>
-            input {
-                align-content: center;
-                width: 50%;
-                padding: 3px 5px;
-                margin: 8px 0;
-                box-sizing: border-box;
-            }
-        </style>
-    </head>
-
-    <body background = "../../../CorintecApp/static/img/fondo.jpg">
-            <div align="center" style="width: 100%;height: 100%;padding-top: 120px">
-                <div class="card" align="center" style="width: 650px;height: auto">
-                    <div style="background-color: white" class="card-header">
-                        <div align="center" style="width: 98%">
-                            <h2>Registrarse</h2>
-                            <h6 style="color : #FC7754">Ingrese sus Datos Adecuadamente</h6>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="col">
-
-                            <form  action="" method="post">
+{% block content %}
+<body>
+    <main>
+       <section class="min-vh-100 d-flex align-items-center section-image overlay-soft-dark" data-background="https://appsrv1-147a1.kxcdn.com/pixel-lite-v400/img/pages/form-image.jpg">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 d-flex align-items-center justify-content-center">
+                        <div class="signin-inner my-4 my-lg-0 bg-white shadow-soft border rounded border-gray-300 p-4 p-lg-5 w-100 fmxw-500">
+                            <div class="text-center text-md-center mb-4 mt-md-0">
+                                <h1 class="mb-0 h3">
+                                    <a href="https://appseed.us/django/django-pixel-bootstrap-uikit" target="_blank"></a>Registrarse<hr>
+                                </h1>
+                                <span class="font-weight-normal">Ingrese sus credenciales</span>
+                            </div>
+                            <form method="post" action="" action="#">
                                 {% csrf_token %}
-                                {{ form | crispy}}
-                                <button type="submit" class="btn btn-success">Registrar</button> <br>
-                                <a style="font-size: 10px;padding-bottom: 20px" href="{% url 'login' %}">Iniciar Sesion</a>
+                                <div class="form-group mb-4">
+                                    <label for="email">Usuario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><span class="fas fa-user"></span></span>
+                                        <input type="text" name="username" placeholder="Usuario" class="form-control" autofocus required id="id_username">
+                                    </div>
+                                    <span class="text-error"></span>
+                                </div>
+                                <!-- Form -->
+                                <div class="form-group mb-4">
+                                    <label for="email">Correo Electronico</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon3"><span class="fas fa-envelope"></span></span>
+                                        <input type="email" name="email" placeholder="Correo Electronico" class="form-control" required id="id_email">
+                                    </div>
+                                    <span class="text-error"></span>
+                                </div>
+                                <!-- End of Form -->
+                                <div class="form-group">
+                                    <!-- Form -->
+                                    <div class="form-group mb-4">
+                                        <label for="password">Contraseña</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon4"><span class="fas fa-unlock-alt"></span></span>
+                                            <input type="password" name="password1" placeholder="Contraseña" class="form-control" required id="id_password1">
+                                        </div>
+                                        <span class="text-error"></span>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="password">Confirmar Contraseña</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="basic-addon"><span class="fas fa-unlock-alt"></span></span>
+                                            <input type="password" name="password2" placeholder="Confirmar Contraseña" class="form-control" required id="id_password2">
+                                        </div>
+                                        <span class="text-error"></span>
+                                    </div>
+                                    <!-- End of Form -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div class="form-check mb-0">
+                                            <input class="form-check-input" type="checkbox" value="" id="remember">
+                                            <label class="form-check-label mb-0" for="remember">
+                                              Aceptar <a class="fw-bold text-underline" href="#">Terminos</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" name="register" class="btn btn-primary">Registarse</button>
+                                </div>
+                                <div align="center"><a style="font-size: 10px;padding-bottom: 20px" href="{% url 'login' %}">Iniciar sesión</a></div>
+
                             </form>
 
-                        </div>
-                    </div>
+                            <br />
 
-                    <div style="background-color: white" class="card-footer">
-                            <img src="../../CorintecApp/static/img/logo.jpg" height="55px">
+                            <div class="d-flex justify-content-center align-items-center mt-4">
+                                <span class="fw-normal">
+                                    &copy; Themesberg - coded by
+                                    <a href="https://appseed.us" target="_blank"
+                                       class="fw-bold text-underline">AppSeed</a>
+                                </span>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-    </body>
+        </section>
 
-</html>
+    </main>
+</body>
+{% endblock content %}
