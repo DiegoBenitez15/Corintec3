@@ -1,0 +1,43 @@
+<div class="card">
+
+     <div class="card-header">
+        <h5>Agregar Distribuidor</h5>
+    </div>
+
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                   <div class="form-row">
+                       <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="id_nombre">Nombre</label>
+                                    <input name="nombre" type="text" class="form-control" id="id_nombre" aria-describedby="emailHelp" placeholder="Introduzca su nombre.">
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="id_correo">Correo Electronico</label>
+                                    <input type="email" class="form-control" id="id_correo" aria-describedby="emailHelp" placeholder="Introduzca su correo.">
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                            </div>
+                       </div>
+                   </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-group col-sm-12">
+                        <label for="id_telefono">Teléfono</label>
+                        <input type="email" class="form-control" id="id_telefono" aria-describedby="emailHelp" placeholder="Introduzca su teléfono.">
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="id_direccion">Dirección</label>
+                        <textarea class="form-control" id="id_direccion" rows="3" placeholder="Introduzca su dirección."></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

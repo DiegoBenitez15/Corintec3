@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Agregar Cliente</h5>
+    </div>
+
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                   <div class="form-row">
+                       <div class="form-group">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="id_nombre">Nombre</label>
+                                    <input name="nombre" type="text" class="form-control" id="id_nombre" aria-describedby="emailHelp" placeholder="Introduzca su nombre.">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="id_apellido">Apellido</label>
+                                    <input type="email" class="form-control" id="id_apellido" aria-describedby="emailHelp" placeholder="Introduzca su apellido.">
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="id_genero">Género</label>
+                                    <select class="form-control" id="id_genero">
+                                        <option>------------</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Femenino</option>
+                                        <option value="O">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="id_correo">Correo Electronico</label>
+                                    <input type="email" class="form-control" id="id_correo" aria-describedby="emailHelp" placeholder="Introduzca su correo.">
+                                </div>
+                                <button type="submit" class="btn btn-success">Guardar</button>
+                            </div>
+                       </div>
+                   </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <div class="form-group col-sm-12">
+                        <label for="id_direccion">Dirección</label>
+                        <textarea id="id_direccion" class="form-control" rows="3" placeholder="Introduzca su dirección."></textarea>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="id_telefono">Teléfono</label>
+                        <input id="id_telefono" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Introduzca su teléfono.">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

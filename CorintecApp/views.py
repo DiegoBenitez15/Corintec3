@@ -67,11 +67,6 @@ class ClienteListView(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
-    def get_queryset(self, *args, **kwargs):
-        c = super(ClienteListView, self).get_queryset(*args, **kwargs)
-        c = Cliente.objects.filter().all()
-        return c
-
 
 class DistribuidorListView(ListView):
     template_name = 'busqueda.html'

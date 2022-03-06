@@ -2,120 +2,120 @@
 
 {% block content %}
     <body>
-
-    <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <div class="card mb-4">
-          <div class="card-header pb-0">
-            <h6>Tabla de Clientes</h6>
-          </div>
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0">
-                <thead>
-                {% if menu_active == 'Busqueda Cliente' %}
-                <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Nacimiento</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
-                  <th class="text-secondary opacity-7"></th>
-                </tr>
-                {% endif %}
-                {% if menu_active == 'Busqueda Distribuidor' %}
-                <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
-                  <th class="text-secondary opacity-7"></th>
-                </tr>
-                {% endif %}
-
-                </thead>
-                <tbody>
-                  {% for article in object_list %}
-                  {% if menu_active == 'Busqueda Cliente' %}
-
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <!-- [ Main Content ] start -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {% if menu_active == 'Busqueda Cliente' %}
+                              <h5>Tabla de Clientes</h5>
+                            {% endif %}
+                            {% if menu_active == 'Busqueda Distribuidor' %}
+                              <h5>Tabla de Distribuidor</h5>
+                            {% endif %}
                         </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
-                          <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+                        <div class="card-body">
+                          <table class="table align-items-center mb-0">
+                            <thead>
+                            {% if menu_active == 'Busqueda Cliente' %}
+                              <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+                                <th class="text-secondary opacity-7"></th>
+                              </tr>
+                            {% endif %}
+                            {% if menu_active == 'Busqueda Distribuidor' %}
+                              <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+                                <th class="text-secondary opacity-7"></th>
+                              </tr>
+                            {% endif %}
+                            </thead>
+                            <tbody>
+                              {% for article in object_list %}
+                              {% if menu_active == 'Busqueda Cliente' %}
+
+                              <tr>
+                                <td>
+                                  <div class="d-flex px-2 py-1">
+                                    <div>
+                                      <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                      <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+                                      <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td ><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
+                                <td style="vertical-align: center"><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+                                <td class="align-middle text-center text-sm"><p class="text-xs font-weight-bold mb-0">{{ article.fecha_nacimiento|date:"d/M/Y"}}</p></td>
+                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+                                <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
+                              </tr>
+
+                              {% endif %}
+
+
+                              {% if menu_active == 'Busqueda Distribuidor' %}
+                              <tr>
+                                <td>
+                                  <div class="d-flex px-2 py-1">
+                                    <div>
+                                      <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                      <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+                                      <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+                                <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+                                <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
+                              </tr>
+                              {% endif %}
+                              {% endfor %}
+                            </tbody>
+                          </table>
                         </div>
-                      </div>
-                    </td>
-                    <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
-                    <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-                    <td class="align-middle text-center text-sm"><p class="text-xs font-weight-bold mb-0">{{ article.fecha_nacimiento|date:"d/M/Y"}}</p></td>
-                    <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
-                    <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
-                  </tr>
-
-                  {% endif %}
-
-
-                  {% if menu_active == 'Busqueda Distribuidor' %}
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <img width=70px" height="70px" src='https://w7.pngwing.com/pngs/549/437/png-transparent-camera-graphy-free-content-kamera-camera-lens-rectangle-black-thumbnail.png' class="avatar avatar-sm me-3" alt="user1">
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
-                          <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-                    <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
-                    <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
-                  </tr>
-
-                  {% endif %}
-                  {% endfor %}
-                </tbody>
-              </table>
+                    </div>
+                </div>
             </div>
-          </div>
+              <footer class="footer pt-3  ">
+                <div class="container-fluid">
+                  <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                      <div class="copyright text-center text-sm text-muted text-lg-start">
+                        © <a href="https://bit.ly/3fKQZaL" class="font-weight-bold" target="_blank">Creative Tim</a>
+                        coded by AppSeed.
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                        <li class="nav-item">
+                          <a href="https://appseed.us/product/django-soft-ui-dashboard" class="nav-link text-muted" target="_blank">Download</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="https://appseed.us/support" class="nav-link text-muted" target="_blank">Support</a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="https://bit.ly/3fKQZaL" class="nav-link text-muted" target="_blank">Creative-Tim</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </footer>
         </div>
-      </div>
     </div>
-
-    <footer class="footer pt-3  ">
-      <div class="container-fluid">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-            <div class="copyright text-center text-sm text-muted text-lg-start">
-              © <a href="https://bit.ly/3fKQZaL" class="font-weight-bold" target="_blank">Creative Tim</a>
-              coded by AppSeed.
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-              <li class="nav-item">
-                <a href="https://appseed.us/product/django-soft-ui-dashboard" class="nav-link text-muted" target="_blank">Download</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://appseed.us/support" class="nav-link text-muted" target="_blank">Support</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://bit.ly/3fKQZaL" class="nav-link text-muted" target="_blank">Creative-Tim</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-
-  </div>
 
 </body>
 
