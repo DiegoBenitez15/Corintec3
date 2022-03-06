@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-
     <head>
         <style>
             input {
@@ -11,6 +9,10 @@
                 padding: 12px 20px;
                 margin: 8px 0;
                 box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
             }
 
             select {
@@ -18,6 +20,10 @@
                 padding: 12px 20px;
                 margin: 8px 0;
                 box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
             }
 
             textarea {
@@ -42,6 +48,7 @@
                         {% if menu_active == 'Agregar Cliente' %}
                             {% include 'agregar_cliente_tabla.html' %}
                         {% endif %}
+
                         {% if menu_active == 'Agregar Distribuidor' %}
                             {% include 'agregar_distribuidor_tabla.html' %}
                         {% endif %}

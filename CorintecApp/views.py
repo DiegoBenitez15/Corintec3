@@ -62,6 +62,13 @@ class ClienteListView(ListView):
     model = Cliente
     paginate_by = 10  # if pagination is desired
 
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda Cliente'
@@ -72,6 +79,13 @@ class DistribuidorListView(ListView):
     template_name = 'busqueda.html'
     model = Distribuidor
     paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
