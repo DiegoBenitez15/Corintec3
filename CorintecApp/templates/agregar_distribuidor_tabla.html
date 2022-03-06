@@ -1,3 +1,5 @@
+{% load crispy_forms_tags %}
+
 <div class="card">
 
      <div class="card-header">
@@ -13,12 +15,10 @@
                        <div class="form-group">
                             <div class="form-row">
                                 <div class="form-group col-sm-12">
-                                    <label for="id_nombre">Nombre</label>
-                                    <input name="nombre" type="text" class="form-control" id="id_nombre" aria-describedby="emailHelp" placeholder="Introduzca su nombre.">
+                                    {{ form.nombre|as_crispy_field }}
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    <label for="id_correo">Correo Electronico</label>
-                                    <input type="email" class="form-control" id="id_correo" aria-describedby="emailHelp" placeholder="Introduzca su correo.">
+                                    {{ form.correo|as_crispy_field }}
                                 </div>
                                 <br>
                                 <button type="submit" class="btn btn-success">Guardar</button>
@@ -28,12 +28,10 @@
                 </div>
                 <div class="form-group col-md-6">
                     <div class="form-group col-sm-12">
-                        <label for="id_telefono">Teléfono</label>
-                        <input type="email" class="form-control" id="id_telefono" aria-describedby="emailHelp" placeholder="Introduzca su teléfono.">
+                        {{ form.telefono|as_crispy_field }}
                     </div>
                     <div class="form-group col-sm-12">
-                        <label for="id_direccion">Dirección</label>
-                        <textarea class="form-control" id="id_direccion" rows="3" placeholder="Introduzca su dirección."></textarea>
+                        {{ form.direccion|as_crispy_field }}
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ class Cliente(models.Model):
     nombre = models.CharField(max_length=30,null=True)
     apellido = models.CharField(max_length=30,null=True)
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
-    direccion = models.CharField(max_length=200,null=True)
+    direccion = models.TextField(max_length=200,null=True)
     correo = models.CharField(max_length=30,null=True)
     telefono = models.CharField(max_length=14,null=True)
 
@@ -16,7 +16,7 @@ class Cliente(models.Model):
 class Distribuidor(models.Model):
     nombre = models.CharField(max_length=30)
     correo = models.CharField(max_length=30)
-    direccion = models.CharField(max_length=200)
+    direccion = models.TextField(max_length=200)
     telefono = models.CharField(max_length=14)
 
 class Cargo(models.Model):
@@ -52,7 +52,7 @@ activo= 1
 inactivo = 0
 t_estadoEnvio =((activo, 'Activo'), (inactivo, 'Inactivo'))
 
-class OrdenEnvio():
+class OrdenEnvio(models.Model):
     fecha_envio = models.DateTimeField
     empleado = models.ForeignKey(Empleados,on_delete=models.CASCADE,null=True)
     contactoEmpresa = models.CharField(max_length=50)
@@ -80,14 +80,3 @@ class Factura(models.Model):
 
     def factura_str(self):
         return [v[1] for v in self.t_pago if v[0] == self.tipoPago][0].title()
-
-
-
-
-
-
-
-
-
-
-
