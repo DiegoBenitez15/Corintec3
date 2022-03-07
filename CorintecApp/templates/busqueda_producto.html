@@ -1,36 +1,67 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <head>
-        <style>
-        div.card-body {
-            width: 100px;
-            height: 100px;
-        }
-        </style>
-    </head>
-
-    <body>
-        <div align="center" style="width: 97%;font-family: Arial">
-            <h1>Busqueda Producto</h1>
-            <p>Resultado de la busqueda realizada</p>
-            <div align="center" style="width: 45%;padding-bottom: 15px"><hr></div>
+<div class="card" style="height: 100px">
+    <div class="card-body">
+      <form method="GET" action="">
+        <div style="padding-left: 60px" class="form-row">
+          <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
+          </div>
+          <div class="col-md-10 form-group">
+            <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Search">
+          </div>
         </div>
+      </form>
+    </div>
+</div>
 
-        <div class="container row" style="width: 97%;padding-left: 165px">
-            {% for i in '012345678'|make_list %}
-                <div style="padding-bottom: 20px;padding-right: 20px">
-                    <div style="width:300px" class="card" align="center">
-                        <center><img align="center" style="width: 250px;height: 250px" class="card-img-top" src="../../CorintecApp/static/img/sinfoto.jpg" alt="Card image"></center>
-                        <h5 class="card-title">Nombre del Producto</h5>
-                        <h6 class="card-title">Nombre del Fabricante</h6>
-                        <p class="card-text">$999</p>
-                        <p><input style="width: 50px" type="number" value = "0"></p>
-                        <a href="#" class="btn btn-primary">Agregar Producto</a>
+<div class="card">
+
+    <div class="card-header">
+        <h5>Productos</h5>
+    </div>
+
+    <div class="card-body">
+        <table class="table align-items-center justify-content-center mb-0">
+            <thead style="text-align: center">
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descricion</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center">
+                {% for article in object_list %}
+                <tr>
+                  <td>
+                    {{ article.nombre|upper}}
+                  </td>
+                  <td>
+                    ${{ article.precio_venta|upper}}
+                  </td>
+                  <td>
+                    {{ article.tipo|upper}}
+                  </td>
+                  <td class="align-middle text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                      {{ article.descripcion|upper}}
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    </body>
+                  </td>
+                  <td class="align-middle">
+                    <input type="number" class ="form_control"  name="quantity" min="1" max="10">
+                  </td>
+                    <td class="align-middle">
+                    <btn class="btn btn-light">Agregar</btn>
+                  </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock content %}

@@ -1,0 +1,62 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card">
+  <div class="card-header">
+      {% if menu_active == 'Busqueda Cliente' %}
+        <h5>Tabla de Clientes</h5>
+      {% endif %}
+  </div>
+  <div class="card-body">
+    <table class="table align-items-center mb-0">
+      <thead style="text-align: center">
+        <tr>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+          <th class="text-secondary opacity-7"></th>
+        </tr>
+      </thead>
+      <tbody style="text-align: center">
+        {% for article in object_list %}
+        <tr>
+          <td>
+            <img width=70px" height="70px" {% if article.genero == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if article.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if article.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="user1">
+          </td>
+          <td>
+            <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+            <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+          </td>
+          <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
+          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+          <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_compra|date:"d/M/Y"}}</p></td>
+          <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+          <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateClienteModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+        </tr>
+        <script>
+          $('#edit{{article.id}}').click(function (){
+              document.getElementById("iframe_edit").src = "{% url 'home' %}";
+          })
+        </script>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="UpdateClienteModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+           <iframe id="iframe_edit" src = "" height ="1680px" width="780" frameborder="0"></iframe>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endblock %}

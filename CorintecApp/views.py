@@ -12,12 +12,6 @@ from .forms import *
 def home(request):
     return render(request, 'inicio.html')
 
-def carrito(request):
-    return render(request, 'carrito.html')
-
-def busqueda(request):
-    return render(request, 'busqueda_producto.html')
-
 def Login(request):
     return render(request, 'registration/login.html')
 
@@ -45,6 +39,33 @@ class AgregarClienteView(CreateView):
         context['menu_active'] = 'Agregar Cliente'
         return context
 
+class CarritoCompras(ListView):
+    template_name = 'carrito.html'
+    model = Producto
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda'
+        return context
+
+class AgregarProductosView(CreateView):
+    template_name = 'agregar.html'
+    model = Producto
+    form_class = AgregarProductoForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Agregar Productos'
+        return context
+
 class AgregarDistribuidorView(CreateView):
     template_name = 'agregar.html'
     model = Distribuidor
@@ -55,7 +76,6 @@ class AgregarDistribuidorView(CreateView):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Agregar Distribuidor'
         return context
-
 
 class ClienteListView(ListView):
     template_name = 'busqueda.html'
@@ -74,6 +94,21 @@ class ClienteListView(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
+class BusquedaProductos(ListView):
+    template_name = 'busqueda_producto.html'
+    model = Producto
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda'
+        return context
 
 class DistribuidorListView(ListView):
     template_name = 'busqueda.html'
@@ -102,3 +137,14 @@ class FacturasListView(ListView):
         context['menu_active'] = 'Busqueda Distribuidor'
         return context
 
+class UpdateCliente(UpdateView):
+    template_name = 'update_cliente.html'
+    fields = '__all__'
+    model = Cliente
+    success_url = reverse_lazy('home')
+
+class UpdateDistribuidor(UpdateView):
+    template_name = 'update_distribuidor.html'
+    form_class = AgregarDistribuidorForm
+    model = Distribuidor
+    success_url = reverse_lazy('home')
