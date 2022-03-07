@@ -36,12 +36,12 @@ class Empleados(models.Model):
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=70)
+    descripcion = models.TextField(max_length=70)
     tipo = models.CharField(max_length=30)
-    fecha_compra = models.DateField
-    fecha_venta = models.DateField
-    precio_compra = models.FloatField
-    precio_venta = models.FloatField
+    fecha_compra = models.DateField(auto_now_add=True,null=True)
+    fecha_venta = models.DateField(null=True)
+    precio_compra = models.FloatField(null=True)
+    precio_venta = models.FloatField(null=True)
     distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE,null=True)
 
 class Pedido(models.Model):
