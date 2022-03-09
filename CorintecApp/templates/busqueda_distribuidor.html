@@ -27,24 +27,17 @@
         </td>
         <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
         <td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
-        <td class="align-middle"><a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Editar</a></td>
+        <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
       </tr>
+      <script>
+          $('#edit{{article.id}}').click(function (){
+              document.getElementById("iframe_edit").src = "{% url 'editar-distribuidor' article.id %}";
+          })
+        </script>
       {% endfor %}
     </tbody>
   </table>
 </div>
 
-<div class="modal fade" id="UpdateDistribuidor" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" >
-      </div>
-      <div class="modal-body">
-          <iframe></iframe>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-</div>
 
 {% endblock %}

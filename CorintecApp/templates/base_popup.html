@@ -36,37 +36,15 @@
 </head>
 
 <body>
-     <!-- [ Pre-loader ] start -->
-    <div class="loader-bg">
-        <div class="loader-track">
-            <div class="loader-fill"></div>
-        </div>
-    </div>
-
-    <!-- Top Bar -->
-
-    {% include 'menu.html' %}
-
-    <div class="pcoded-main-container g-sidenav-show  bg-gray-100">
-      <div class="pcoded-wrapper">
-        <div class="pcoded-content">
-          <div class="pcoded-inner-content">
-            <div class="main-body">
-              <div class="page-wrapper">
-                  {% block content %}
-                  {% endblock content %}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% block content %}
+    {% endblock content %}
 </body>
 
- <!-- Required Js -->
-    <script src="https://appsrv1-147a1.kxcdn.com/dattaable/js/vendor-all.min.js"></script>
-    <script src="https://appsrv1-147a1.kxcdn.com/dattaable/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://appsrv1-147a1.kxcdn.com/dattaable/js/pcoded.min.js"></script>
-    <!-- Specific Page JS goes HERE  -->
+
+<!-- Required Js -->
+<script src="https://appsrv1-147a1.kxcdn.com/dattaable/js/vendor-all.min.js"></script>
+<script src="https://appsrv1-147a1.kxcdn.com/dattaable/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://appsrv1-147a1.kxcdn.com/dattaable/js/pcoded.min.js"></script>
+<!-- Specific Page JS goes HERE  -->
 
 </html>
