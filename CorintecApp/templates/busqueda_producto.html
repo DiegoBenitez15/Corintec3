@@ -4,7 +4,7 @@
 <div class="card" style="height: 100px">
     <div class="card-body">
       <form method="GET" action="">
-        <div style="padding-left: 60px" class="form-row">
+        <div sftyle="padding-left: 60px" class="form-row">
           <div class="form-group">
             <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
           </div>
@@ -28,7 +28,6 @@
               <tr>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descricion</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
                 <th></th>
@@ -42,9 +41,6 @@
                   </td>
                   <td>
                     ${{ article.precio_venta|upper}}
-                  </td>
-                  <td>
-                    {{ article.tipo|upper}}
                   </td>
                   <td class="align-middle text-center">
                     <div class="d-flex align-items-center justify-content-center">

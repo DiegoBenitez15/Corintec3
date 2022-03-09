@@ -15,4 +15,5 @@ urlpatterns = [
     path('agregar/distribuidor', views.AgregarDistribuidorView.as_view(), name='agregar-distribuidor'),
     path('agregar/producto', views.AgregarProductosView.as_view(), name='agregar-producto'),
     path('editar/cliente/<int:pk>', views.UpdateCliente.as_view(), name='editar-cliente'),
+    path('editar/distribuidor/<int:pk>', views.UpdateDistribuidor.as_view(), name='editar-distribuidor'),
 ]
