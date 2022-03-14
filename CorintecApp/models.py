@@ -9,7 +9,7 @@ class Cliente(models.Model):
     direccion = models.TextField(max_length=200,null=True)
     correo = models.CharField(max_length=30,null=True)
     telefono = models.CharField(max_length=14,null=True)
-    rnc = models.CharField(max_length=30,null=True)
+    RNC = models.CharField(max_length=30,null=True)
     identificacion = models.CharField(max_length=30,null=True)
 
     def __str__(self):
@@ -41,11 +41,11 @@ class Empleados(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField(max_length=70)
-    fecha_compra = models.DateField(auto_now_add=True,null=True)
+    fecha_compra = models.DateField(null=True)
     fecha_venta = models.DateField(null=True)
     precio_compra = models.FloatField(null=True)
     precio_venta = models.FloatField(null=True)
-    distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE,null=True)
+    distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE, null=True)
 
 class Pedido(models.Model):
     fecha = models.DateTimeField

@@ -18,7 +18,7 @@
                                 <div class="form-group col-sm-6">
                                     {{ form.nombre|as_crispy_field }}
                                 </div>
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-sm-6" style="right:22px">
                                     {{ form.apellido|as_crispy_field }}
                                 </div>
                                 <div class="form-group col-sm-12">
@@ -27,6 +27,9 @@
                                 <div class="form-group col-sm-12">
                                     {{ form.correo|as_crispy_field }}
                                 </div>
+                                <div class="form-group col-sm-12">
+                                    {{ form.RNC|as_crispy_field }}
+                                </div>
                                 <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
                        </div>
@@ -34,10 +37,13 @@
                 </div>
                 <div class="form-group col-md-6">
                     <div class="form-group col-sm-12">
-                        {{ form.direccion|as_crispy_field }}
+                        {{ form.identificacion|as_crispy_field }}
                     </div>
                     <div class="form-group col-sm-12">
                         {{ form.telefono|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12" style="top:30px">
+                        {{ form.direccion|as_crispy_field }}
                     </div>
                 </div>
             </div>
