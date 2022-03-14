@@ -40,12 +40,16 @@ class Empleados(models.Model):
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
+    marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
-    fecha_compra = models.DateField(auto_now_add=True,null=True)
-    fecha_venta = models.DateField(null=True)
+    cantidad = models.IntegerField(default=0)
+
+class RegistroCompras(models.Model):
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
+    distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE)
+    fecha_compra = models.DateField(auto_now_add=True, null=True)
     precio_compra = models.FloatField(null=True)
-    precio_venta = models.FloatField(null=True)
-    distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE,null=True)
+    cantidad = models.IntegerField(default=0)
 
 class Pedido(models.Model):
     fecha = models.DateTimeField
