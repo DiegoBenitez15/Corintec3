@@ -9,7 +9,6 @@ class AgregarProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = '__all__'
-        exclude = ['fecha_venta','fecha_compra']
 
 class AgregarClienteForm(forms.ModelForm):
     class Meta:
