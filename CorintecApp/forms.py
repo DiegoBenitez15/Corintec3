@@ -15,6 +15,10 @@ class AgregarClienteForm(forms.ModelForm):
         model = Cliente
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(AgregarClienteForm, self).__init__(*args, **kwargs)
+        self.fields['RNC'].label = 'RNC'
+
 class AgregarDistribuidorForm(forms.ModelForm):
     class Meta:
         model = Distribuidor

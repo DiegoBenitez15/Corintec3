@@ -9,7 +9,7 @@ class Cliente(models.Model):
     direccion = models.TextField(max_length=200,null=True)
     correo = models.CharField(max_length=30,null=True)
     telefono = models.CharField(max_length=14,null=True)
-    RNC = models.CharField(max_length=30,null=True)
+    rnc = models.CharField(max_length=30,null=True)
     identificacion = models.CharField(max_length=30,null=True)
 
     def __str__(self):
