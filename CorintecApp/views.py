@@ -52,6 +52,28 @@ class AgregarClienteView(CreateView):
         context['menu_active'] = 'Agregar Cliente'
         return context
 
+class RegistrarVendedorView(CreateView):
+    template_name = 'formulario.html'
+    model = Empleados
+    form_class = RegistrarForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Registrar Vendedor'
+        return context
+
+class RegistrarAdminView(CreateView):
+    template_name = 'formulario.html'
+    model = Empleados
+    form_class = RegistrarForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Registrar Administrador'
+        return context
+
 class CarritoCompras(ListView):
     template_name = 'carrito.html'
     model = Producto
