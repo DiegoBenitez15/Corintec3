@@ -2,20 +2,19 @@
 
 {% block content %}
 
-
 <div class="card">
   <div class="card-header">
-      {% if menu_active == 'Busqueda Distribuidor' %}
-        <h5>Tabla de Distribuidores</h5>
+      {% if menu_active == 'Busqueda Pedido' %}
+        <h5>Tabla de Pedidos</h5>
       {% endif %}
   </div>
   <div class="card-body">
     <table class="table align-items-center mb-0">
       <thead style="text-align: center">
         <tr>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Identificacion</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Envio</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
           <th class="text-secondary opacity-7"></th>
         </tr>
@@ -23,24 +22,19 @@
       <tbody style="text-align: center">
         {% for article in object_list %}
         <tr>
-          <td class="d-flex flex-column justify-content-center">
-            <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+          <td>
+            <h6 class="mb-0 text-sm">{{ article.Factura.Cliente.nombre }} {{ article.Factura.Cliente.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-          <td><p class="text-xs font-weight-bold mb-0">{{ article.identificacion}}</p></td>
-          <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-          <td class="text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.Factura.Cliente.telefono }}</p></td>
+          <td><p class="text-xs font-weight-bold mb-0">{{ article.Orden_envio.fecha_envio|date:"d/M/Y"}}</p></td>
+          <td><span class="text-secondary text-xs font-weight-bold">{{ article.Factura.Cliente.direccion }}</span></td>
           <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
         </tr>
-        <script>
-            $('#edit{{article.id}}').click(function (){
-                document.getElementById("iframe_edit").src = "{% url 'editar-distribuidor' article.id %}";
-            })
-          </script>
         {% endfor %}
       </tbody>
     </table>
   </div>
-
+</div>
 
 {% endblock %}

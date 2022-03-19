@@ -140,6 +140,40 @@ class DistribuidorListView(ListView):
         context['menu_active'] = 'Busqueda Distribuidor'
         return context
 
+class FacturaListView(ListView):
+    template_name = 'busqueda.html'
+    model = Factura
+    paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda Factura'
+        return context
+
+class PedidoListView(ListView):
+    template_name = 'busqueda.html'
+    model = Pedido
+    paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda Pedido'
+        return context
+
 class FacturasListView(ListView):
     template_name = 'busqueda.html'
     model = Distribuidor
