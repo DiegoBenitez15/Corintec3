@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -98,6 +99,7 @@ class ClienteListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
+        qs = qs.filter(estado = 'A')
         if query:
             return qs.filter(nombre=query)
         return qs
@@ -161,3 +163,8 @@ class UpdateDistribuidor(UpdateView):
     form_class = AgregarDistribuidorForm
     model = Distribuidor
     success_url = reverse_lazy('home')
+
+def DeleteCliente(request, pk):
+    Cliente.objects.filter(pk=pk).update(estado = 'I')
+
+    return HttpResponseRedirect("/busqueda/cliente")

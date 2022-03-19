@@ -14,10 +14,11 @@ class AgregarClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
         fields = '__all__'
+        exclude = ['estado']
 
     def __init__(self, *args, **kwargs):
         super(AgregarClienteForm, self).__init__(*args, **kwargs)
-        self.fields['RNC'].label = 'RNC'
+        self.fields['rnc'].label = 'RNC'
 
 class AgregarDistribuidorForm(forms.ModelForm):
     class Meta:
