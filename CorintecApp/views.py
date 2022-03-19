@@ -99,7 +99,7 @@ class ClienteListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
-        qs = qs.filter(estado = 'A')
+        qs = qs.filter(estado = 'A').order_by('-id')[:10:-1]
         if query:
             return qs.filter(nombre=query)
         return qs
@@ -114,7 +114,7 @@ class BusquedaProductos(ListView):
     model = Producto
 
     def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs).order_by('-id')[:10:-1]
         query = self.request.GET.get('nombre_producto')
         if query:
             return qs.filter(nombre=query)
@@ -133,6 +133,7 @@ class DistribuidorListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
+        qs = qs.filter(estado='A').order_by('-id')[:10:-1]
         if query:
             return qs.filter(nombre=query)
         return qs

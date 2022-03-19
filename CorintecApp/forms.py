@@ -24,6 +24,7 @@ class AgregarDistribuidorForm(forms.ModelForm):
     class Meta:
         model = Distribuidor
         fields = '__all__'
+        exclude = ['estado']
 
     def save(self, commit=True):
         reporte = super().save(commit=False)

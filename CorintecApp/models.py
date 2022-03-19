@@ -23,6 +23,7 @@ class Distribuidor(models.Model):
     direccion = models.TextField(max_length=200)
     telefono = models.CharField(max_length=14)
     identificacion = models.CharField(max_length=30, null=True)
+    estado = models.CharField(max_length=10, null=True, choices=t_eliminado, default="A")
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=30,null=True)
