@@ -40,6 +40,7 @@
           <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_compra|date:"d/M/Y"}}</p></td>
           <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
           <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+          <td><a href="{% url 'eliminar-cliente' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>
         </tr>
         <script>
           $('#edit{{article.id}}').click(function (){

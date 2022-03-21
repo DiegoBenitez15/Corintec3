@@ -1,16 +1,18 @@
 from django.db import models
 
 t_genero = (('M', 'HOMBRE'), ('F', 'MUJER'), ('O', 'OTROS'))
+t_eliminado = (('A', 'ACTIVO'), ('I', 'INACTIVO'))
 
 class Cliente(models.Model):
-    nombre = models.CharField(max_length=30,null=True)
-    apellido = models.CharField(max_length=30,null=True)
-    genero = models.CharField(max_length=1,choices=t_genero,null=True)
-    direccion = models.TextField(max_length=200,null=True)
-    correo = models.CharField(max_length=30,null=True)
-    telefono = models.CharField(max_length=14,null=True)
-    rnc = models.CharField(max_length=30,null=True)
-    identificacion = models.CharField(max_length=30,null=True)
+    nombre = models.CharField(max_length=30, null=True)
+    apellido = models.CharField(max_length=30, null=True)
+    genero = models.CharField(max_length=1, choices=t_genero, null=True)
+    direccion = models.TextField(max_length=200, null=True)
+    correo = models.CharField(max_length=30, null=True)
+    telefono = models.CharField(max_length=14, null=True)
+    rnc = models.CharField(max_length=30, null=True)
+    identificacion = models.CharField(max_length=30, null=True)
+    estado = models.CharField(max_length=10, null=True, choices=t_eliminado, default="A")
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido
@@ -21,6 +23,7 @@ class Distribuidor(models.Model):
     direccion = models.TextField(max_length=200)
     telefono = models.CharField(max_length=14)
     identificacion = models.CharField(max_length=30, null=True)
+    estado = models.CharField(max_length=10, null=True, choices=t_eliminado, default="A")
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=30,null=True)
