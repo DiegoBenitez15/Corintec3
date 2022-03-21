@@ -52,6 +52,28 @@ class AgregarClienteView(CreateView):
         context['menu_active'] = 'Agregar Cliente'
         return context
 
+class RegistrarVendedorView(CreateView):
+    template_name = 'formulario.html'
+    model = Empleados
+    form_class = RegistrarForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Registrar Vendedor'
+        return context
+
+class RegistrarAdminView(CreateView):
+    template_name = 'formulario.html'
+    model = Empleados
+    form_class = RegistrarForm
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Registrar Administrador'
+        return context
+
 class CarritoCompras(ListView):
     template_name = 'carrito.html'
     model = Producto
@@ -138,6 +160,40 @@ class DistribuidorListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda Distribuidor'
+        return context
+
+class FacturaListView(ListView):
+    template_name = 'busqueda.html'
+    model = Factura
+    paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda Factura'
+        return context
+
+class PedidoListView(ListView):
+    template_name = 'busqueda.html'
+    model = Pedido
+    paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda Pedido'
         return context
 
 class FacturasListView(ListView):

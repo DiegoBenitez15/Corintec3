@@ -12,8 +12,8 @@
     <table class="table align-items-center mb-0">
       <thead style="text-align: center">
         <tr>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cédula</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
@@ -30,6 +30,10 @@
           <td>
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+          </td>
+           <td>
+            <h6 class="mb-0 text-sm">{{ article.identificacion }}</h6>
+            <p class="text-xs text-secondary mb-0">{{ article.rnc }}</p>
           </td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
           <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
