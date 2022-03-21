@@ -10,6 +10,11 @@ class AgregarProductoForm(forms.ModelForm):
         model = Producto
         fields = '__all__'
 
+class RegistrarForm(forms.ModelForm):
+    class Meta:
+        model = Empleados
+        fields = '__all__'
+
 class AgregarClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente

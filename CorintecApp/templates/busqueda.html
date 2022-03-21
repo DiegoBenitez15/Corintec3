@@ -11,7 +11,7 @@
               <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
             </div>
             <div class="col-md-10 form-group">
-              <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Search">
+              <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Buscar">
             </div>
           </div>
         </form>
@@ -27,6 +27,10 @@
                    {% include 'busqueda_cliente.html' %}
                 {% elif menu_active == 'Busqueda Distribuidor' %}
                    {% include 'busqueda_distribuidor.html' %}
+                {% elif menu_active == 'Busqueda Pedido' %}
+                   {% include 'busqueda_pedido.html' %}
+                {% elif menu_active == 'Busqueda Factura' %}
+                   {% include 'busqueda_factura.html' %}
                 {% endif %}
 
                 </div>
