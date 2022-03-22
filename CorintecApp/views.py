@@ -6,6 +6,8 @@ from django.views import View
 from django.views.generic import *
 from .models import *
 from .forms import *
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 # Create your views here.
 
@@ -25,21 +27,27 @@ class home(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
+def registerusuario(request):
+    return render(request, 'registrarusuario.html')
+
 def Login(request):
     return render(request, 'registration/login.html')
 
 def Registrarse(request):
-    data = {'form': CustomUserCreationForm}
+    template_name = 'registration/registrar.html'
+    success_url = 'registrar-usuario'
     if request.method == 'POST':
-        formulario = CustomUserCreationForm(data=request.POST)
-        if formulario.is_valid():
-            formulario.save()
-            user = authenticate(username = formulario.cleaned_data["username"], password = formulario.cleaned_data["password1"])
-            login(request,user)
-            messages.success(request,'Te has registrado correctamente')
-            return redirect(to = "login")
-        data["form"] = formulario
-    return render(request, 'registration/registrar.html',data)
+        form = UserCreationFormCustom(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect(success_url)
+    else:
+        form = UserCreationFormCustom()
+    return render(request, template_name, {'form': form})
 
 class AgregarClienteView(CreateView):
     template_name = 'agregar.html'
@@ -54,7 +62,7 @@ class AgregarClienteView(CreateView):
 
 class CarritoCompras(ListView):
     template_name = 'carrito.html'
-    model = Producto
+    model = CarritoCompras
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)

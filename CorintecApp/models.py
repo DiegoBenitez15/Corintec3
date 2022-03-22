@@ -1,6 +1,68 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 t_genero = (('M', 'HOMBRE'), ('F', 'MUJER'), ('O', 'OTROS'))
+
+class Role(models.Model):
+    VENDEDOR = 1
+    ADMINISTRADOR = 2
+    ROLE_CHOICES = (
+        (VENDEDOR, 'paciente'),
+        (ADMINISTRADOR, 'medico'),
+    )
+    id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
+
+class User(AbstractUser):
+    roles = models.ManyToManyField(Role)
+    pass
+
+class Cargo(models.Model):
+    nombre = models.CharField(max_length=30,null=True)
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=50)
+    marca = models.CharField(max_length=120)
+    descripcion = models.TextField(max_length=70)
+    cantidad = models.IntegerField(default=0)
+
+class CarritoCompras(models.Model):
+    productos = models.ManyToManyField(Producto)
+    subtotal = models.FloatField(default=0)
+    itbis = models.FloatField(default=0)
+    total = models.FloatField(default=0)
+
+class Empleados(models.Model):
+    nombre = models.CharField(max_length=30,null=True)
+    apellido = models.CharField(max_length=30,null=True)
+    correo = models.CharField(max_length=30,null=True)
+    genero = models.CharField(max_length=1,choices=t_genero,null=True)
+    telefono = models.CharField(max_length=14,null=True)
+    cargo = models.ForeignKey(Cargo,on_delete=models.CASCADE,null=True)
+    fecha_nacimiento = models.DateField(null=True)
+    identificacion = models.CharField(max_length=30, null=True)
+    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nombre + ' ' + self.apellido
+
+    def save(self, *args, **kwargs):
+        paciente = super(Paciente, self)
+        self.carrito = CarritoCompras.objects.create()
+        paciente.save(*args, **kwargs)
+
+class AdministradorUsuario(Empleados):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.usuario.roles.add(Role.ADMINISTRADOR)
+        super(Paciente, self).save(*args, **kwargs)
+
+class VendedorUsuario(Empleados):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.usuario.roles.add(Role.VENDEDOR)
+        super(Paciente, self).save(*args, **kwargs)
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=30,null=True)
@@ -21,28 +83,6 @@ class Distribuidor(models.Model):
     direccion = models.TextField(max_length=200)
     telefono = models.CharField(max_length=14)
     identificacion = models.CharField(max_length=30, null=True)
-
-class Cargo(models.Model):
-    nombre = models.CharField(max_length=30,null=True)
-
-class Empleados(models.Model):
-    nombre = models.CharField(max_length=30,null=True)
-    apellido = models.CharField(max_length=30,null=True)
-    correo = models.CharField(max_length=30,null=True)
-    genero = models.CharField(max_length=1,choices=t_genero,null=True)
-    telefono = models.CharField(max_length=14,null=True)
-    cargo = models.ForeignKey(Cargo,on_delete=models.CASCADE,null=True)
-    fecha_nacimiento = models.DateField(null=True)
-    identificacion = models.CharField(max_length=30, null=True)
-
-    def __str__(self):
-        return self.nombre + ' ' + self.apellido
-
-class Producto(models.Model):
-    nombre = models.CharField(max_length=50)
-    marca = models.CharField(max_length=120)
-    descripcion = models.TextField(max_length=70)
-    cantidad = models.IntegerField(default=0)
 
 class RegistroCompras(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
@@ -87,3 +127,4 @@ class Factura(models.Model):
 
     def factura_str(self):
         return [v[1] for v in self.t_pago if v[0] == self.tipoPago][0].title()
+

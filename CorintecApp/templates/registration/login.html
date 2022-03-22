@@ -4,6 +4,23 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<head>
+        <style>
+            input {
+                align-content: center;
+                width: 95%;
+                height: 40px;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 14px;
+                background-color: #f8f8f8;
+            }
+
+        </style>
+    </head>
+
 <body>
     <main>
         <!-- Section -->
@@ -18,39 +35,15 @@
                                 </h1>
                             </div>
 
-                             <form  action="" method="post" class="mt-4">
+                             <form style="text-align: center"  action="" method="post" class="mt-4">
                                 {% csrf_token %}
-                                {{ form|crispy}}
-                                <!-- Form -->
-                                <div class="form-group mb-4">
-                                    <label for="id_username">Usuario</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><span class="fas fa-user"></span></span>
-                                        <input type="text" name="username" placeholder="Usuario" class="form-control"  required id="id_username">
-                                    </div>
-                                </div>
-                                <!-- End of Form -->
-                                <div class="form-group">
-                                    <!-- Form -->
-                                    <div class="form-group mb-4">
-                                        <label for="id_password">Contraseña</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="basic-addon2"><span class="fas fa-unlock-alt"></span></span>
-                                            <input type="password" name="password" placeholder="Contraseña" class="form-control"  required id="id_password">
-                                        </div>
-                                    </div>
-                                    <!-- End of Form -->
-                                    <div  class="d-flex justify-content-between align-items-center mb-4">
-                                        <div class="form-check mb-0">
-                                            <input class="form-check-input" type="checkbox" value="" id="remember">
-                                            <label class="form-check-label mb-0" for="remember">
-                                              Recuerdame
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" name="login" class="btn btn-primary">Iniciar Sesion</button>
+                                 {{ form|crispy}}
+                                {% for formset in inlines %}
+                                    {{formset|crispy}}
+                                {% endfor %}
+                                <br/>
+                                <div style="padding-left: 12px" class="d-grid">
+                                    <button type="submit" style="width: 97%" name="login" class="btn btn-primary">Iniciar Sesion</button>
                                 </div>
                                 <br/>
                                 <div align="center"><a style="font-size: 10px;padding-bottom: 20px" href="{% url 'registrar' %}">Registrar nuevo usuario</a></div>
@@ -70,6 +63,6 @@
                 </div>
             </div>
         </section>
-a    </main>
+    </main>
 </body>
 {% endblock content %}
