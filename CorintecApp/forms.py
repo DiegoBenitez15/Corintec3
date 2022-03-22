@@ -31,10 +31,16 @@ class AgregarProductoForm(forms.ModelForm):
         model = Producto
         fields = '__all__'
 
+class RegistrarForm(forms.ModelForm):
+    class Meta:
+        model = Empleados
+        fields = '__all__'
+
 class AgregarClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
         fields = '__all__'
+        exclude = ['estado']
 
     def __init__(self, *args, **kwargs):
         super(AgregarClienteForm, self).__init__(*args, **kwargs)
@@ -44,6 +50,7 @@ class AgregarDistribuidorForm(forms.ModelForm):
     class Meta:
         model = Distribuidor
         fields = '__all__'
+        exclude = ['estado']
 
     def save(self, commit=True):
         reporte = super().save(commit=False)
