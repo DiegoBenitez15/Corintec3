@@ -1,4 +1,4 @@
-{% extends 'base_popup.html' %}
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
 
@@ -44,6 +44,10 @@
     <body>
 
         <div class="card">
+            <div class="card-header">
+                <a href="/busqueda/cliente"><h5>Volver</h5></a>
+            </div>
+
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -75,6 +79,15 @@
                             </div>
                             <div class="form-group col-sm-12">
                                 {{ form.telefono|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-sm-12">
+                                {{ form.rnc|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-sm-12">
+                                {{ form.identificacion|as_crispy_field }}
+                            </div>
+                            <div style="display: none"  class="form-group col-sm-12">
+                                {{ form.estado|as_crispy_field }}
                             </div>
                         </div>
                     </div>

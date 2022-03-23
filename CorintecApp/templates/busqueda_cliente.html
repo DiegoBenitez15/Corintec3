@@ -12,8 +12,8 @@
     <table class="table align-items-center mb-0">
       <thead style="text-align: center">
         <tr>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cédula</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
@@ -31,26 +31,33 @@
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-           <td>
-            <h6 class="mb-0 text-sm">{{ article.identificacion }}</h6>
-            <p class="text-xs text-secondary mb-0">{{ article.rnc }}</p>
-          </td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
           <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_compra|date:"d/M/Y"}}</p></td>
           <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
-          <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+          <td><a id="edit{{article.id}}" href="{% url 'editar-cliente' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
           <td><a href="{% url 'eliminar-cliente' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>
         </tr>
-        <script>
-          $('#edit{{article.id}}').click(function (){
-              document.getElementById("iframe_edit").src = "{% url 'editar-cliente' article.id %}";
-          })
-        </script>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+
+<div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Cliente</h5>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+
+                  <iframe frameborder="1" width="420" height="345" src="/agregar/cliente"></iframe>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
 
 {% endblock %}
