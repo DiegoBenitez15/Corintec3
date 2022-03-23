@@ -13,6 +13,7 @@
     <table class="table align-items-center mb-0">
       <thead style="text-align: center">
         <tr>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Identificacion</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
@@ -23,6 +24,9 @@
       <tbody style="text-align: center">
         {% for article in object_list %}
         <tr>
+          <td>
+              <img style = "position:relative; bottom:16px" width=70px" height="70px"src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' class="avatar avatar-sm me-3" alt="user1">
+          </td>
           <td class="d-flex flex-column justify-content-center">
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
@@ -30,13 +34,8 @@
           <td><p class="text-xs font-weight-bold mb-0">{{ article.identificacion}}</p></td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
           <td class="text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
-          <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+          <td><a id="edit{{article.id}}" href="{% url 'editar-distribuidor' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
         </tr>
-        <script>
-            $('#edit{{article.id}}').click(function (){
-                document.getElementById("iframe_edit").src = "{% url 'editar-distribuidor' article.id %}";
-            })
-          </script>
         {% endfor %}
       </tbody>
     </table>

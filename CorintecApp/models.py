@@ -35,13 +35,12 @@ class CarritoCompras(models.Model):
 class Empleados(models.Model):
     nombre = models.CharField(max_length=30,null=True)
     apellido = models.CharField(max_length=30,null=True)
+    identificacion = models.CharField(max_length=30, null=True)
     correo = models.CharField(max_length=30,null=True)
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
     telefono = models.CharField(max_length=14,null=True)
-    cargo = models.ForeignKey(Cargo,on_delete=models.CASCADE,null=True)
     fecha_nacimiento = models.DateField(null=True)
-    identificacion = models.CharField(max_length=30, null=True)
-    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE)
+    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido

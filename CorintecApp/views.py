@@ -63,8 +63,8 @@ class AgregarClienteView(CreateView):
 
 class RegistrarVendedorView(CreateView):
     template_name = 'formulario.html'
-    model = Empleados
-    form_class = RegistrarForm
+    model = VendedorUsuario
+    form_class = RegistrarVendedorForm
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -74,8 +74,8 @@ class RegistrarVendedorView(CreateView):
 
 class RegistrarAdminView(CreateView):
     template_name = 'formulario.html'
-    model = Empleados
-    form_class = RegistrarForm
+    model = AdministradorUsuario
+    form_class = RegistrarAdministradorForm
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -225,7 +225,7 @@ class UpdateCliente(UpdateView):
 
 class UpdateDistribuidor(UpdateView):
     template_name = 'update_distribuidor.html'
-    form_class = AgregarDistribuidorForm
+    fields = '__all__'
     model = Distribuidor
     success_url = reverse_lazy('home')
 

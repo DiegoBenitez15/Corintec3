@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+<style>
+    input {
+        align-content: center;
+        width: 91%;
+        padding: 12px 20px;
+        margin: 8px 0 30px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        resize: none;
+    }
+
+    select {
+        width: 91%;
+        padding: 12px 20px;
+        margin: 8px 0 30px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        resize: none;
+    }
+
+    textarea {
+        width: 91%;
+        height: 140px;
+        padding: 12px 20px 30px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        resize: none;
+    }
+</style>
+</head>
+
+
+<form method="get">
+    <div class="card" style="width: 90%">
+        <div class="card-header">
+           {% if menu_active == 'Registrar Administrador' %}<h5>Registrar Administrador</h5>{% endif %}
+           {% if menu_active == 'Registrar Vendedor' %}<h5>Registrar Vendedor</h5>{% endif %}
+        </div>
+
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="padding-left: 50px"  class="col-md-13">
+                    {{form|crispy}}
+                    <button style="width: 91%" type="submit" class="btn btn-success">Guardar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
