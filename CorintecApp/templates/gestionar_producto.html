@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card" style="height: 100px">
+    <div class="card-body">
+      <form method="GET" action="">
+        <div sftyle="padding-left: 60px" class="form-row">
+          <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
+          </div>
+          <div class="col-md-10 form-group">
+            <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Search">
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+
+<div class="card">
+
+    <div class="card-header">
+        <h5>Productos</h5>
+    </div>
+
+    <div class="card-body">
+        <table class="table align-items-center justify-content-center mb-0">
+            <thead style="text-align: center">
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descricion</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center">
+                {% for article in object_list %}
+                <tr>
+                  <td>
+                    {{ article.nombre|upper}}
+                  </td>
+                  <td>
+                    ${{ article.precio_venta|upper}}
+                  </td>
+                  <td class="align-middle text-center">
+                    <div class="d-flex align-items-center justify-content-center">
+                      {{ article.descripcion|upper}}
+                    </div>
+                  </td>
+                  <td class="align-middle">
+                    <div class="d-flex align-items-center justify-content-center">
+                      {{ article.cantidad|upper}}
+                    </div>
+                  </td>
+                    <td><a id="edit{{article.id}}" href="{% url 'editar-producto' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if object_list %}
+        {% else %}
+        <a href="{% url 'agregar-producto' %}" class="btn btn-success btn-block" >Agregar</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
