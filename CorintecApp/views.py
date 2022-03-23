@@ -64,7 +64,7 @@ class AgregarClienteView(CreateView):
 class RegistrarVendedorView(CreateView):
     template_name = 'formulario.html'
     model = VendedorUsuario
-    form_class = RegistrarVendedorForm
+    form_class = Empleados
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
@@ -75,7 +75,7 @@ class RegistrarVendedorView(CreateView):
 class RegistrarAdminView(CreateView):
     template_name = 'formulario.html'
     model = AdministradorUsuario
-    form_class = RegistrarAdministradorForm
+    form_class = Empleados
     success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
