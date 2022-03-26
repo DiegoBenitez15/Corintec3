@@ -31,7 +31,11 @@
                    {% include 'busqueda_pedido.html' %}
                 {% elif menu_active == 'Busqueda Factura' %}
                    {% include 'busqueda_factura.html' %}
-                {% endif %}
+                {% elif menu_active == 'Busqueda Producto' %}
+                   {% include 'busqueda_producto.html' %}
+                    {% elif menu_active == 'Gestionar Producto' %}
+                   {% include 'gestionar_producto.html' %}
+                    {% endif %}
 
                 </div>
             </div>

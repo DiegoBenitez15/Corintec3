@@ -31,7 +31,7 @@
             textarea {
                 top:2px;
                 width: 91%;
-                height: 167px;
+                height: 277px;
                 padding: 12px 20px;
                 box-sizing: border-box;
                 border: 2px solid #ccc;
@@ -46,7 +46,7 @@
 
         <div class="card">
             <div class="card-header">
-                <a href="/busqueda/cliente"><h5>Volver</h5></a>
+                <a href="/gestionar/producto"><h5>Volver</h5></a>
             </div>
 
             <div class="card-body">
@@ -57,39 +57,25 @@
                            <div class="form-row">
                                <div class="form-group">
                                     <div class="form-row">
-                                        <div class="form-group col-sm-6">
+                                        <div class="form-group col-sm-12">
                                     {{ form.nombre|as_crispy_field }}
                                 </div>
-                                <div class="form-group col-sm-6" style="right:22px">
-                                    {{ form.apellido|as_crispy_field }}
-                                </div>
                                 <div class="form-group col-sm-12">
-                                    {{ form.genero|as_crispy_field }}
-                                </div>
-                                <div class="form-group col-sm-12">
-                                    {{ form.correo|as_crispy_field }}
-                                </div>
-                                <div class="form-group col-sm-12">
-                                    {{ form.rnc|as_crispy_field }}
-                                </div>
-                                <button type="submit" class="btn btn-success">Actualizar</button>
+                        {{ form.marca|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12">
+                        {{ form.cantidad|as_crispy_field }}
+                    </div>
+                                <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
                        </div>
                    </div>
                 </div>
                 <div class="form-group col-md-6">
+
                     <div class="form-group col-sm-12">
-                        {{ form.identificacion|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-sm-12">
-                        {{ form.telefono|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-sm-12">
-                        {{ form.direccion|as_crispy_field }}
-                    </div>
-                            <div style="display: none"  class="form-group col-sm-12">
-                                {{ form.estado|as_crispy_field }}
-                            </div>
+                                    {{ form.descripcion|as_crispy_field }}
+                                </div>
                         </div>
                     </div>
                 </form>
