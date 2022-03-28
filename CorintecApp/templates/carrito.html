@@ -30,34 +30,40 @@
               </tr>
             </thead>
             <tbody class="center">
-                {% for article in object_list.producto %}
-                <tr>
-                  <td>
-                    {{ article.nombre|upper}}
-                  </td>
-                  <td>
-                    ${{ article.precio_venta|upper}}
-                  </td>
-                  <td class="align-middle text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                      {{ article.descripcion|upper}}
-                    </div>
-                  </td>
-                    <td class="align-middle">
-
-                  </td>
-                  <td class="align-middle">
-                        <button type="button" class="btn btn-square btn-light">Quitar</button>
-                  </td>
-                </tr>
+                {% for carrito in object_list %}
+                    {% for article in carrito.carrito_productos.all %}
+                        <tr>
+                          <td>
+                            {{article.producto.nombre|upper}}
+                          </td>
+                          <td>
+                            {{article.producto.precio_venta|upper}}
+                          </td>
+                          <td class="align-middle text-center">
+                            <div class="d-flex align-items-center justify-content-center">
+                              {{article.producto.descripcion|upper}}
+                            </div>
+                          </td>
+                            <td class="align-middle">
+                              {{article.cantidad|upper}}
+                          </td>
+                          <td class="align-middle">
+                              <a href="{% url 'remove-carrito' carrito_id article.producto.id %}" id="quitar_producto" type="button" class="btn btn-square btn-light">Quitar</a>
+                          </td>
+                        </tr>
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>
         <br><hr>
         <div class="col-md-12" style="text-align: right">
-            <p>Sub Total: </p>
-            <p>ITBIS: </p>
-            <p>Total: </p>
+
+                {% for carrito in object_list %}
+                    <p>Sub Total: {{carrito.subtotal}}</p>
+                    <p>ITBIS: {{carrito.itbis}}</p>
+                    <p>Total: {{carrito.total}}</p>
+                {% endfor %}
+
         </div>
     </div>
 </div>

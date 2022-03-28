@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="card" style="height: 100px">
     <div class="card-body">
       <form method="GET" action="">
@@ -48,12 +49,36 @@
                     </div>
                   </td>
                   <td class="align-middle">
-                    <input type="number" class ="form_control"  name="quantity" min="1" max="10">
+                    <input id="cantidad" value="0" type="number" class ="form_control"  name="quantity" min="1" max="10">
                   </td>
                     <td class="align-middle">
-                    <btn class="btn btn-light">Agregar</btn>
+                    <a id = "agregar_producto" class="btn btn-light">Agregar</a>
                   </td>
                 </tr>
+
+                <script>
+                     $("#agregar_producto").click(function() {
+                        window.alert("Se ingreso su producto al carrito adecuadamente");
+                        var token = '{{csrf_token}}';
+                        var formData = new FormData();
+                        formData.append('cantidad',$('#cantidad').val());
+                        $.ajax({
+                            headers: { "X-CSRFToken": token },
+                            url: "{% url 'add-carrito' carrito_id article.id %}" ,
+                            dataType: 'text', // what to expect back from the server
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            type: 'post',
+                            success: function (response) {
+
+                            },
+                            error: function (response) {
+                            }
+                        });
+                     })
+                </script>
                 {% endfor %}
             </tbody>
         </table>

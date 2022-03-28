@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -9,9 +10,13 @@ from .models import *
 from .forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.utils.decorators import method_decorator
+from .decorators import *
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class home(ListView):
     template_name = 'inicio.html'
     model = Cliente
@@ -27,6 +32,19 @@ class home(ListView):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda Cliente'
         return context
+
+
+def addCarritoCompras(request,carrito_id,producto_id):
+    cantidad = request.POST.get('cantidad','')
+    carrito = CarritoCompras.objects.get(pk=carrito_id)
+    carrito.addProducto(producto_id,cantidad)
+    return
+
+def removeCarritoCompras(request, carrito_id,producto_id):
+    template_name = 'carrito.html'
+    carrito = CarritoCompras.objects.get(pk=carrito_id)
+    carrito.removeProducto(producto_id)
+    return render(request, template_name)
 
 def registerusuario(request):
     return render(request, 'registrarusuario.html')
@@ -72,18 +90,27 @@ class RegistrarVendedorView(CreateView):
         context['menu_active'] = 'Registrar Vendedor'
         return context
 
-class RegistrarAdminView(CreateView):
-    template_name = 'formulario.html'
+class RegistrarAdminView(LoginRequiredMixin, CreateView):
     model = AdministradorUsuario
-    form_class = Empleados
-    success_url = reverse_lazy('home')
+    template_name = 'formulario.html'
+    success_url = reverse_lazy('home') 
+    form_class = CreateAdminUsuarioForm
+
+    def get_form_kwargs(self):
+        kwargs = super(RegistrarAdminView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(RegistrarAdminView, self).get_context_data(**kwargs)
         context['menu_active'] = 'Registrar Administrador'
         return context
 
-class CarritoCompras(ListView):
+class CarritoComprasView(ListView):
     template_name = 'carrito.html'
     model = CarritoCompras
 
@@ -97,6 +124,7 @@ class CarritoCompras(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda'
+        context['carrito_id'] = 2
         return context
 
 class AgregarProductosView(CreateView):
@@ -153,6 +181,7 @@ class BusquedaProductos(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda'
+        context['carrito_id'] = 2
         return context
 
 class DistribuidorListView(ListView):
