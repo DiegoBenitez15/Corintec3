@@ -35,11 +35,12 @@
           <td><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
           <td class="text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
           <td><a id="edit{{article.id}}" href="{% url 'editar-distribuidor' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+          <td><a href="{% url 'eliminar-distribuidor' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
-
+</div>
 
 {% endblock %}

@@ -157,10 +157,10 @@ class ClienteListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
-        qs = qs.filter(estado = 'A').order_by('-id')[:10:-1]
+        qs = qs.filter(estado = 'A')
         if query:
             return qs.filter(nombre=query)
-        return qs
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -172,11 +172,28 @@ class BusquedaProductos(ListView):
     model = Producto
 
     def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs).order_by('-id')[:10:-1]
+        qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
         if query:
             return qs.filter(nombre=query)
-        return qs
+        return qs.order_by('-id')[:10:-1]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Busqueda'
+        return context
+
+class GestionarProductos(ListView):
+    template_name = 'gestionar_producto.html'
+    model = Producto
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,10 +209,10 @@ class DistribuidorListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
-        qs = qs.filter(estado='A').order_by('-id')[:10:-1]
+        qs = qs.filter(estado='A')
         if query:
             return qs.filter(nombre=query)
-        return qs
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -258,7 +275,18 @@ class UpdateDistribuidor(UpdateView):
     model = Distribuidor
     success_url = reverse_lazy('home')
 
+class UpdateProducto(UpdateView):
+    template_name = 'update_producto.html'
+    fields = '__all__'
+    model = Producto
+    success_url = reverse_lazy('home')
+
 def DeleteCliente(request, pk):
     Cliente.objects.filter(pk=pk).update(estado = 'I')
 
     return HttpResponseRedirect("/busqueda/cliente")
+
+def DeleteDistribuidor(request, pk):
+    Distribuidor.objects.filter(pk=pk).update(estado = 'I')
+
+    return HttpResponseRedirect("/busqueda/distribuidor")

@@ -1,7 +1,21 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<head>
+        <style>
+            textarea {
+                top:2px;
+                width: 91%;
+                height: 277px;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+        </style>
+    </head>
 <div class="card">
     <div class="card-header">
         <h5>Agregar Producto</h5>
@@ -19,20 +33,21 @@
                                     {{ form.nombre|as_crispy_field }}
                                 </div>
                                 <div class="form-group col-sm-12">
-                                    {{ form.descripcion|as_crispy_field }}
-                                </div>
+                        {{ form.marca|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12">
+                        {{ form.cantidad|as_crispy_field }}
+                    </div>
                                 <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
                        </div>
                    </div>
                 </div>
                 <div class="form-group col-md-6">
+
                     <div class="form-group col-sm-12">
-                        {{ form.marca|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-sm-12">
-                        {{ form.cantidad|as_crispy_field }}
-                    </div>
+                                    {{ form.descripcion|as_crispy_field }}
+                                </div>
                 </div>
             </div>
         </form>
