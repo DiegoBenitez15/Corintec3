@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from .models import *
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class UserCreationFormCustom(UserCreationForm):
     error_messages = {'password_mismatch': ("Las dos contraseñas no coinciden."),}
@@ -35,6 +37,7 @@ class RegistrarForm(forms.ModelForm):
     class Meta:
         model = Empleados
         fields = '__all__'
+        exclude = ['carrito']
 
 class AgregarClienteForm(forms.ModelForm):
     class Meta:
@@ -59,3 +62,25 @@ class AgregarDistribuidorForm(forms.ModelForm):
             reporte.save()
 
         return reporte
+    
+    
+class CreateAdminUsuarioForm(forms.ModelForm):
+    fecha_nacimiento = forms.DateTimeField(
+        input_formats=['%d/%m/%Y %H:%M', '%d/%m/%Y'],
+    )
+
+    class Meta:
+        model = AdministradorUsuario
+        exclude = ['usuario','carrito']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(CreateAdminUsuarioForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user

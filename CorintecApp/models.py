@@ -8,14 +8,19 @@ class Role(models.Model):
     VENDEDOR = 1
     ADMINISTRADOR = 2
     ROLE_CHOICES = (
-        (VENDEDOR, 'paciente'),
-        (ADMINISTRADOR, 'medico'),
+        (VENDEDOR, 'vendedor'),
+        (ADMINISTRADOR, 'administrador'),
     )
     id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
 
 class User(AbstractUser):
     roles = models.ManyToManyField(Role)
-    pass
+    
+    def is_admin(self):
+        return self.roles.filter(pk=Role.ADMINISTRADOR).exists()
+
+    def is_vendedor(self):
+        return self.roles.filter(pk=Role.VENDEDOR).exists()   
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=30,null=True)
@@ -25,12 +30,47 @@ class Producto(models.Model):
     marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
     cantidad = models.IntegerField(default=0)
+    precio_venta = models.FloatField(default=0)
+
+class CarritoProductos(models.Model):
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
+    cantidad = models.IntegerField(default=0)
 
 class CarritoCompras(models.Model):
-    productos = models.ManyToManyField(Producto)
+    carrito_productos = models.ManyToManyField(CarritoProductos,null=True)
     subtotal = models.FloatField(default=0)
     itbis = models.FloatField(default=0)
     total = models.FloatField(default=0)
+
+    def actualizarPrecios(self):
+        suma = 0
+        for i in self.carrito_productos.all():
+            suma+= i.producto.precio_venta * i.cantidad
+        self.subtotal = suma
+        self.itbis = suma * 0.18
+        self.total = self.subtotal + self.itbis
+        self.save()
+
+    def addProducto(self,producto_id,cantidad):
+        for i in self.carrito_productos.all():
+            if i.producto.pk == producto_id:
+                c = CarritoProductos.objects.get(producto__id=producto_id)
+                c.cantidad = c.cantidad + int(cantidad)
+                c.save()
+                self.actualizarPrecios()
+                return
+
+
+        c = CarritoProductos.objects.create(producto=Producto.objects.get(pk=producto_id),cantidad=cantidad)
+        self.carrito_productos.add(c)
+        self.actualizarPrecios()
+        return
+
+    def removeProducto(self,producto_id):
+        c = CarritoProductos.objects.get(producto=producto_id)
+        self.carrito_productos.remove(c)
+        c.delete()
+        self.actualizarPrecios()
 
 class Empleados(models.Model):
     nombre = models.CharField(max_length=30,null=True)
@@ -40,15 +80,10 @@ class Empleados(models.Model):
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
     telefono = models.CharField(max_length=14,null=True)
     fecha_nacimiento = models.DateField(null=True)
-    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE,null=True)
+    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido
-
-    def save(self, *args, **kwargs):
-        paciente = super(Paciente, self)
-        self.carrito = CarritoCompras.objects.create()
-        paciente.save(*args, **kwargs)
 
 class AdministradorUsuario(Empleados):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
