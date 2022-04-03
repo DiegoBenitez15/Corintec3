@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card" style="height: 100px">
+  <div class="card-body">
+    <form method="GET" action="">
+      <div style="padding-left: 60px" class="form-row">
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
+        </div>
+        <div class="col-md-10 form-group">
+          <input class="form-control mb-4" type="text" name="nombre_cliente" placeholder="Buscar">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+        <h5>Lista de Clientes</h5>
+  </div>
+  <div class="card-body">
+    <table class="table align-items-center mb-0">
+      <tbody style="text-align: center">
+        {% for article in object_list %}
+        <tr>
+          <td>
+            <img style = "position:relative; bottom:16px" width=70px" height="70px" {% if article.genero == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if article.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if article.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="user1">
+          </td>
+          <td>
+            <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
+            <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
+          </td>
+            <td><a href="{% url 'facturar-producto' carrito_id article.id %}"  type="button" class="btn btn-primary">Seleccionar</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Cliente</h5>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+
+                  <iframe frameborder="1" width="420" height="345" src="/agregar/cliente"></iframe>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+{% endblock %}

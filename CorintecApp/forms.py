@@ -89,10 +89,11 @@ class RegistrarFacturaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RegistrarFacturaForm, self).__init__(*args, **kwargs)
+        self.fields['cliente'].queryset = Cliente.objects.filter(pk=self.initial['cliente'])
 
     def save(self, commit=True):
         factura = super().save(commit=True)
-        carrito_id = self.initial['id_factura']
+        carrito_id = self.initial['carrito_id']
         carrito = CarritoCompras.objects.get(pk=carrito_id)
 
         if commit:

@@ -27,6 +27,7 @@ urlpatterns = [
     path('registrar/vendedor', views.RegistrarVendedorView.as_view(), name='registrar-vendedor'),
     path('add/carrito/<int:carrito_id>/producto/<int:producto_id>',views.addCarritoCompras, name='add-carrito'),
     path('remove/carrito/<int:carrito_id>/producto/<int:producto_id>',views.removeCarritoCompras, name='remove-carrito'),
-    path('carrito/<int:pk>/facturacion', views.FacturacionView.as_view(), name='facturar-producto'),
+    path('carrito/<int:carrito_id>/cliente/<int:cliente_id>/facturacion', views.FacturacionView.as_view(), name='facturar-producto'),
     path('carrito/cotizar', views.CotizacionView.as_view(), name='cotizar-producto'),
+    path('carrito/<int:carrito_id>/buscar/cliente/', views.FiltrarCliente.as_view(), name='filtrar-cliente'),
 ]

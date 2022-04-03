@@ -87,12 +87,13 @@ class FacturacionView(CreateView):
 
     def get_initial(self):
         initial = super(FacturacionView, self).get_initial()
-        initial['id_factura'] = self.kwargs['pk']
+        initial['carrito_id'] = self.kwargs['carrito_id']
+        initial['cliente'] = self.kwargs['cliente_id']
         return initial
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['carrito'] = CarritoCompras.objects.get(pk=self.kwargs['pk'])
+        context['carrito'] = CarritoCompras.objects.get(pk=self.kwargs['carrito_id'])
         context['menu_active'] = 'Facturar Productos'
         return context
 
@@ -319,3 +320,23 @@ def DeleteDistribuidor(request, pk):
     Distribuidor.objects.filter(pk=pk).update(estado = 'I')
 
     return HttpResponseRedirect("/busqueda/distribuidor")
+
+class FiltrarCliente(ListView):
+    template_name = 'filtrar_clientes.html'
+    model = Cliente
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_cliente')
+        if query:
+            return qs.filter(nombre=query)
+        else:
+            qs = []
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['carrito_id'] = self.kwargs['carrito_id']
+        context['menu_active'] = 'Filtrar Cliente'
+        return context
