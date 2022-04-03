@@ -33,7 +33,7 @@
           </td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
           <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-          <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_compra|date:"d/M/Y"}}</p></td>
+          <td><p class="text-xs font-weight-bold mb-0">28/3/2022</p></td>
           <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
           <td><a id="edit{{article.id}}" href="{% url 'editar-cliente' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
           <td><a href="{% url 'eliminar-cliente' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>

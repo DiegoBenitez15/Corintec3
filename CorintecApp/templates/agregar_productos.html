@@ -4,9 +4,9 @@
 <head>
         <style>
             textarea {
-                top:2px;
+                top:0px;
                 width: 91%;
-                height: 277px;
+                height: 165px;
                 padding: 12px 20px;
                 box-sizing: border-box;
                 border: 2px solid #ccc;
@@ -44,10 +44,13 @@
                    </div>
                 </div>
                 <div class="form-group col-md-6">
-
                     <div class="form-group col-sm-12">
-                                    {{ form.descripcion|as_crispy_field }}
-                                </div>
+                        {{ form.precio_venta|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12">
+                        {{ form.descripcion|as_crispy_field }}
+                    </div>
+
                 </div>
             </div>
         </form>
