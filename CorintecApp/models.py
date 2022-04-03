@@ -80,24 +80,24 @@ class Empleados(models.Model):
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
     telefono = models.CharField(max_length=14,null=True)
     fecha_nacimiento = models.DateField(null=True)
-    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE)
+    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido
 
 class AdministradorUsuario(Empleados):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
 
     def save(self, *args, **kwargs):
         self.usuario.roles.add(Role.ADMINISTRADOR)
-        super(Paciente, self).save(*args, **kwargs)
+        super(Empleados, self).save(*args, **kwargs)
 
 class VendedorUsuario(Empleados):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.usuario.roles.add(Role.VENDEDOR)
-        super(Paciente, self).save(*args, **kwargs)
+        super(Empleados, self).save(*args, **kwargs)
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=30, null=True)
@@ -135,14 +135,12 @@ t_pago = ((Efectivo, 'EFECTIVO'), (Credito, 'CREDITO'), (Deposito, 'DEPOSITO'))
 
 class Factura(models.Model):
     fecha = models.DateField(auto_now_add=True,null=True)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=True)
-    cantidad = models.PositiveIntegerField(default=0)
+    productos = models.ManyToManyField(CarritoProductos,null=True)
     totalPago = models.FloatField(null=True)
     subTotal = models.FloatField(null=True)
     ITBIS = models.FloatField(null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
     tipoPago = models.PositiveIntegerField(choices=t_pago,null=True)
-
 
     def factura_str(self):
         return [v[1] for v in self.t_pago if v[0] == self.tipoPago][0].title()

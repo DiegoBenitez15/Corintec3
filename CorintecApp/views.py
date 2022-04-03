@@ -79,6 +79,34 @@ class AgregarClienteView(CreateView):
         context['menu_active'] = 'Agregar Cliente'
         return context
 
+class FacturacionView(CreateView):
+    template_name = 'facturacion.html'
+    model = Factura
+    form_class = RegistrarFacturaForm
+    success_url = reverse_lazy('home')
+
+    def get_initial(self):
+        initial = super(FacturacionView, self).get_initial()
+        initial['id_factura'] = self.kwargs['pk']
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['carrito'] = CarritoCompras.objects.get(pk=self.kwargs['pk'])
+        context['menu_active'] = 'Facturar Productos'
+        return context
+
+class CotizacionView(CreateView):
+    template_name = 'cotizacion.html'
+    model = Factura
+    fields = "__all___"
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Cotizar Productos'
+        return context
+
 class RegistrarVendedorView(CreateView):
     template_name = 'formulario.html'
     model = VendedorUsuario

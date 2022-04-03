@@ -65,22 +65,48 @@ class AgregarDistribuidorForm(forms.ModelForm):
     
     
 class CreateAdminUsuarioForm(forms.ModelForm):
-    fecha_nacimiento = forms.DateTimeField(
-        input_formats=['%d/%m/%Y %H:%M', '%d/%m/%Y'],
-    )
 
     class Meta:
         model = AdministradorUsuario
-        exclude = ['usuario','carrito']
+        fields = ['nombre','apellido','identificacion','correo','genero','telefono']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(CreateAdminUsuarioForm, self).__init__(*args, **kwargs)
 
-    def save(self, commit=True):
+    def save(self, commit=False):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         user.email = self.cleaned_data["email"]
         if commit:
             user.save()
         return user
+
+class RegistrarFacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ['cliente','tipoPago']
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrarFacturaForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        factura = super().save(commit=True)
+        carrito_id = self.initial['id_factura']
+        carrito = CarritoCompras.objects.get(pk=carrito_id)
+
+        if commit:
+            factura.totalPago = carrito.total
+            factura.subTotal = carrito.subtotal
+            factura.ITBIS = carrito.itbis
+
+            for i in carrito.carrito_productos.all():
+                factura.productos.add(i)
+
+            factura.save()
+            carrito.carrito_productos.clear()
+            carrito.actualizarPrecios()
+        return factura
+
+
+
