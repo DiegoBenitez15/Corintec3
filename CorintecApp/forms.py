@@ -89,6 +89,7 @@ class RegistrarFacturaForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RegistrarFacturaForm, self).__init__(*args, **kwargs)
+        self.fields['cliente'].queryset = Cliente.objects.filter(pk=self.initial['cliente'])
 
     def save(self, commit=True):
         factura = super().save(commit=True)
