@@ -59,9 +59,9 @@
         <div class="col-md-12" style="text-align: right">
 
                 {% for carrito in object_list %}
-                    <p>Sub Total: {{carrito.subtotal}}</p>
-                    <p>ITBIS: {{carrito.itbis}}</p>
-                    <p>Total: {{carrito.total}}</p>
+                    <p>Sub Total: {{carrito.subtotal|floatformat:2}}</p>
+                    <p>ITBIS: {{carrito.itbis|floatformat:2}}</p>
+                    <p>Total: {{carrito.total|floatformat:2}}</p>
                 {% endfor %}
 
         </div>
@@ -69,9 +69,39 @@
 </div>
 
 <div style="text-align: center">
-    <button style="width:400px;" type="button" class="btn btn-square btn-primary">Cotizar</button>
-    <button style="width:400px;" type="button" class="btn btn-square btn-success">Facturar</button>
+    <button style="width:400px;" type="button" data-toggle="modal" data-target="#ConfirmarCotizacionModal" class="btn btn-square btn-primary">Cotizar</button>
+    <button style="width:400px;" type="button" data-toggle="modal" data-target="#ConfirmarFacturacionModal" class="btn btn-square btn-success">Facturar</button>
 </div>
 
+
+<div class="modal fade" id="ConfirmarFacturacionModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div style="text-align: center;" class="modal-body">
+          <br>
+          <h6>¿Esta seguro que quiere facturar?</h6>
+          <br>
+          <button data-dismiss="modal" class="btn btn-danger">Volver</button>
+          <button class="btn btn-success">Continuar</button>
+          <br>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="ConfirmarCotizacionModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div style="text-align: center;" class="modal-body">
+          <br>
+          <h6>¿Esta seguro que quiere cotizar?</h6>
+          <br>
+          <button data-dismiss="modal" class="btn btn-danger">Volver</button>
+          <a class="btn btn-success">Continuar</a>
+          <br>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 {% endblock content %}

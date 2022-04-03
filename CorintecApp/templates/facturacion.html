@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<head>
+    <style>
+        input {
+            align-content: center;
+            width: 91%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            resize: none;
+        }
+
+        select {
+            width: 91%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            resize: none;
+        }
+        .tabla {
+            top:2px;
+            width: 91%;
+            height: 300px;
+            padding: 12px 20px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f8f8;
+            resize: none;
+        }
+    </style>
+</head>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Facturar Productos</h5>
+    </div>
+
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-md-7">
+                    {{ form.cliente|as_crispy_field}}
+                    <br>
+                    <div style="overflow: scroll;" class="tabla" >
+                        {% for producto in carrito.carrito_productos.all %}
+                            <div style="margin-left: 20px" class="row">
+                                <div style="width: 60%">
+                                    {{producto.producto.nombre}}
+                                </div>
+                                <div style="width: 15%;text-align: center">
+                                    x{{producto.cantidad}}
+                                </div>
+                                <div style="width: 20%;text-align: center;">
+                                    {{producto.producto.precio_venta}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group col-md-5">
+                    {{ form.tipoPago|as_crispy_field}}
+                    <br>
+                    <div style="height: 160px"></div>
+                    <div style="height: 100px">
+
+                        <div style="background-color: #f8f8f8;width: 94%">
+                            <div style="margin-left: 20px">
+                                <h6>Subtotal: {{carrito.subtotal|floatformat:2}}</h6>
+                                <h6>ITBIS: {{carrito.itbis|floatformat:2}}</h6>
+                                <h6>Total: {{carrito.total|floatformat:2}}</h6>
+                            </div>
+                        </div>
+                        <br>
+                        <div style="width: 96%;text-align: right">
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+
