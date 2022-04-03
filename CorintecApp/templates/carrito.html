@@ -48,7 +48,7 @@
                               {{article.cantidad|upper}}
                           </td>
                           <td class="align-middle">
-                              <a href="{% url 'remove-carrito' carrito_id article.producto.id %}" id="quitar_producto" type="button" class="btn btn-square btn-light">Quitar</a>
+                              <a href="{% url 'remove-carrito' carrito_id article.producto.id %}" id="quitar_producto{{article.producto.id}}" type="button" class="btn btn-square btn-light">Quitar</a>
                           </td>
                         </tr>
                     {% endfor %}

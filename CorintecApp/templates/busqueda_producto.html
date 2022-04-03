@@ -41,7 +41,7 @@
                     {{ article.nombre|upper}}
                   </td>
                   <td>
-                    ${{ article.precio_venta|upper}}
+                    {{ article.precio_venta|upper}}
                   </td>
                   <td class="align-middle text-center">
                     <div class="d-flex align-items-center justify-content-center">
@@ -49,19 +49,19 @@
                     </div>
                   </td>
                   <td class="align-middle">
-                    <input id="cantidad" value="0" type="number" class ="form_control"  name="quantity" min="1" max="10">
+                    <input id="cantidad{{article.id}}" style="text-align: center" value="1" type="number" class ="form_control"  name="quantity" min="1" max="10">
                   </td>
                     <td class="align-middle">
-                    <a id = "agregar_producto" class="btn btn-light">Agregar</a>
+                    <a id = "agregar_producto{{article.id}}" class="btn btn-light">Agregar</a>
                   </td>
                 </tr>
 
                 <script>
-                     $("#agregar_producto").click(function() {
+                     $("#agregar_producto{{article.id}}").click(function() {
                         window.alert("Se ingreso su producto al carrito adecuadamente");
                         var token = '{{csrf_token}}';
                         var formData = new FormData();
-                        formData.append('cantidad',$('#cantidad').val());
+                        formData.append('cantidad',$('#cantidad{{article.id}}').val());
                         $.ajax({
                             headers: { "X-CSRFToken": token },
                             url: "{% url 'add-carrito' carrito_id article.id %}" ,
@@ -72,9 +72,9 @@
                             data: formData,
                             type: 'post',
                             success: function (response) {
-
                             },
                             error: function (response) {
+                                $('#cantidad{{article.id}}').val(0)
                             }
                         });
                      })

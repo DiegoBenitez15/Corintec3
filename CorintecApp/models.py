@@ -125,7 +125,7 @@ class RegistroCompras(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
     distribuidor = models.ForeignKey(Distribuidor,on_delete=models.CASCADE)
     fecha_compra = models.DateField(auto_now_add=True, null=True)
-    precio_compra = models.FloatField(null=True)
+    precio_compra = models.FloatField(default=0,null=True)
     cantidad = models.IntegerField(default=0)
 
 Efectivo = 0
