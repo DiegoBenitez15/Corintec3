@@ -59,7 +59,10 @@
         </table>
         {% if object_list %}
         {% else %}
-        <a href="{% url 'agregar-producto' %}" class="btn btn-success btn-block" >Agregar</a>
+        <br>
+        <p align="center">No se ha encontrado resultado. ¿Desea agregarlo?</p>
+        <br>
+        <a href="{% url 'agregar-producto' %}" class="btn btn btn-outline-info btn-block" >Agregar</a>
         {% endif %}
     </div>
 </div>

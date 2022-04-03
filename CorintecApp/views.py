@@ -44,7 +44,7 @@ def removeCarritoCompras(request, carrito_id,producto_id):
     template_name = 'carrito.html'
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.removeProducto(producto_id)
-    return render(request, template_name)
+    return redirect('/carrito/')
 
 def registerusuario(request):
     return render(request, 'registrarusuario.html')
@@ -181,6 +181,7 @@ class BusquedaProductos(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda'
+        context['carrito_id'] = 2
         return context
 
 class GestionarProductos(ListView):
