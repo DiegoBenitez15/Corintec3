@@ -92,7 +92,7 @@ class RegistrarFacturaForm(forms.ModelForm):
 
     def save(self, commit=True):
         factura = super().save(commit=True)
-        carrito_id = self.initial['id_factura']
+        carrito_id = self.initial['carrito_id']
         carrito = CarritoCompras.objects.get(pk=carrito_id)
 
         if commit:
