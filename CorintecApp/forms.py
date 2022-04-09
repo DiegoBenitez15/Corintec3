@@ -74,6 +74,17 @@ class CreateAdminUsuarioForm(forms.ModelForm):
         self.fields['usuario'].initial = user
         self.fields['usuario'].disabled = True
 
+class CreateVendedorUsuarioForm(forms.ModelForm):
+    class Meta:
+        model = VendedorUsuario
+        exclude = ['carrito']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(CreateVendedorUsuarioForm, self).__init__(*args, **kwargs)
+        self.fields['usuario'].initial = user
+        self.fields['usuario'].disabled = True
+
 class RegistrarFacturaForm(forms.ModelForm):
     class Meta:
         model = Factura

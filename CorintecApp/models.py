@@ -108,6 +108,7 @@ class VendedorUsuario(Empleados):
 
     def save(self, *args, **kwargs):
         self.usuario.roles.add(Role.VENDEDOR)
+        self.carrito = CarritoCompras.objects.create()
         super(Empleados, self).save(*args, **kwargs)
 
 class Cliente(models.Model):
