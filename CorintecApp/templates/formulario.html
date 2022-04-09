@@ -41,23 +41,21 @@
 </head>
 
 
-<form method="get">
-    <div class="card" style="width: 90%">
-        <div class="card-header">
-           {% if menu_active == 'Registrar Administrador' %}<h5>Registrar Administrador</h5>{% endif %}
-           {% if menu_active == 'Registrar Vendedor' %}<h5>Registrar Vendedor</h5>{% endif %}
-        </div>
-
-        <div class="card-body">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div style="padding-left: 50px"  class="col-md-13">
-                    {{form|crispy}}
-                    <button style="width: 91%" type="submit" class="btn btn-success">Guardar</button>
-                </div>
-            </form>
-        </div>
+<div class="card" style="width: 90%">
+    <div class="card-header">
+       {% if menu_active == 'Registrar Administrador' %}<h5>Registrar Administrador</h5>{% endif %}
+       {% if menu_active == 'Registrar Vendedor' %}<h5>Registrar Vendedor</h5>{% endif %}
     </div>
-</form>
+
+    <div class="card-body">
+        <form  method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="padding-left: 50px"  class="col-md-13">
+                {{form|crispy}}
+                <button style="width: 91%" type="submit" class="btn btn-success">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock %}

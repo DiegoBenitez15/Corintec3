@@ -13,14 +13,25 @@ class Role(models.Model):
     )
     id = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, primary_key=True)
 
+    def __str__(self):
+      return self.get_id_display()
+
 class User(AbstractUser):
     roles = models.ManyToManyField(Role)
-    
+
+    def get_roles(self):
+        s = ""
+        for r in self.roles.all():
+            s += str(r) + ","
+        if len(s) > 0:
+            s = s[:-1]
+        return s
+
     def is_admin(self):
         return self.roles.filter(pk=Role.ADMINISTRADOR).exists()
 
     def is_vendedor(self):
-        return self.roles.filter(pk=Role.VENDEDOR).exists()   
+        return self.roles.filter(pk=Role.VENDEDOR).exists()
 
 class Cargo(models.Model):
     nombre = models.CharField(max_length=30,null=True)
@@ -30,7 +41,6 @@ class Producto(models.Model):
     marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
     cantidad = models.IntegerField(default=0)
-    precio_venta = models.FloatField(default=0)
 
 class CarritoProductos(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
@@ -86,10 +96,11 @@ class Empleados(models.Model):
         return self.nombre + ' ' + self.apellido
 
 class AdministradorUsuario(Empleados):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE,null=True)
+    usuario = models.OneToOneField(User,on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.usuario.roles.add(Role.ADMINISTRADOR)
+        self.carrito = CarritoCompras.objects.create()
         super(Empleados, self).save(*args, **kwargs)
 
 class VendedorUsuario(Empleados):
@@ -97,6 +108,7 @@ class VendedorUsuario(Empleados):
 
     def save(self, *args, **kwargs):
         self.usuario.roles.add(Role.VENDEDOR)
+        self.carrito = CarritoCompras.objects.create()
         super(Empleados, self).save(*args, **kwargs)
 
 class Cliente(models.Model):
@@ -145,16 +157,18 @@ class Factura(models.Model):
     def factura_str(self):
         return [v[1] for v in self.t_pago if v[0] == self.tipoPago][0].title()
 
-activo= 1
-inactivo = 0
-t_estadoEnvio =((activo, 'Activo'), (inactivo, 'Inactivo'))
+en_curso = 0
+pendiente = 1
+cancelado = 2
+finalizado = 3
+t_estadoEnvio =((en_curso, 'En Curso'),(pendiente, 'Pendiente'),(cancelado, 'Cancelado'), (finalizado, 'Finalizado'))
 
 class OrdenEnvio(models.Model):
-    fecha_envio = models.DateTimeField(null=True)
+    fecha_envio = models.DateTimeField(auto_now_add=True)
     empleado = models.ForeignKey(Empleados,on_delete=models.CASCADE,null=True)
     estadoEnvio = models.PositiveIntegerField(choices=t_estadoEnvio, null=True)
 
-    def orden_evio_str(self):
+    def orden_envio_str(self):
         return [v[1] for v in self.t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
 
 class Pedido(models.Model):
