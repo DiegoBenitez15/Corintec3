@@ -63,24 +63,16 @@ class AgregarDistribuidorForm(forms.ModelForm):
 
         return reporte
     
-    
 class CreateAdminUsuarioForm(forms.ModelForm):
-
     class Meta:
         model = AdministradorUsuario
-        fields = ['nombre','apellido','identificacion','correo','genero','telefono']
+        exclude = ['carrito']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(CreateAdminUsuarioForm, self).__init__(*args, **kwargs)
-
-    def save(self, commit=False):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        user.email = self.cleaned_data["email"]
-        if commit:
-            user.save()
-        return user
+        self.fields['usuario'].initial = user
+        self.fields['usuario'].disabled = True
 
 class RegistrarFacturaForm(forms.ModelForm):
     class Meta:

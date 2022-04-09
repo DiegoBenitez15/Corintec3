@@ -89,6 +89,7 @@ class FacturacionView(CreateView):
         initial = super(FacturacionView, self).get_initial()
         initial['carrito_id'] = self.kwargs['carrito_id']
         initial['cliente'] = self.kwargs['cliente_id']
+        initial['user'] = self.request.user
         return initial
 
     def get_context_data(self, **kwargs):
@@ -122,7 +123,7 @@ class RegistrarVendedorView(CreateView):
 class RegistrarAdminView(LoginRequiredMixin, CreateView):
     model = AdministradorUsuario
     template_name = 'formulario.html'
-    success_url = reverse_lazy('home') 
+    success_url = reverse_lazy('home')
     form_class = CreateAdminUsuarioForm
 
     def get_form_kwargs(self):
@@ -144,16 +145,13 @@ class CarritoComprasView(ListView):
     model = CarritoCompras
 
     def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
-        query = self.request.GET.get('nombre_producto')
-        if query:
-            return qs.filter(nombre=query)
+        qs = super().get_queryset(*args, **kwargs).filter(pk = self.request.user.administradorusuario.carrito_id)
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda'
-        context['carrito_id'] = 2
+        context['carrito_id'] = self.request.user.administradorusuario.carrito_id
         return context
 
 class AgregarProductosView(CreateView):
@@ -210,7 +208,7 @@ class BusquedaProductos(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Busqueda'
-        context['carrito_id'] = 2
+        context['carrito_id'] = self.request.user.administradorusuario.carrito_id
         return context
 
 class GestionarProductos(ListView):
