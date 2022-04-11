@@ -169,9 +169,30 @@ class AgregarProductosView(CreateView):
     form_class = AgregarProductoForm
     success_url = reverse_lazy('home')
 
+    def get_form_kwargs(self):
+        kwargs = super(AgregarProductosView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['menu_active'] = 'Agregar Productos'
+        return context
+
+class AgregarOrdenCompraView(CreateView):
+    template_name = 'agregar.html'
+    model = Producto
+    form_class = AgregarProductoForm
+    success_url = reverse_lazy('home')
+
+    def get_form_kwargs(self):
+        kwargs = super(AgregarOrdenCompraView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Agregar Orden Compra'
         return context
 
 class AgregarDistribuidorView(CreateView):
@@ -347,3 +368,8 @@ class FiltrarCliente(ListView):
         context['carrito_id'] = self.kwargs['carrito_id']
         context['menu_active'] = 'Filtrar Cliente'
         return context
+
+class OrdenCompraView(ListView):
+    template_name = 'orden_compra.html'
+    model = Cliente
+    paginate_by = 10

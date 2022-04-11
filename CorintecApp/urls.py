@@ -30,4 +30,5 @@ urlpatterns = [
     path('carrito/<int:carrito_id>/cliente/<int:cliente_id>/facturacion', views.FacturacionView.as_view(), name='facturar-producto'),
     path('carrito/cotizar', views.CotizacionView.as_view(), name='cotizar-producto'),
     path('carrito/<int:carrito_id>/buscar/cliente/', views.FiltrarCliente.as_view(), name='filtrar-cliente'),
+    path('orden/compra/', views.OrdenCompraView.as_view(), name='orden-compra'),
 ]

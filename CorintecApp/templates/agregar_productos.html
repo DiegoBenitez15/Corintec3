@@ -33,11 +33,11 @@
                                     {{ form.nombre|as_crispy_field }}
                                 </div>
                                 <div class="form-group col-sm-12">
-                        {{ form.marca|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-sm-12">
-                        {{ form.cantidad|as_crispy_field }}
-                    </div>
+                                    {{ form.marca|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    {{ form.registrado_por|as_crispy_field }}
+                                </div>
                                 <button type="submit" class="btn btn-success">Guardar</button>
                             </div>
                        </div>
@@ -47,6 +47,7 @@
                     <div class="form-group col-sm-12">
                         {{ form.descripcion|as_crispy_field }}
                     </div>
+
                 </div>
             </div>
         </form>

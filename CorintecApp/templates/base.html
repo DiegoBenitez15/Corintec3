@@ -53,7 +53,10 @@
           <div class="pcoded-inner-content">
             <div class="main-body">
               <div class="page-wrapper">
+                  <div style="margin-left: 10px" align="right"><h6>{{ user }} ({{user.get_roles}})  <a href="/accounts/login/"><i class="feather icon-log-out"> Log out</i></a></h6></div>
+                  <br>
                   {% block content %}
+
                   {% endblock content %}
               </div>
             </div>

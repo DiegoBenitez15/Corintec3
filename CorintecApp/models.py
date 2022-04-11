@@ -41,13 +41,14 @@ class Producto(models.Model):
     marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
     cantidad = models.IntegerField(default=0)
+    registrado_por = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class CarritoProductos(models.Model):
+class GrupoProductos(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
     cantidad = models.IntegerField(default=0)
 
 class CarritoCompras(models.Model):
-    carrito_productos = models.ManyToManyField(CarritoProductos,null=True)
+    carrito_productos = models.ManyToManyField(GrupoProductos,null=True)
     subtotal = models.FloatField(default=0)
     itbis = models.FloatField(default=0)
     total = models.FloatField(default=0)
@@ -147,7 +148,7 @@ t_pago = ((Efectivo, 'EFECTIVO'), (Credito, 'CREDITO'), (Deposito, 'DEPOSITO'))
 
 class Factura(models.Model):
     fecha = models.DateField(auto_now_add=True,null=True)
-    productos = models.ManyToManyField(CarritoProductos,null=True)
+    productos = models.ManyToManyField(GrupoProductos,null=True)
     totalPago = models.FloatField(null=True)
     subTotal = models.FloatField(null=True)
     ITBIS = models.FloatField(null=True)
@@ -161,12 +162,26 @@ en_curso = 0
 pendiente = 1
 cancelado = 2
 finalizado = 3
+entregado = 4
 t_estadoEnvio =((en_curso, 'En Curso'),(pendiente, 'Pendiente'),(cancelado, 'Cancelado'), (finalizado, 'Finalizado'))
+t_estadoOrdenCompra =((pendiente,'Pendiente'),(cancelado, 'Cancelado'), (entregado, 'Entregado'))
 
 class OrdenEnvio(models.Model):
     fecha_envio = models.DateTimeField(auto_now_add=True)
     empleado = models.ForeignKey(Empleados,on_delete=models.CASCADE,null=True)
     estadoEnvio = models.PositiveIntegerField(choices=t_estadoEnvio, null=True)
+
+    def orden_envio_str(self):
+        return [v[1] for v in self.t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
+
+class OrdenCompra(models.Model):
+    fecha_pedido = models.DateTimeField(auto_now_add=True)
+    fecha_entrega = models.DateTimeField(auto_now_add=True)
+    productos = models.ManyToManyField(GrupoProductos, null=True)
+    distribuidor = models.ForeignKey(Distribuidor, on_delete=models.CASCADE, null=True)
+    estado = models.PositiveIntegerField(choices=t_estadoOrdenCompra, null=True)
+    recibido_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='recibido')
+    registrado_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='registrado')
 
     def orden_envio_str(self):
         return [v[1] for v in self.t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
