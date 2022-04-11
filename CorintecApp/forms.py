@@ -31,7 +31,13 @@ class UserCreationFormCustom(UserCreationForm):
 class AgregarProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = '__all__'
+        exclude = ['cantidad']
+        
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(AgregarProductoForm, self).__init__(*args, **kwargs)
+        self.fields['registrado_por'].initial = user
+        self.fields['registrado_por'].disabled = True
 
 class RegistrarForm(forms.ModelForm):
     class Meta:
