@@ -118,5 +118,36 @@ class RegistrarFacturaForm(forms.ModelForm):
             carrito.actualizarPrecios()
         return factura
 
+class RegistrarOrdenCompraForm(forms.ModelForm):
+    class Meta:
+        model = OrdenCompra
+        fields = ['distribuidor']
+
+    distribuidor = models.ForeignKey(Distribuidor, on_delete=models.CASCADE, null=True)
+    estado = models.PositiveIntegerField(choices=t_estadoOrdenCompra, null=True)
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrarOrdenCompraForm, self).__init__(*args, **kwargs)
+        self.fields['distribuidor'].queryset = Distribuidor.objects.filter(pk=self.initial['distribuidor'])
+
+    def save(self, commit=True):
+        factura = super().save(commit=True)
+        carrito_id = self.initial['carrito_id']
+        carrito = CarritoCompras.objects.get(pk=carrito_id)
+        factura.recibido_por = self.initial['user']
+        factura.estado = 1
+
+        if commit:
+            factura.totalPago = carrito.total
+            factura.subTotal = carrito.subtotal
+            factura.ITBIS = carrito.itbis
+
+            for i in carrito.carrito_productos.all():
+                factura.productos.add(i)
+
+            factura.save()
+            carrito.carrito_productos.clear()
+            carrito.actualizarPrecios()
+        return factura
 
 

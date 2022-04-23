@@ -12,9 +12,10 @@
     <table class="table align-items-center mb-0">
       <thead style="text-align: center">
         <tr>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Id Factura</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total de pago</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Telefono</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha</th>
           <th class="text-secondary opacity-7"></th>
         </tr>
@@ -22,14 +23,14 @@
       <tbody style="text-align: center">
         {% for article in object_list %}
         <tr>
+          <td><p class="text-xs text-secondary mb-0">XXX-XXX</p></td>
           <td>
-            <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
-            <p class="text-xs text-secondary mb-0">{{ article.id }}</p>
+            <h6 class="mb-0 text-sm">{{ article.cliente.nombre }} {{ article.cliente.apellido }}</h6>
+            <p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.correo }}</p>
           </td>
-          <td><p class="text-xs font-weight-bold mb-0">{{ article.totalPago }}</p></td>
-          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+          <td><p class="text-xs font-weight-bold mb-0">${{ article.totalPago }}</p></td>
+          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.telefono }}</p></td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha|date:"d/M/Y"}}</p></td>
-          <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
           <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
         </tr>
         {% endfor %}

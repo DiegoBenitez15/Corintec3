@@ -2,6 +2,23 @@
 
 {% block content %}
 
+<head>
+        <style>
+            input {
+                align-content: center;
+                width: 80px;
+                height: 30px;
+                text-align: left;
+                margin: 8px 0;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+        </style>
+    </head>
+
 <div class="card" style="height: 100px">
     <div class="card-body">
       <form method="GET" action="">
@@ -52,9 +69,26 @@
                     <input id="cantidad{{article.id}}" style="text-align: center" value="1" type="number" class ="form_control"  name="quantity" min="1" max="10">
                   </td>
                     <td class="align-middle">
-                    {% if article.cantidad %}<a id = "agregar_producto{{article.id}}" class="btn btn-light">Agregar</a>{% else %}<p style="color: red">No hay stock disponible</p>{% endif %}
+                        {% if article.cantidad %}<a data-toggle="modal"  data-target="#AgregarProductoModal{{article.id}}" class="btn btn-light">Agregar</a>{% else %}<p style="color: red">No hay stock disponible</p>{% endif %}
                   </td>
                 </tr>
+
+                <div class="modal fade" id="AgregarProductoModal{{article.id}}" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div align="right" style="text-align: center;" class="modal-header">
+                                <a  style="cursor: pointer;text-align: right" data-dismiss="modal" style="float:right;">Cerrar</a>
+                            </div>
+                            <div style="text-align: center;" class="modal-body">
+                                <br>
+                                <h6>¿Cual fue el precio de compra del producto?</h6>
+                                <input id="precio{{article.id}}" type="number" value="0"><br>
+                                <button id = "agregar_producto{{article.id}}"  class="btn btn-success">Confirmar</button>
+                                <br>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
                 <script>
                      $("#agregar_producto{{article.id}}").click(function() {
@@ -62,9 +96,10 @@
                         var token = '{{csrf_token}}';
                         var formData = new FormData();
                         formData.append('cantidad',$('#cantidad{{article.id}}').val());
+                        formData.append('precio',$('#precio{{article.id}}').val());
                         $.ajax({
                             headers: { "X-CSRFToken": token },
-                            url: "{% url 'add-carrito' carrito_id article.id %}" ,
+                            url: "{% url 'add-carrito-orden-compra' carrito_id article.id %}" ,
                             dataType: 'text', // what to expect back from the server
                             cache: false,
                             contentType: false,
@@ -80,8 +115,12 @@
                      })
                 </script>
                 {% endfor %}
+
             </tbody>
         </table>
+         <div class="card-footer">
+            <div align="center"><a href="{% url 'ordencompra-formulario' carrito_id distribuidor_id %}" class="btn btn-success">Continuar</a></div>
+        </div>
     </div>
 </div>
 

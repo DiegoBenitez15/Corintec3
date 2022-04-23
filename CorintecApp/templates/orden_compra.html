@@ -19,17 +19,59 @@
   </div>
 </div>
 
-<div><a href="{% url 'agregar-producto' %}" class="btn btn btn-primary btn-block" >Agregar Orden de Compra</a></div>
+<div><a href="{% url 'filtrar-distribuidor'  %}" class="btn btn btn-primary btn-block" >Agregar Orden de Compra</a></div>
 <br>
 <div class="card">
     <div class="card-header">
         <h5>Orden de Compra</h5>
     </div>
+    <div class="card-body">
+        <table  class="table align-items-center mb-0">
+            <thead align="center">
+                <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Codigo</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Pedido</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Entrega</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Registrado por</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                {% for article in object_list %}
+                     <tr {% if article.estado == 1 %} style="cursor: pointer;" data-toggle="modal"  data-target="#ClickModal{{article.codigo}}"{% endif %}>
+                          <td><p class="text-xs font-weight-bold mb-0">{{ article.codigo}}</p></td>
+                          <td class="d-flex flex-column justify-content-center">
+                            <h6 class="mb-0 text-sm">{{ article.distribuidor.nombre }}</h6>
+                            <p class="text-xs text-secondary mb-0">{{ article.distribuidor.correo }}</p>
+                          </td>
+                          <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_pedido|date:"d/M/Y"}}</p></td>
+                          <td><p class="text-xs font-weight-bold mb-0">{% if article.fecha_entrega %}{{ article.fecha_entrega|date:"d/M/Y"}}{% endif %}</p></td>
+                          <td><p class="text-xs font-weight-bold mb-0">{{ article.orden_compra_str }}</p></td>
+                          <td><p class="text-xs font-weight-bold mb-0">{{ article.recibido_por }}</p></td>
+                     </tr>
 
-            <div class="card-body">
-
-            </div>
-        </form>
+                    <div class="modal fade" id="ClickModal{{article.codigo}}" tabindex="-1" role="dialog">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div align="right" style="text-align: center;" class="modal-header">
+                               <a  style="cursor: pointer;text-align: right" data-dismiss="modal" style="float:right;">Cerrar</a>
+                          </div>
+                          <div style="text-align: center;" class="modal-body">
+                              <br>
+                              <h6>¿Que opción desea seleccionar?</h6>
+                              <br>
+                              <a href="{% url 'cancel-ordenCompra' article.codigo user.id %}"  class="btn btn-danger">Cancelar</a>
+                              <a href="{% url 'terminate-ordenCompra' article.codigo user.id %}" class="btn btn-success">Terminar</a>
+                              <br>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     </div>
     </div>
 

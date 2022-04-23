@@ -33,6 +33,12 @@ class home(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
+def addCarritoComprasOrdenCompra(request,carrito_id,producto_id):
+    cantidad = request.POST.get('cantidad','')
+    precio = request.POST.get('precio', '')
+    carrito = CarritoOrdenCompra.objects.get(pk=carrito_id)
+    carrito.addProductoOrdenCompra(producto_id,cantidad,precio)
+    return
 
 def addCarritoCompras(request,carrito_id,producto_id):
     cantidad = request.POST.get('cantidad','')
@@ -371,5 +377,73 @@ class FiltrarCliente(ListView):
 
 class OrdenCompraView(ListView):
     template_name = 'orden_compra.html'
-    model = Cliente
+    model = OrdenCompra
     paginate_by = 10
+
+class FiltrarDistribuidor(ListView):
+    template_name = 'filtrar_distribuidor.html'
+    model = Distribuidor
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_cliente')
+        if query:
+            return qs.filter(nombre=query)
+        else:
+            qs = []
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Filtrar Distribuidor'
+        return context
+    
+class FiltarProductos(ListView):
+    template_name = 'filtrar_producto.html'
+    model = Producto
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(nombre=query)
+        return qs.order_by('-id')[:10:-1]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Filtar Producto'
+        context['carrito_id'] = self.request.user.administradorusuario.productos_id
+        context['distribuidor_id'] = self.kwargs['distribuidor_id']
+        return context
+
+class OrdenEnvioFormularioView(CreateView):
+    template_name = 'orden_compra_formulario.html'
+    model = OrdenCompra
+    form_class = RegistrarOrdenCompraForm
+    success_url = reverse_lazy('home')
+
+    def get_initial(self):
+        initial = super(OrdenEnvioFormularioView, self).get_initial()
+        initial['carrito_id'] = self.kwargs['carrito_id']
+        initial['distribuidor'] = self.kwargs['distribuidor_id']
+        initial['user'] = self.request.user
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['carrito'] = CarritoCompras.objects.get(pk=self.kwargs['carrito_id'])
+        context['carrito_id'] = self.kwargs['carrito_id']
+        context['menu_active'] = 'Facturar Productos'
+        return context
+
+def CancelOrdenCompra(request, pk, user):
+    orden = OrdenCompra.objects.get(codigo=pk)
+    orden.cambiar_estado('Cancelado',user)
+    return HttpResponseRedirect("/ordencompra")
+
+def TerminateOrdenCompra(request, pk, user):
+    orden = OrdenCompra.objects.get(codigo = pk)
+    orden.cambiar_estado('Terminado',user)
+    return HttpResponseRedirect("/ordencompra")
