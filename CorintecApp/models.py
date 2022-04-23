@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import datetime
+import random
 
 t_genero = (('M', 'HOMBRE'), ('F', 'MUJER'), ('O', 'OTROS'))
 t_eliminado = (('A', 'ACTIVO'), ('I', 'INACTIVO'))
@@ -41,11 +43,34 @@ class Producto(models.Model):
     marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
     cantidad = models.IntegerField(default=0)
+    precio_venta = models.IntegerField(default=0)
     registrado_por = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class GrupoProductos(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
     cantidad = models.IntegerField(default=0)
+
+class GrupoProductosOrdenCompra(models.Model):
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
+    cantidad = models.IntegerField(default=0)
+    precio_compra = models.FloatField(default=0)
+
+class CarritoOrdenCompra(models.Model):
+    carrito_productos = models.ManyToManyField(GrupoProductosOrdenCompra,null=True)
+
+    def addProductoOrdenCompra(self, producto_id, cantidad, precio_compra):
+        for i in self.carrito_productos.all():
+            if i.producto.pk == producto_id:
+                c = GrupoProductosOrdenCompra.objects.get(producto__id=producto_id)
+                c.cantidad = c.cantidad + int(cantidad)
+                c.precio_compra = precio_compra
+                c.save()
+                return
+
+        c = GrupoProductosOrdenCompra.objects.create(producto=Producto.objects.get(pk=producto_id), cantidad=cantidad, precio_compra=precio_compra)
+        self.carrito_productos.add(c)
+        return
 
 class CarritoCompras(models.Model):
     carrito_productos = models.ManyToManyField(GrupoProductos,null=True)
@@ -65,20 +90,20 @@ class CarritoCompras(models.Model):
     def addProducto(self,producto_id,cantidad):
         for i in self.carrito_productos.all():
             if i.producto.pk == producto_id:
-                c = CarritoProductos.objects.get(producto__id=producto_id)
+                c = GrupoProductos.objects.get(producto__id=producto_id)
                 c.cantidad = c.cantidad + int(cantidad)
                 c.save()
                 self.actualizarPrecios()
                 return
 
 
-        c = CarritoProductos.objects.create(producto=Producto.objects.get(pk=producto_id),cantidad=cantidad)
+        c = GrupoProductos.objects.create(producto=Producto.objects.get(pk=producto_id),cantidad=cantidad)
         self.carrito_productos.add(c)
         self.actualizarPrecios()
         return
 
     def removeProducto(self,producto_id):
-        c = CarritoProductos.objects.get(producto=producto_id)
+        c = GrupoProductos.objects.get(producto=producto_id)
         self.carrito_productos.remove(c)
         c.delete()
         self.actualizarPrecios()
@@ -91,7 +116,8 @@ class Empleados(models.Model):
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
     telefono = models.CharField(max_length=14,null=True)
     fecha_nacimiento = models.DateField(null=True)
-    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE,null=True)
+    carrito = models.ForeignKey(CarritoCompras,on_delete=models.CASCADE,null=True,related_name="carrito")
+    productos = models.ForeignKey(CarritoOrdenCompra, on_delete=models.CASCADE, null=True,related_name="productos")
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido
@@ -174,17 +200,31 @@ class OrdenEnvio(models.Model):
     def orden_envio_str(self):
         return [v[1] for v in self.t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
 
+def random_string():
+    return str(random.randint(1000000000, 9999999999))
+
 class OrdenCompra(models.Model):
+    codigo = models.CharField(default=random_string,primary_key=True,max_length=10)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
-    fecha_entrega = models.DateTimeField(auto_now_add=True)
+    fecha_entrega = models.DateTimeField(null=True)
     productos = models.ManyToManyField(GrupoProductos, null=True)
     distribuidor = models.ForeignKey(Distribuidor, on_delete=models.CASCADE, null=True)
     estado = models.PositiveIntegerField(choices=t_estadoOrdenCompra, null=True)
     recibido_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='recibido')
     registrado_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='registrado')
 
-    def orden_envio_str(self):
-        return [v[1] for v in self.t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
+    def orden_compra_str(self):
+        return [v[1] for v in t_estadoOrdenCompra if v[0] == self.estado][0].title()
+
+    def cambiar_estado(self,estado_acccion,user):
+        if(estado_acccion == 'Terminado'):
+            self.estado = 4
+            self.registrado_por = User.objects.get(pk = user)
+            self.fecha_entrega = datetime.now()
+        elif (estado_acccion == 'Cancelado'):
+            self.estado = 2
+
+        self.save()
 
 class Pedido(models.Model):
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)

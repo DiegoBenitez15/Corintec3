@@ -30,5 +30,11 @@ urlpatterns = [
     path('carrito/<int:carrito_id>/cliente/<int:cliente_id>/facturacion', views.FacturacionView.as_view(), name='facturar-producto'),
     path('carrito/cotizar', views.CotizacionView.as_view(), name='cotizar-producto'),
     path('carrito/<int:carrito_id>/buscar/cliente/', views.FiltrarCliente.as_view(), name='filtrar-cliente'),
-    path('orden/compra/', views.OrdenCompraView.as_view(), name='orden-compra'),
+    path('ordencompra/buscar/distribuidor/', views.FiltrarDistribuidor.as_view(), name='filtrar-distribuidor'),
+    path('ordencompra/', views.OrdenCompraView.as_view(), name='orden-compra'),
+    path('ordencompra/distribuidor/<int:distribuidor_id>/buscar/productos', views.FiltarProductos.as_view(), name='filtrar-producto'),
+    path('ordencompra/productos/<int:carrito_id>/distribuidor/<int:distribuidor_id>', views.OrdenEnvioFormularioView.as_view(), name='ordencompra-formulario'),
+    path('ordencompra/terminar/<int:pk>/usuario/<int:user>', views.TerminateOrdenCompra, name='terminate-ordenCompra'),
+    path('ordencompra/cancelar/<int:pk>/usuario/<int:user>', views.CancelOrdenCompra, name='cancel-ordenCompra'),
+    path('ordencompra/add/<int:carrito_id>/producto/<int:producto_id>',views.addCarritoComprasOrdenCompra, name='add-carrito-orden-compra'),
 ]
