@@ -30,18 +30,13 @@
                     <li class="nav-item pcoded-menu-caption">
                         <label>Navegación</label>
                     </li>
-                  <li data-username="form elements advance componant validation masking wizard picker select" class="nav-item pcoded-hasmenu">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Pedidos</span></a>
-                        <ul class="pcoded-submenu">
-                            <li class=""><a href="/busqueda/pedido" class="">Buscar Pedido</a></li>
-                        </ul>
-                  </li>
-                   <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Facturas</span></a>
-                        <ul class="pcoded-submenu">
-                            <li class=""><a href="/busqueda/factura" class="">Buscar Factura</a></li>
-                        </ul>
-                  </li>
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                         <a href="/busqueda/pedido" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Pedidos</span></a>
+
+                   </li>
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                        <a href="/busqueda/factura" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Facturas</span></a>
+                    </li>
               <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
                   <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-clipboard"></i></span><span class="pcoded-mtext">Inventario</span></a>
                   <ul class="pcoded-submenu">
@@ -66,7 +61,11 @@
                             <li class=""><a href="/busqueda/distribuidor" class="">Buscar Distribuidores</a></li>
                         </ul>
                   </li>
-
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                        <a href="/busqueda/devoluciones" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Devoluciones</span></a>
+                    </li>
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                    </li>
                 </ul>
             </div>
         {% elif user.is_vendedor %}
@@ -87,19 +86,13 @@
                     <li class="nav-item pcoded-menu-caption">
                         <label>Navegación</label>
                     </li>
-                  <li data-username="form elements advance componant validation masking wizard picker select" class="nav-item pcoded-hasmenu">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Pedidos</span></a>
-                        <ul class="pcoded-submenu">
-                            <li class=""><a href="/busqueda/pedido" class="">Buscar Pedido</a></li>
-                        </ul>
-                  </li>
+                  <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                         <a href="/busqueda/pedido" class="nav-link "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Pedidos</span></a>
 
-                   <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
-                        <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Facturas</span></a>
-                        <ul class="pcoded-submenu">
-                            <li class=""><a href="/busqueda/factura" class="">Buscar Factura</a></li>
-                        </ul>
-                  </li>
+                   </li>
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                        <a href="/busqueda/factura" class="nav-link "><span class="pcoded-micon"><i class="feather icon-file-text"></i></span><span class="pcoded-mtext">Facturas</span></a>
+                    </li>
                   <li data-username="basic components Button Alert Badges breadcrumb Paggination progress Tooltip popovers Carousel Cards Collapse Tabs pills Modal Grid System Typography Extra Shadows Embeds" class="nav-item pcoded-hasmenu">
                         <a href="javascript:" class="nav-link "><span class="pcoded-micon"><i class="feather icon-user"></i></span><span class="pcoded-mtext">Clientes</span></a>
                         <ul class="pcoded-submenu">
@@ -115,6 +108,9 @@
                             <li class=""><a href="/busqueda/distribuidor" class="">Buscar Distribuidores</a></li>
                         </ul>
                   </li>
+                    <li data-username="Table bootstrap datatable footable" class="nav-item ">
+                        <a href="/busqueda/devoluciones" class="nav-link "><span class="pcoded-micon"><i class="feather icon-box"></i></span><span class="pcoded-mtext">Devoluciones</span></a>
+                    </li>
                 </ul>
             </div>
         {% endif %}

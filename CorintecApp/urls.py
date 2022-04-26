@@ -34,6 +34,7 @@ urlpatterns = [
     path('carrito/<int:carrito_id>/cliente/<int:cliente_id>/facturacion', views.FacturacionView.as_view(), name='facturar-producto'),
     path('carrito/cotizar', views.CotizacionView.as_view(), name='cotizar-producto'),
     path('carrito/<int:carrito_id>/buscar/cliente/', views.FiltrarClienteCotizacion.as_view(), name='filtrar-cliente-cotizacion'),
+    path('devoluciones/buscar/factura', views.FiltrarFactura.as_view(), name='filtrar-factura-devolucion'),
     path('cotizacion/carrito/<int:carrito_id>/buscar/cliente/', views.FiltrarCliente.as_view(), name='filtrar-cliente'),
     path('ordencompra/buscar/distribuidor/', views.FiltrarDistribuidor.as_view(), name='filtrar-distribuidor'),
     path('ordencompra/', views.OrdenCompraView.as_view(), name='orden-compra'),
@@ -49,4 +50,6 @@ urlpatterns = [
     path('actualizar/ventas/<str:t_venta>', views.VentasDashBoard.as_view(), name='venta-dashboard'),
     path('actualizar/productos/agotados', views.ProductoAgotado.as_view(), name='productos-agotados'),
     path('informacion/cliente/<int:cliente_id>', views.InfoCliente, name='info-cliente'),
+    path('busqueda/devoluciones', views.DevolucionesListView.as_view(), name='busqueda-devoluciones'),
+    path('crear/devoluciones/factura/<int:factura_id>', views.CreateDevoluciones.as_view(), name='create-devoluciones')
 ]

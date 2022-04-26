@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card" style="height: 100px">
+  <div class="card-body">
+    <form method="GET" action="">
+      <div style="padding-left: 60px" class="form-row">
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
+        </div>
+        <div class="col-md-10 form-group">
+          <input class="form-control mb-4" type="text" name="nombre_cliente" placeholder="Buscar">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div><a href="{% url 'filtrar-factura-devolucion'  %}" class="btn btn btn-primary btn-block" >Hacer una Devolucion</a></div>
+<br>
+<div class="card">
+  <div class="card-header">
+        <h5>Lista de Devoluciones</h5>
+  </div>
+  <div class="card-body">
+    <table class="table align-items-center mb-0">
+      <thead style="text-align: center">
+        <tr>
+          <th width="20%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cod. Factura</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Motivo</th>
+          <th width="20%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Registro</th>
+          <th width="20%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Registrado Por</th>
+        </tr>
+      </thead>
+      <tbody style="text-align: center">
+        {% for article in object_list %}
+        <tr>
+            <td>{{article.factura.codigo}}</td>
+            <td>{{article.motivo}}</td>
+            <td>{{article.fecha_registro|date:"d/M/Y"}}</td>
+            <td>{{article.registrado_por}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+      {% if object_list %}
+        {% else %}
+            <br><br>
+            <p align="center">No se ha encontrado resultado. ¿Desea agregarlo?</p>
+            <br>
+        {% endif %}
+  </div>
+</div>
+
+{% endblock %}

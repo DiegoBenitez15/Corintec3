@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<head>
+    <style>
+        input {
+                margin-left: 50px;
+                width: 400px;
+                align-content: center;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+            select {
+                margin-left: 50px;
+                width: 400px;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+
+            button {
+                margin-top: 55px;
+                margin-left: 50px;
+            }
+
+            label {
+                margin-left: 50px;
+            }
+
+            textarea {
+                margin-left: 50px;
+                width: 400px;
+                height: 170px;
+                padding: 12px 20px;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+    </style>
+</head>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Agregar Cliente</h5>
+    </div>
+
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div class="row">
+                <div class="form-group">
+                    <div class="form-group col-sm-12">
+                        {{ form.factura|as_crispy_field }}
+                    </div>
+                    <div style="margin-top: 40px" class="form-group col-sm-12">
+                        {{ form.registrado_por|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <button style="width: 400px"  type="submit" class="btn btn-success btn-block">Guardar</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-sm-12">
+                        {{ form.motivo|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-sm-12">
+                        {{ form.producto_a_inventario|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+       </form>
+    </div>
+</div>
+{% endblock content %}

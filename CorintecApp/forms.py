@@ -173,3 +173,34 @@ class RegistrarOrdenCompraForm(forms.ModelForm):
             carrito.producto_add.clear()
             carrito.actualizarPrecios()
         return factura
+
+CHOICES_PRIVACIDAD = [(1, 'SI'),(0, 'NO'),]
+
+class CreateDevolucionesForm(forms.ModelForm):
+
+    class Meta:
+        model = Devoluciones
+        exclude = ['fecha_registro']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        factura = kwargs.pop('factura')
+        super(CreateDevolucionesForm, self).__init__(*args, **kwargs)
+        self.fields['registrado_por'].initial = user
+        self.fields['registrado_por'].disabled = True
+        self.fields['factura'].initial = factura
+        self.fields['factura'].disabled = True
+
+    def save(self, commit=True):
+        devolucion = super().save(commit=True)
+        if commit:
+            productos = devolucion.factura.productos
+
+            if devolucion.producto_a_inventario == 1:
+                for i in productos.all():
+                    i.producto.cantidad = i.producto.cantidad + i.cantidad
+                    i.producto.save()
+
+            devolucion.save()
+        return devolucion
+

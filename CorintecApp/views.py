@@ -25,6 +25,7 @@ import io
 
 # Create your views here.
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def render_to_pdf(template_src, context_dict):
     if context_dict is None:
         context_dict = {}
@@ -37,6 +38,7 @@ def render_to_pdf(template_src, context_dict):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def GenerateCotizacionPdf(request,cliente_id,carrito_id):
     #Retrieve data or whatever you need
     carrito = CarritoCompras.objects.get(pk=carrito_id)
@@ -49,6 +51,7 @@ def GenerateCotizacionPdf(request,cliente_id,carrito_id):
     context = {'pagesize':'A4','cliente':cliente,'carrito':carrito,'totales':totales}
     return render_to_pdf('cotizacion_pdf.html',context)
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def GenerateFacturaPdf(request,factura_id):
     #Retrieve data or whatever you need
     factura = Factura.objects.get(pk=factura_id)
@@ -71,20 +74,24 @@ class home(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 def addCarritoComprasOrdenCompra(request,carrito_id,producto_id):
     cantidad = request.POST.get('cantidad','')
     precio = request.POST.get('precio', '')
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.addProductoOrdenCompra(producto_id,cantidad,precio)
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 def removeCarritoComprasOrdenCompra(request, carrito_id,producto_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.removeProductoOrdenCompra(producto_id)
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 def cleanCarritoComprasOrdenCompra(request,carrito_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.cleanProductoOrdenCompra()
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class addCarritoCompras(View):
     def post(self, request, carrito_id,producto_id):
         cantidad = request.POST.get('cantidad','')
@@ -92,11 +99,13 @@ class addCarritoCompras(View):
         carrito.addProducto(producto_id,cantidad)
         return JsonResponse({})
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def removeCarritoCompras(request, carrito_id,producto_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.removeProducto(producto_id)
     return redirect('/carrito/')
 
+@method_decorator([login_required], name='dispatch')
 def registerusuario(request):
     return render(request, 'registrarusuario.html')
 
@@ -119,6 +128,7 @@ def Registrarse(request):
         form = UserCreationFormCustom()
     return render(request, template_name, {'form': form})
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class AgregarClienteView(CreateView):
     template_name = 'agregar.html'
     model = Cliente
@@ -130,6 +140,7 @@ class AgregarClienteView(CreateView):
         context['menu_active'] = 'Agregar Cliente'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FacturacionView(CreateView):
     template_name = 'facturacion.html'
     model = Factura
@@ -149,6 +160,7 @@ class FacturacionView(CreateView):
         context['menu_active'] = 'Facturar Productos'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class CotizacionView(CreateView):
     template_name = 'cotizacion.html'
     model = Factura
@@ -160,6 +172,7 @@ class CotizacionView(CreateView):
         context['menu_active'] = 'Cotizar Productos'
         return context
 
+@method_decorator([login_required], name='dispatch')
 class RegistrarVendedorView(CreateView):
     model = AdministradorUsuario
     template_name = 'formulario.html'
@@ -180,6 +193,7 @@ class RegistrarVendedorView(CreateView):
         form.instance.usuario = self.request.user
         return super().form_valid(form)
 
+@method_decorator([login_required], name='dispatch')
 class RegistrarAdminView(LoginRequiredMixin, CreateView):
     model = AdministradorUsuario
     template_name = 'formulario.html'
@@ -200,6 +214,7 @@ class RegistrarAdminView(LoginRequiredMixin, CreateView):
         context['menu_active'] = 'Registrar Administrador'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class CarritoComprasView(ListView):
     template_name = 'carrito.html'
     model = CarritoCompras
@@ -221,6 +236,7 @@ class CarritoComprasView(ListView):
             context['carrito_id'] = self.request.user.vendedorusuario.carrito_id
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class AgregarProductosView(CreateView):
     template_name = 'agregar.html'
     model = Producto
@@ -237,6 +253,7 @@ class AgregarProductosView(CreateView):
         context['menu_active'] = 'Agregar Productos'
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 class AgregarOrdenCompraView(CreateView):
     template_name = 'agregar.html'
     model = Producto
@@ -253,6 +270,7 @@ class AgregarOrdenCompraView(CreateView):
         context['menu_active'] = 'Agregar Orden Compra'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class AgregarDistribuidorView(CreateView):
     template_name = 'agregar.html'
     model = Distribuidor
@@ -264,6 +282,7 @@ class AgregarDistribuidorView(CreateView):
         context['menu_active'] = 'Agregar Distribuidor'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class ClienteListView(ListView):
     template_name = 'busqueda.html'
     model = Cliente
@@ -282,6 +301,7 @@ class ClienteListView(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class BusquedaProductos(ListView):
     template_name = 'busqueda_producto.html'
     model = Producto
@@ -303,6 +323,7 @@ class BusquedaProductos(ListView):
 
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 class GestionarProductos(ListView):
     template_name = 'gestionar_producto.html'
     model = Producto
@@ -321,6 +342,7 @@ class GestionarProductos(ListView):
         context['carrito_id'] = 2
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class DistribuidorListView(ListView):
     template_name = 'busqueda.html'
     model = Distribuidor
@@ -339,6 +361,7 @@ class DistribuidorListView(ListView):
         context['menu_active'] = 'Busqueda Distribuidor'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FacturaListView(ListView):
     template_name = 'busqueda.html'
     model = Factura
@@ -356,6 +379,7 @@ class FacturaListView(ListView):
         context['menu_active'] = 'Busqueda Factura'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class PedidoListView(ListView):
     template_name = 'busqueda.html'
     model = Pedido
@@ -373,6 +397,7 @@ class PedidoListView(ListView):
         context['menu_active'] = 'Busqueda Pedido'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FacturasListView(ListView):
     template_name = 'busqueda.html'
     model = Distribuidor
@@ -383,34 +408,40 @@ class FacturasListView(ListView):
         context['menu_active'] = 'Busqueda Distribuidor'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class UpdateCliente(UpdateView):
     template_name = 'update_cliente.html'
     fields = '__all__'
     model = Cliente
     success_url = reverse_lazy('home')
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class UpdateDistribuidor(UpdateView):
     template_name = 'update_distribuidor.html'
     fields = '__all__'
     model = Distribuidor
     success_url = reverse_lazy('home')
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class UpdateProducto(UpdateView):
     template_name = 'update_producto.html'
     fields = ['nombre','marca','descripcion','ganancia']
     model = Producto
     success_url = reverse_lazy('gestionar-producto')
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def DeleteCliente(request, pk):
     Cliente.objects.filter(pk=pk).update(estado = 'I')
 
     return HttpResponseRedirect("/busqueda/cliente")
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def DeleteDistribuidor(request, pk):
     Distribuidor.objects.filter(pk=pk).update(estado = 'I')
 
     return HttpResponseRedirect("/busqueda/distribuidor")
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FiltrarCliente(ListView):
     template_name = 'filtrar_clientes.html'
     model = Cliente
@@ -429,6 +460,32 @@ class FiltrarCliente(ListView):
         context['menu_active'] = 'Filtrar Cliente'
         return context
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
+class FiltrarFactura(ListView):
+    template_name = 'filtrar_factura.html'
+    model = Factura
+    paginate_by = 10
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        query = self.request.GET.get('nombre_cliente')
+        if query:
+            return qs.filter(codigo__icontains=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        id = []
+        devoluciones = Devoluciones.objects.all()
+
+        for i in devoluciones:
+            id.append(i.factura.id)
+
+        context = super().get_context_data(**kwargs)
+        context['facturas'] = id
+        context['menu_active'] = 'Filtrar Factura'
+        return context
+
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FiltrarClienteCotizacion(ListView):
     template_name = 'filtrar_clientes.html'
     model = Cliente
@@ -447,6 +504,7 @@ class FiltrarClienteCotizacion(ListView):
         context['menu_active'] = 'Filtrar Cliente Cotizacion'
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 class OrdenCompraView(ListView):
     template_name = 'orden_compra.html'
     model = OrdenCompra
@@ -460,6 +518,7 @@ class OrdenCompraView(ListView):
 
         return qs
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class FiltrarDistribuidor(ListView):
     template_name = 'filtrar_distribuidor.html'
     model = Distribuidor
@@ -482,7 +541,8 @@ class FiltrarDistribuidor(ListView):
             context['carrito_id'] = self.request.user.vendedorusuario.productos_id
 
         return context
-    
+
+@method_decorator([login_required, administador_required()], name='dispatch')
 class FiltarProductos(ListView):
     template_name = 'filtrar_producto.html'
     model = Producto
@@ -505,6 +565,7 @@ class FiltarProductos(ListView):
         context['distribuidor_id'] = self.kwargs['distribuidor_id']
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 class OrdenEnvioFormularioView(CreateView):
     template_name = 'orden_compra_formulario.html'
     model = OrdenCompra
@@ -526,27 +587,32 @@ class OrdenEnvioFormularioView(CreateView):
         context['menu_active'] = 'Facturar Productos'
         return context
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 def CancelOrdenCompra(request, pk, user):
     orden = OrdenCompra.objects.get(pk=pk)
     orden.cambiar_estado('Cancelado',user)
     return HttpResponseRedirect("/ordencompra")
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def TerminatePedido(request, pk, user):
     pedido = Pedido.objects.get(pk = pk)
     pedido.cambiar_estado('Terminado',user)
     return HttpResponseRedirect("/busqueda/pedido")
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def CancelPedido(request, pk, user):
     pedido = Pedido.objects.get(pk=pk)
     pedido.cambiar_estado('Cancelado',user)
     return HttpResponseRedirect("/busqueda/pedido")
 
+@method_decorator([login_required, administador_required()], name='dispatch')
 def TerminateOrdenCompra(request, pk, user):
     orden = OrdenCompra.objects.get(pk = pk)
     orden.cambiar_estado('Terminado',user)
     orden.actualizarProductos(pk)
     return HttpResponseRedirect("/ordencompra")
 
+@method_decorator([login_required], name='dispatch')
 class ActualizarFiltroProducto(View):
     def get(self, request,carrito_id):
         carrito = CarritoCompras.objects.get(pk=carrito_id)
@@ -559,11 +625,7 @@ class ActualizarFiltroProducto(View):
 
         return JsonResponse({'id_productos': id_productos,'cantidad':cantidad})
 
-class GenerateOrdenEnvioPdf(FPDF):
-    def post(self, request, carrito_id):
-        pdf = PDF(orientation='L',measure='cm',format='A4')
-        pass
-
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class chequearDisponibilidad(View):
     def post(self,request,producto_id):
         producto = Producto.objects.get(pk=producto_id)
@@ -574,6 +636,7 @@ class chequearDisponibilidad(View):
         else:
             return JsonResponse({'respuesta':'no'})
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class VentasDashBoard(View):
     def post(self,request,t_venta):
         suma=0
@@ -594,10 +657,49 @@ class VentasDashBoard(View):
 
         return JsonResponse({'suma':suma})
 
+
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 class ProductoAgotado(View):
     def post(self,request):
         return JsonResponse({'producto_agotado':Producto.objects.filter(cantidad=0).all().count()})
 
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def InfoCliente(request,cliente_id):
     cliente = Cliente.objects.get(pk=cliente_id)
     return render(request, 'info_cliente.html',{'cliente':cliente})
+
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
+class DevolucionesListView(ListView):
+    template_name = 'devoluciones.html'
+    model = Devoluciones
+    paginate_by = 10  # if pagination is desired
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs).order_by('-id')
+        query = self.request.GET.get('nombre_producto')
+        if query:
+            return qs.filter(codigo=query)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Devoluciones'
+        return context
+
+@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
+class CreateDevoluciones(CreateView):
+    template_name = 'create_devoluciones.html'
+    model = Devoluciones
+    form_class = CreateDevolucionesForm
+    success_url = reverse_lazy('home')
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateDevoluciones, self).get_form_kwargs()
+        kwargs['factura'] = Factura.objects.get(pk=self.kwargs['factura_id'])
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menu_active'] = 'Crear Devoluciones'
+        return context

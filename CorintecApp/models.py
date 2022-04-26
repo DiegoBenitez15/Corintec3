@@ -42,7 +42,7 @@ class Cargo(models.Model):
     nombre = models.CharField(max_length=30,null=True)
 
 class Producto(models.Model):
-    codigo = models.CharField(default=random_string,max_length=10)
+    codigo = models.CharField(default=random_string,max_length=10,unique=True)
     nombre = models.CharField(max_length=50)
     marca = models.CharField(max_length=120)
     descripcion = models.TextField(max_length=70)
@@ -142,7 +142,7 @@ class CarritoCompras(models.Model):
 class Empleados(models.Model):
     nombre = models.CharField(max_length=30,null=True)
     apellido = models.CharField(max_length=30,null=True)
-    identificacion = models.CharField(max_length=30, null=True)
+    identificacion = models.CharField(max_length=30, null=True,unique=True)
     correo = models.CharField(max_length=30,null=True)
     genero = models.CharField(max_length=1,choices=t_genero,null=True)
     telefono = models.CharField(max_length=14,null=True)
@@ -177,8 +177,8 @@ class Cliente(models.Model):
     direccion = models.TextField(max_length=200, null=True)
     correo = models.CharField(max_length=30, null=True)
     telefono = models.CharField(max_length=14, null=True)
-    rnc = models.CharField(max_length=30, null=True)
-    identificacion = models.CharField(max_length=30, null=True)
+    rnc = models.CharField(max_length=30, null=True,unique=True)
+    identificacion = models.CharField(max_length=30, null=True,unique=True)
     estado = models.CharField(max_length=10, null=True, choices=t_eliminado, default="A")
 
     def __str__(self):
@@ -195,7 +195,7 @@ class Distribuidor(models.Model):
     correo = models.CharField(max_length=30)
     direccion = models.TextField(max_length=200)
     telefono = models.CharField(max_length=14)
-    identificacion = models.CharField(max_length=30, null=True)
+    identificacion = models.CharField(max_length=30, null=True,unique=True)
     estado = models.CharField(max_length=10, null=True, choices=t_eliminado, default="A")
 
     def __str__(self):
@@ -217,7 +217,7 @@ Deposito = 2
 t_pago = ((Efectivo, 'EFECTIVO'), (Credito, 'CREDITO'), (Deposito, 'DEPOSITO'))
 
 class Factura(models.Model):
-    codigo = models.CharField(default=random_string, max_length=10)
+    codigo = models.CharField(default=random_string, max_length=10,unique=True)
     fecha = models.DateField(auto_now_add=True,null=True)
     productos = models.ManyToManyField(Lista_Productos)
     totalPago = models.FloatField(null=True)
@@ -225,6 +225,9 @@ class Factura(models.Model):
     ITBIS = models.FloatField(null=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)
     tipoPago = models.PositiveIntegerField(choices=t_pago,null=True)
+
+    def __str__(self):
+        return "Codigo: " + self.codigo
 
     def t_pago_str(self):
         return [v[1] for v in t_pago if v[0] == self.tipoPago][0].title()
@@ -246,7 +249,7 @@ class OrdenEnvio(models.Model):
         return [v[1] for v in t_estadoEnvio if v[0] == self.estadoEnvio][0].title()
 
 class OrdenCompra(models.Model):
-    codigo = models.CharField(default=random_string,max_length=10)
+    codigo = models.CharField(default=random_string,max_length=10,unique=True)
     fecha_pedido = models.DateTimeField(auto_now_add=True)
     fecha_entrega = models.DateTimeField(null=True)
     productos = models.ManyToManyField(Lista_Productos)
@@ -296,3 +299,12 @@ class Pedido(models.Model):
         self.orden_envio.save()
         self.factura.save()
         self.save()
+
+OPTION = [(1,'SI'),(0,'NO')]
+
+class Devoluciones(models.Model):
+    factura = models.ForeignKey(Factura,on_delete=models.CASCADE)
+    motivo = models.TextField(max_length=100,null=True)
+    producto_a_inventario = models.PositiveIntegerField(choices=OPTION, default=0)
+    fecha_registro = models.DateField(auto_now_add=True)
+    registrado_por = models.ForeignKey(User,on_delete=models.CASCADE)

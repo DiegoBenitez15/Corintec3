@@ -14,11 +14,10 @@
       <thead style="text-align: center">
         <tr>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Identificacion</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Identificacion</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
-          <th class="text-secondary opacity-7"></th>
+         <th class="text-secondary opacity-7"></th>
         </tr>
       </thead>
       <tbody style="text-align: center">
@@ -27,13 +26,13 @@
           <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer">
               <img style = "position:relative; bottom:16px" width=70px" height="70px" src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' class="avatar avatar-sm me-3" alt="user1">
           </td>
-          <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer" class="d-flex flex-column justify-content-center">
+          <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.identificacion}}</p></td>
+
+            <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer" class="d-flex flex-column justify-content-center">
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-          <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.identificacion}}</p></td>
           <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-          <td data-toggle="modal" data-target="#InfoDistribuidor{{article.id}}" style="cursor: pointer" class="text-center"><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
           <td  ><a id="edit{{article.id}}" href="{% url 'editar-distribuidor' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
           <td><a href="{% url 'eliminar-distribuidor' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>
         </tr>

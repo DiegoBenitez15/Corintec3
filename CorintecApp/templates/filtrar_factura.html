@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card" style="height: 100px">
+  <div class="card-body">
+    <form method="GET" action="">
+      <div style="padding-left: 60px" class="form-row">
+        <div class="form-group">
+          <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
+        </div>
+        <div class="col-md-10 form-group">
+          <input class="form-control mb-4" type="text" name="nombre_cliente" placeholder="Buscar">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+        <h5>Lista de Facturas</h5>
+  </div>
+  <div class="card-body">
+
+    <table class="table align-items-center mb-0">
+      <tbody style="text-align: center">
+        {% for article in object_list %}
+            <tr>
+                <td><p class="text-xs text-secondary mb-0">{{ article.codigo }}</p></td>
+                <td>
+                    <h6 class="mb-0 text-sm">{{ article.cliente.nombre }} {{ article.cliente.apellido }}</h6>
+                    <p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.correo }}</p>
+                </td>
+                <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.t_pago_str }}</p></td>
+                <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha|date:"d/M/Y"}}</p></td>
+                <td><p class="text-xs font-weight-bold mb-0">${{ article.totalPago }}</p></td>
+                <td>{% if article.id in facturas %}<h6 style="margin-left: -15px;margin-top: 3px">Ya fue Devuelto</h6>{% else %}<a id="select{{article.id}}" href="{% url 'create-devoluciones' article.id %}"  type="button" class="btn btn-primary">Seleccionar</a>{% endif %}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+      {% if object_list %}
+        {% else %}
+            <br>
+            <p align="center">No se ha encontrado resultado.</p>
+            <br>
+        {% endif %}
+  </div>
+</div>
+
+<div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modificar Cliente</h5>
+            </div>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+
+                  <iframe frameborder="1" width="420" height="345" src="/agregar/cliente"></iframe>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
+{% endblock %}
