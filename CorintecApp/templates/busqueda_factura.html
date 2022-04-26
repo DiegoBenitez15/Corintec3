@@ -14,25 +14,37 @@
         <tr>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Id Factura</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
+          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo de Pago</th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Total de pago</th>
-          <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Telefono</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha</th>
           <th class="text-secondary opacity-7"></th>
         </tr>
       </thead>
       <tbody style="text-align: center">
         {% for article in object_list %}
-        <tr>
-          <td><p class="text-xs text-secondary mb-0">XXX-XXX</p></td>
-          <td>
+         <tr>
+          <td><p class="text-xs text-secondary mb-0">{{ article.codigo }}</p></td>
+          <td data-toggle="modal" data-target="#InfoCliente{{article.cliente.id}}" style="cursor: pointer">
             <h6 class="mb-0 text-sm">{{ article.cliente.nombre }} {{ article.cliente.apellido }}</h6>
             <p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.correo }}</p>
           </td>
-          <td><p class="text-xs font-weight-bold mb-0">${{ article.totalPago }}</p></td>
-          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.telefono }}</p></td>
+          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.t_pago_str }}</p></td>
           <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha|date:"d/M/Y"}}</p></td>
-          <td><a id="edit{{article.id}}" href="" data-toggle="modal" data-target="#UpdateModal" class="text-secondary font-weight-bold text-xs">Editar</a></td>
+          <td><p class="text-xs font-weight-bold mb-0">${{ article.totalPago }}</p></td>
+          <td><a href="{% url 'facturacion-pdf' article.id %}" target="new" class="text-secondary font-weight-bold text-xs">Imprimir</a></td>
         </tr>
+
+         <div class="modal fade" id="InfoCliente{{article.id}}" tabindex="-1" role="dialog">
+            <div  class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div style="text-align: center;" class="modal-body">
+                        {% with article.cliente as cliente %}
+                            {% include 'info_cliente.html' %}
+                        {% endwith %}
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
         {% endfor %}
       </tbody>
     </table>

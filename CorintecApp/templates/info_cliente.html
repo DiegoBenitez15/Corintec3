@@ -1,0 +1,35 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<div align="center">
+  <div align="left" style="width: 100%" class="card">
+    <div class="card-header">
+        <h5>Informacion del Cliente</h5>
+    </div>
+    <div style="width: 100%" align="center" class="card-body">
+        <div class="col-md-12">
+                <img style = "position:relative; bottom:16px" width=100px" height="100px" {% if cliente.genero == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if cliente.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if cliente.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="user1">
+                <br>
+                <h6>Nombre Completo: {{cliente.nombre}} {{cliente.apellido}}</h6>
+                <h6>Identificacion: {{cliente.identificacion}}</h6>
+                <h6>RNC: {{cliente.rnc}}</h6>
+                <h6>Genero: {{cliente.genero_str}}</h6>
+                <h6>Estado: {{cliente.estado_str}} </h6>
+                <h6>Telefono: {{cliente.telefono}}</h6>
+                <h6>Correo: {{cliente.correo}}</h6>
+                <h6>Direccion: {{cliente.direccion}}</h6>
+        <div>
+    </div>
+  </div>
+</div>
+  </div></div>
+{% endblock content %}

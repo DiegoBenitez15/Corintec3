@@ -34,11 +34,18 @@
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-            <td><a href="{% url 'facturar-producto' carrito_id article.id %}"  type="button" class="btn btn-primary">Seleccionar</a></td>
+            <td><a {% if menu_active == "Filtrar Cliente" %}href="{% url 'facturar-producto' carrito_id article.id %}"{% else %} target="new" href="{% url 'cotizacion-pdf' article.id carrito_id %}"{% endif %}  type="button" class="btn btn-primary">Seleccionar</a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+      {% if object_list %}
+        {% else %}
+            <br>
+            <p align="center">No se ha encontrado resultado. ¿Desea agregarlo?</p>
+            <br>
+        {% endif %}
+        <a href="{% url 'agregar-cliente' %}" class="btn btn btn-outline-info btn-block" >Agregar</a>
   </div>
 </div>
 

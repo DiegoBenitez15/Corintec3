@@ -2,6 +2,24 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<head>
+    <style>
+        tbody {
+            display: block;
+            height: 190px;
+            overflow: auto;
+        }
+        thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;/* even columns width , fix width of table too*/
+        }
+        thead {
+            width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+        }
+    </style>
+</head>
+
 <body>
             <div class="main-body">
                 <div class="page-wrapper">
@@ -14,15 +32,14 @@
                                     <h6 class="mb-4">Ventas Diarias</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>$ 249.95</h3>
+                                            <h3 id="ventas_diarias" class="f-w-300 d-flex align-items-center m-b-0"><i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>$ 0</h3>
                                         </div>
 
                                         <div class="col-3 text-right">
-                                            <p class="m-b-0">67%</p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
-                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -35,14 +52,13 @@
                                     <h6 class="mb-4">Ventas Mensuales</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-arrow-down text-c-red f-30 m-r-10"></i>$ 2.942.32</h3>
+                                            <h3 id="ventas_mensual" class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-arrow-down text-c-red f-30 m-r-10"></i>$ 0</h3>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <p class="m-b-0">36%</p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
-                                        <div class="progress-bar progress-c-theme2" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar progress-c-theme2" role="progressbar" style="width: 100%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -55,14 +71,13 @@
                                     <h6 class="mb-4">Ventas Anuales</h6>
                                     <div class="row d-flex align-items-center">
                                         <div class="col-9">
-                                            <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>$ 8.638.32</h3>
+                                            <h3 id="ventas_anual" class="f-w-300 d-flex align-items-center  m-b-0"><i class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>$ 0</h3>
                                         </div>
                                         <div class="col-3 text-right">
-                                            <p class="m-b-0">80%</p>
                                         </div>
                                     </div>
                                     <div class="progress m-t-30" style="height: 7px;">
-                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -70,27 +85,35 @@
                         <!--[ year  sales section ] end-->
                         <!--[ Recent Users ] start-->
                         <div class="col-xl-8 col-md-6">
-                            <div class="card Recent-Users">
+                            <div style="height: 340px" class="card Recent-Users">
                                 <div class="card-header">
-                                    <h5>Ultimos Clientes Registrados</h5>
+                                    <h5>Pedidos en Curso</h5>
                                 </div>
                                 <div class="card-block px-0 py-3">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
+                                        <table style="text-align: center" class="table table-hover">
+                                            <thead>
+                                                <th>Codigo</th>
+                                                <th style="width: 35%">Cliente</th>
+                                                <th>Telefono</th>
+                                                <th>Fecha Envio</th>
+                                            </thead>
                                             <tbody>
                                             {% for article in object_list %}
                                                 <tr class="unread">
                                                     <td>
-                                                        <img class="rounded-circle" style="width:40px;" {% if article.genero|upper == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if article.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if article.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="activity-user">
+                                                       <h6 class="mb-1">{{ article.factura.codigo }}</h6>
+                                                    </td>
+                                                    <td style="width: 35%" >
+                                                        <h6 class="mb-1">{{ article.factura.cliente.nombre }} {{ article.factura.cliente.apellido }}</h6>
+                                                        <p class="m-0">{{ article.factura.cliente.correo }}</p>
                                                     </td>
                                                     <td>
-                                                        <h6 class="mb-1">{{ article.nombre }} {{ article.apellido }}</h6>
-                                                        <p class="m-0">{{ article.correo }}</p>
+                                                       <h6 class="mb-1">{{ article.factura.cliente.telefono }}</h6>
                                                     </td>
                                                     <td>
-                                                        <h6 class="text-muted"><i class="fas fa-circle text-c-green f-10 m-r-15"></i>11 MAY 12:56</h6>
+                                                       <h6 class="mb-1">{{ article.factura.fecha|date:"d/M/Y" }}</h6>
                                                     </td>
-                                                  <td><a href="#!" class="label theme-bg2 text-white f-12">Eliminar</a></td>
                                                 </tr>
                                             {% endfor %}
                                             </tbody>
@@ -111,31 +134,21 @@
 
                                         </div>
                                     </div>
-                                    <h2 class="mt-3 f-w-300">45<sub class="text-muted f-14">Productos</sub></h2>
+                                    <h3 id="producto_agotado" class="mt-3 f-w-300">45</h3>
                                     <i class="feather icon-alert-triangle text-c-red f-40"></i>
                                     <h6 class="text-muted mt-4 mb-0">Productos Agotados en Inventario </h6>
 
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-block border-bottom">
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-auto">
-                                            <i class="feather icon-clipboard f-30 text-c-green"></i>
-                                        </div>
-                                        <div class="col">
-                                            <h3 class="f-w-300">235</h3>
-                                            <span class="d-block text-uppercase">Total Contizaciones por Mes</span>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="card-block">
                                     <div class="row d-flex align-items-center">
                                         <div class="col-auto">
                                             <i class="feather icon-check-circle f-30 text-c-blue"></i>
                                         </div>
                                         <div class="col">
-                                            <h3 class="f-w-300">26</h3>
+                                            <h3 id="total_facturas" class="f-w-300">26</h3>
                                             <span class="d-block text-uppercase">Total Facturaciones por Mes</span>
                                         </div>
                                     </div>
@@ -146,6 +159,76 @@
                     <!-- [ Main Content ] end -->
                 </div>
             </div>
-
+        </div>
 </body>
+
+<script>
+    $(document).ready(function() {
+        ActualizarVentas('Diario');
+        ActualizarVentas('Mensual');
+        ActualizarVentas('Anual');
+        ActualizarVentas('Total');
+        ProductoAgotado();
+    });
+
+    function ProductoAgotado(){
+        var token = '{{csrf_token}}';
+        var formData = new FormData();
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "{% url 'productos-agotados' %}" ,
+            dataType: 'text', // what to expect back from the server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            type: 'post',
+            success: function (response) {
+                 var jsonObj = JSON.parse(response);
+                 var producto_agotado = jsonObj['producto_agotado'];
+
+                 $('#producto_agotado').text(producto_agotado + ' Productos');
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+    function ActualizarVentas(t_venta){
+        var token = '{{csrf_token}}';
+        var formData = new FormData();
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "{% url 'venta-dashboard' 1 %}".replace('1',t_venta) ,
+            dataType: 'text', // what to expect back from the server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            type: 'post',
+            success: function (response) {
+                 var jsonObj = JSON.parse(response);
+                 var suma = jsonObj['suma'];
+
+                 if(t_venta === 'Diario'){
+                    $('#ventas_diarias').text('$ ' + suma.toFixed(2));
+                 }
+                 else if (t_venta === 'Mensual'){
+                    $('#ventas_mensual').text('$ ' + suma.toFixed(2));
+                 }
+                 else if (t_venta === 'Anual'){
+                    $('#ventas_anual').text('$ ' + suma.toFixed(2));
+                 }
+                 else if (t_venta === 'Total'){
+                    $('#total_facturas').text(suma);
+                 }
+
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+
+</script>
 {% endblock content %}

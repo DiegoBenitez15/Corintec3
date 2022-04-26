@@ -34,11 +34,41 @@
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-            <td><a href="{% url 'filtrar-producto' article.id %}" type="button" class="btn btn-primary">Seleccionar</a></td>
+            <td><a id="button{{article.id}}" href="{% url 'filtrar-producto' article.id %}" type="button" class="btn btn-primary">Seleccionar</a></td>
         </tr>
+
+        <script>
+            $('#button{{article.id}}').click(function(){
+                var token = '{{csrf_token}}';
+                var formData = new FormData();
+                $.ajax({
+                    headers: { "X-CSRFToken": token },
+                    url: "{% url 'clean-carrito-orden-compra' carrito_id %}" ,
+                    dataType: 'text', // what to expect back from the server
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    type: 'post',
+                    success: function (response) {
+                    },
+                    error: function (response) {
+                    }
+                });
+            })
+        </script>
+
+
         {% endfor %}
       </tbody>
     </table>
+        {% if object_list %}
+        {% else %}
+            <br>
+            <p align="center">No se ha encontrado resultado. ¿Desea agregarlo?</p>
+            <br>
+        {% endif %}
+        <a href="{% url 'agregar-distribuidor' %}" class="btn btn btn-outline-info btn-block" >Agregar</a>
   </div>
 </div>
 

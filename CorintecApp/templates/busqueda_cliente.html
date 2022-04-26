@@ -13,36 +13,55 @@
       <thead style="text-align: center">
         <tr>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
+          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Identificacion</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Cliente</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Género</th>
           <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Teléfono</th>
           <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha de Registro</th>
-          <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dirección</th>
+
           <th class="text-secondary opacity-7"></th>
         </tr>
       </thead>
       <tbody style="text-align: center">
         {% for article in object_list %}
-        <tr>
-          <td>
+        <tr id="cliente{{article.id}}">
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer">
             <img style = "position:relative; bottom:16px" width=70px" height="70px" {% if article.genero == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if article.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if article.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="user1">
           </td>
-          <td>
+
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer"><span class="text-secondary text-xs font-weight-bold">{{ article.identificacion }}</span></td>
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer">
             <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
             <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
           </td>
-          <td><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
-          <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
-          <td><p class="text-xs font-weight-bold mb-0">28/3/2022</p></td>
-          <td><span class="text-secondary text-xs font-weight-bold">{{ article.direccion }}</span></td>
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.genero }}</p></td>
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer"><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.telefono }}</p></td>
+          <td  data-toggle="modal" data-target="#InfoCliente{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">28/3/2022</p></td>
           <td><a id="edit{{article.id}}" href="{% url 'editar-cliente' article.id %}" class="text-secondary font-weight-bold text-xs">Editar</a></td>
           <td><a href="{% url 'eliminar-cliente' pk=article.id %}" class="text-secondary font-weight-bold text-xs">Eliminar</a></td>
         </tr>
+
+        <div class="modal fade" id="InfoCliente{{article.id}}" tabindex="-1" role="dialog">
+            <div  class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div style="text-align: center;" class="modal-body">
+                        {% with article as cliente %}
+                            {% include 'info_cliente.html' %}
+                        {% endwith %}
+
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
         {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
+
+
 
 <div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

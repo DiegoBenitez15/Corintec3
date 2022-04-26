@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Facturacion Corintec S.R.L</title>
+        <style type="text/css">
+            @page {
+                size: {{ pagesize }};
+                margin: 1.5cm;
+                @frame footer {
+                    -pdf-frame-content: footerContent;
+                    bottom: 0cm;
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    height: 1cm;
+                }
+            }
+            p {
+                font-family: Arial;
+                font-size: 12px;
+            }
+            th {
+                background-color: lightgray;
+            }
+
+            div {
+                padding-top: 8px;
+                border-width:1px;
+                border-style:dotted;
+                border-color:black;
+            }
+
+            tr {
+                padding-top: 6px;
+                border-width:1px;
+                border-style:dotted;
+                border-color:black;
+            }
+        </style>
+    </head>
+    <body>
+        <div align="center">
+            <table>
+                <tbody>
+                    <tr>
+                        <td style="padding-left: 10px;border-right: white" align="left"><h1>CORINTEC S.R.L.</h1></td>
+                        <td style="padding-right: 10px;border-left: white" align="right"><h1>FACTURACION</h1></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody style="border-bottom: white;border-top: white;" >
+                    <tr style="padding-top: 8px;border-left: white;border-right: white;border-bottom: white;"><td style="border-left: black;padding-left: 10px" align="left"><p>Factura ID: {{factura.id}} </p></td><td style="border-right: black;padding-left: 10px" align="left"><p>Fecha: {{factura.fecha|date:"d/M/Y"}}</p></td></tr>
+                    <tr style="border-left: white;border-right: white;border-bottom: white;border-top: white"><td style="border-left: black;padding-left: 10px" align="left"><p>T. Pago: {{factura.t_pago_str}}</p></td><td style="border-right: black;padding-left: 10px" align="left"><p>Cod. Factura: {{factura.codigo}}</p></td></tr>
+                    <tr style="border-left: white;border-right: white;border-bottom: white;border-top: white;"><td style="border-left: black;padding-left: 10px" align="left"><p>Dirigido A: {{factura.cliente.nombre}} {{factura.cliente.apellido}} </p></td><td style="border-right: black;padding-left: 10px" align="left"><p>Correo: {{factura.cliente.correo}} </p></td></tr>
+                    <tr style="border-left: white;border-right: white;border-bottom: white;border-top: white;"><td style="border-left: black;padding-left: 10px" align="left"><p>RNC: {{factura.cliente.rnc}} </p></td><td style="border-right: black;padding-left: 10px" align="left"><p>Direccion: {{factura.cliente.direccion}}</p></td></tr>
+                    <tr style="border-right: black;padding-bottom: 8px;border-left: white;border-right: white;border-bottom: white;border-top: white;"><td style="border-left: black;padding-left: 10px" align="left"><p>Telefono: {{factura.cliente.telefono}}</p></td></tr>
+                </tbody>
+            </table>
+
+            <table class="table-bordered">
+                <thead>
+                    <th><p>Producto</p></th>
+                    <th><p>Cantidad</p></th>
+                    <th><p>Precio</p></th>
+                    <th><p>Total</p></th>
+                </thead>
+                <tbody align="center">
+                {% for c in factura.productos.all %}
+                    <tr>
+                        <td width="55%"><p>{{c.producto.nombre}}</p></td>
+                        <td width="15%"><p>x{{c.cantidad}}</p></td>
+                        <td width="15%"><p>DOP {{c.producto.precio_venta}}</p></td>
+                        <td style="background-color: #FFDCAC" width="15%"><p>DOP {% widthratio c.cantidad 1 c.producto.precio_venta %}</p></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                <tr style="border-bottom: white"><td></td><td align="right"  style="padding-right: 10px;font-weight: bold" width="30%"><p>SUB. TOTAL:</p></td><td style="background-color:  #FFDCAC;border-bottom: #FFDCAC" width="15%"><p>DOP {{factura.subTotal|floatformat:2}}</p></td></tr>
+                <tr style="border-bottom: white;border-top: white"><td></td><td align="right" style="padding-right: 10px;font-weight: bold" width="30%"><p>ITBIS:</p></td><td style="background-color:  #FFDCAC;border-top: #FFDCAC" width="15%"><p>DOP {{factura.ITBIS|floatformat:2}}</p></td></tr>
+                <tr style="border-top: white"><td></td><td align="right" style="padding-right: 10px;font-weight: bold" width="30%"><p>TOTAL RD$:</p></td><td style="background-color:  #FFDCAC;border-top: black" width="15%"><p>DOP {{factura.totalPago|floatformat:2}}</p></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

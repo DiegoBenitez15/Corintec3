@@ -3,6 +3,9 @@ from django.contrib.auth.forms import UserCreationForm, UsernameField
 from .models import *
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from django.db import models
+from django.utils import timezone
+import datetime
 
 class UserCreationFormCustom(UserCreationForm):
     error_messages = {'password_mismatch': ("Las dos contraseñas no coinciden."),}
@@ -31,7 +34,7 @@ class UserCreationFormCustom(UserCreationForm):
 class AgregarProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        exclude = ['cantidad']
+        exclude = ['cantidad','precio_venta','estado','codigo']
         
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
@@ -72,7 +75,7 @@ class AgregarDistribuidorForm(forms.ModelForm):
 class CreateAdminUsuarioForm(forms.ModelForm):
     class Meta:
         model = AdministradorUsuario
-        exclude = ['carrito']
+        exclude = ['carrito','productos']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
@@ -83,7 +86,7 @@ class CreateAdminUsuarioForm(forms.ModelForm):
 class CreateVendedorUsuarioForm(forms.ModelForm):
     class Meta:
         model = VendedorUsuario
-        exclude = ['carrito']
+        exclude = ['carrito','productos']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
@@ -92,6 +95,8 @@ class CreateVendedorUsuarioForm(forms.ModelForm):
         self.fields['usuario'].disabled = True
 
 class RegistrarFacturaForm(forms.ModelForm):
+    fecha_envio = forms.DateField()
+
     class Meta:
         model = Factura
         fields = ['cliente','tipoPago']
@@ -100,21 +105,38 @@ class RegistrarFacturaForm(forms.ModelForm):
         super(RegistrarFacturaForm, self).__init__(*args, **kwargs)
         self.fields['cliente'].queryset = Cliente.objects.filter(pk=self.initial['cliente'])
 
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_envio = cleaned_data.get("fecha_envio")
+       
+        if fecha_envio < datetime.datetime.date(timezone.now()):
+            raise forms.ValidationError({
+                'fecha_envio': ["La fecha tiene que ser de hoy en adelante", ],
+            })
+
     def save(self, commit=True):
         factura = super().save(commit=True)
         carrito_id = self.initial['carrito_id']
         carrito = CarritoCompras.objects.get(pk=carrito_id)
+        fecha_envio = self.cleaned_data['fecha_envio']
 
         if commit:
             factura.totalPago = carrito.total
             factura.subTotal = carrito.subtotal
             factura.ITBIS = carrito.itbis
 
-            for i in carrito.carrito_productos.all():
+            for i in carrito.producto_add.all():
+                producto = Producto.objects.get(pk = i.producto.pk)
+                producto.cantidad -= i.cantidad
+                producto.save()
                 factura.productos.add(i)
 
             factura.save()
-            carrito.carrito_productos.clear()
+            orden_envio = OrdenEnvio.objects.create(registrado_por=self.initial['user'],estadoEnvio=0,fecha_envio=fecha_envio)
+            orden_envio.save()
+            pedido = Pedido.objects.create(factura=factura, orden_envio=orden_envio)
+            pedido.save()
+            carrito.producto_add.clear()
             carrito.actualizarPrecios()
         return factura
 
@@ -135,19 +157,17 @@ class RegistrarOrdenCompraForm(forms.ModelForm):
         carrito_id = self.initial['carrito_id']
         carrito = CarritoCompras.objects.get(pk=carrito_id)
         factura.recibido_por = self.initial['user']
-        factura.estado = 1
+        factura.estado = 0
 
         if commit:
             factura.totalPago = carrito.total
             factura.subTotal = carrito.subtotal
             factura.ITBIS = carrito.itbis
 
-            for i in carrito.carrito_productos.all():
+            for i in carrito.producto_add.all():
                 factura.productos.add(i)
 
             factura.save()
-            carrito.carrito_productos.clear()
+            carrito.producto_add.clear()
             carrito.actualizarPrecios()
         return factura
-
-
