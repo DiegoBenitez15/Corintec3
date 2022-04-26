@@ -25,7 +25,6 @@ import io
 
 # Create your views here.
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def render_to_pdf(template_src, context_dict):
     if context_dict is None:
         context_dict = {}
@@ -38,7 +37,6 @@ def render_to_pdf(template_src, context_dict):
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def GenerateCotizacionPdf(request,cliente_id,carrito_id):
     #Retrieve data or whatever you need
     carrito = CarritoCompras.objects.get(pk=carrito_id)
@@ -51,7 +49,6 @@ def GenerateCotizacionPdf(request,cliente_id,carrito_id):
     context = {'pagesize':'A4','cliente':cliente,'carrito':carrito,'totales':totales}
     return render_to_pdf('cotizacion_pdf.html',context)
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def GenerateFacturaPdf(request,factura_id):
     #Retrieve data or whatever you need
     factura = Factura.objects.get(pk=factura_id)
@@ -74,19 +71,16 @@ class home(ListView):
         context['menu_active'] = 'Busqueda Cliente'
         return context
 
-@method_decorator([login_required, administador_required()], name='dispatch')
 def addCarritoComprasOrdenCompra(request,carrito_id,producto_id):
     cantidad = request.POST.get('cantidad','')
     precio = request.POST.get('precio', '')
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.addProductoOrdenCompra(producto_id,cantidad,precio)
 
-@method_decorator([login_required, administador_required()], name='dispatch')
 def removeCarritoComprasOrdenCompra(request, carrito_id,producto_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.removeProductoOrdenCompra(producto_id)
 
-@method_decorator([login_required, administador_required()], name='dispatch')
 def cleanCarritoComprasOrdenCompra(request,carrito_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.cleanProductoOrdenCompra()
@@ -99,13 +93,11 @@ class addCarritoCompras(View):
         carrito.addProducto(producto_id,cantidad)
         return JsonResponse({})
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def removeCarritoCompras(request, carrito_id,producto_id):
     carrito = CarritoCompras.objects.get(pk=carrito_id)
     carrito.removeProducto(producto_id)
     return redirect('/carrito/')
 
-@method_decorator([login_required], name='dispatch')
 def registerusuario(request):
     return render(request, 'registrarusuario.html')
 
@@ -454,13 +446,11 @@ class UpdateProducto(UpdateView):
     model = Producto
     success_url = reverse_lazy('gestionar-producto')
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def DeleteCliente(request, pk):
     Cliente.objects.filter(pk=pk).update(estado = 'I')
 
     return HttpResponseRedirect("/busqueda/cliente")
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def DeleteDistribuidor(request, pk):
     Distribuidor.objects.filter(pk=pk).update(estado = 'I')
 
@@ -637,25 +627,21 @@ class OrdenEnvioFormularioView(CreateView):
         context['menu_active'] = 'Facturar Productos'
         return context
 
-@method_decorator([login_required, administador_required()], name='dispatch')
 def CancelOrdenCompra(request, pk, user):
     orden = OrdenCompra.objects.get(pk=pk)
     orden.cambiar_estado('Cancelado',user)
     return HttpResponseRedirect("/ordencompra")
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def TerminatePedido(request, pk, user):
     pedido = Pedido.objects.get(pk = pk)
     pedido.cambiar_estado('Terminado',user)
     return HttpResponseRedirect("/busqueda/pedido")
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def CancelPedido(request, pk, user):
     pedido = Pedido.objects.get(pk=pk)
     pedido.cambiar_estado('Cancelado',user)
     return HttpResponseRedirect("/busqueda/pedido")
 
-@method_decorator([login_required, administador_required()], name='dispatch')
 def TerminateOrdenCompra(request, pk, user):
     orden = OrdenCompra.objects.get(pk = pk)
     orden.cambiar_estado('Terminado',user)
@@ -713,7 +699,6 @@ class ProductoAgotado(View):
     def post(self,request):
         return JsonResponse({'producto_agotado':Producto.objects.filter(cantidad=0).all().count()})
 
-@method_decorator([login_required, administador_or_vendedor_required()], name='dispatch')
 def InfoCliente(request,cliente_id):
     cliente = Cliente.objects.get(pk=cliente_id)
     return render(request, 'info_cliente.html',{'cliente':cliente})
