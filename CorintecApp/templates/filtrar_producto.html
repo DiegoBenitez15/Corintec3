@@ -8,13 +8,21 @@
                 align-content: center;
                 width: 80px;
                 height: 30px;
-                text-align: left;
                 margin: 8px 0;
                 box-sizing: border-box;
                 border: 2px solid #ccc;
                 border-radius: 4px;
                 background-color: #f8f8f8;
                 resize: none;
+            }
+            .precio {
+                height: 40px;
+                width: 110px;
+                margin: 0px 0;
+            }
+            .search{
+                height: 43px;
+                margin-top: 0px;
             }
         </style>
     </head>
@@ -27,13 +35,13 @@
             <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
           </div>
           <div class="col-md-10 form-group">
-            <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Search">
+            <input class="form-control mb-4 search" type="text" name="nombre_producto" placeholder="Search">
           </div>
         </div>
       </form>
     </div>
 </div>
-
+<div><a id="ContinuarBoton" href="{% url 'ordencompra-formulario' carrito_id distribuidor_id %}" class="btn btn-success btn-block">Continuar</a></div><br>
 <div class="card">
 
     <div class="card-header">
@@ -44,33 +52,33 @@
         <table class="table align-items-center justify-content-center mb-0">
             <thead style="text-align: center">
               <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Código</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descricion</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
                 <th></th>
               </tr>
             </thead>
             <tbody style="text-align: center">
                 {% for article in object_list %}
                 <tr>
+
+                  <td>
+                      {{ article.codigo|upper}}
+                  </td>
                   <td>
                     {{ article.nombre|upper}}
                   </td>
                   <td>
                     ${{ article.precio_venta|upper}}
                   </td>
-                  <td class="align-middle text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                      {{ article.descripcion|upper}}
-                    </div>
-                  </td>
                   <td class="align-middle">
-                    <input id="cantidad{{article.id}}" style="text-align: center" value="1" type="number" class ="form_control"  name="quantity" min="1" max="10">
+                    <input id="cantidad{{article.id}}" style="text-align: center" value="1" type="number" class ="form_control"  name="quantity" min="1" max="99">
                   </td>
                     <td class="align-middle">
-                        {% if article.cantidad %}<a data-toggle="modal"  data-target="#AgregarProductoModal{{article.id}}" class="btn btn-light">Agregar</a>{% else %}<p style="color: red">No hay stock disponible</p>{% endif %}
-                  </td>
+                        <a id="agregar{{article.id}}" data-toggle="modal" data-target="#AgregarProductoModal{{article.id}}" class="btn btn-light">Agregar</a>
+                        <a id="quitar{{article.id}}" data-toggle="modal" style="display: none" class="btn btn-light">Quitar</a>
+                    </td>
                 </tr>
 
                 <div class="modal fade" id="AgregarProductoModal{{article.id}}" tabindex="-1" role="dialog">
@@ -81,9 +89,9 @@
                             </div>
                             <div style="text-align: center;" class="modal-body">
                                 <br>
-                                <h6>¿Cual fue el precio de compra del producto?</h6>
-                                <input id="precio{{article.id}}" type="number" value="0"><br>
-                                <button id = "agregar_producto{{article.id}}"  class="btn btn-success">Confirmar</button>
+                                <h6>Inserte el precio en que se compro el producto</h6><br>
+                                <input style="margin-left: -10px;text-align: center" class="precio" id="precio{{article.id}}" type="number" value="0"><br><br>
+                                <button data-dismiss="modal" id = "agregar_producto{{article.id}}"  class="btn btn-success">Confirmar</button>
                                 <br>
                             </div>
                         </div><!-- /.modal-content -->
@@ -92,7 +100,6 @@
 
                 <script>
                      $("#agregar_producto{{article.id}}").click(function() {
-                        window.alert("Se ingreso su producto al carrito adecuadamente");
                         var token = '{{csrf_token}}';
                         var formData = new FormData();
                         formData.append('cantidad',$('#cantidad{{article.id}}').val());
@@ -109,19 +116,89 @@
                             success: function (response) {
                             },
                             error: function (response) {
-                                $('#cantidad{{article.id}}').val(0)
+                                ActualizarBotonesLista();
+                                window.alert("Se ingreso su producto al carrito adecuadamente");
+                            }
+                        });
+                     })
+
+                      $("#quitar{{article.id}}").click(function() {
+                        var token = '{{csrf_token}}';
+                        var formData = new FormData();
+                        $.ajax({
+                            headers: { "X-CSRFToken": token },
+                            url: "{% url 'remove-carrito-orden-compra' carrito_id article.id %}" ,
+                            dataType: 'text', // what to expect back from the server
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            type: 'post',
+                            success: function (response) {
+                            },
+                            error: function (response) {
+                                 $('#cantidad{{article.id}}').val(1)
+                                $('#cantidad{{article.id}}').prop('disabled', false);
+                                $('#quitar{{article.id}}').css("display","none");
+                                $('#agregar{{article.id}}').css("display","inline");
+                                ActualizarBotonesLista();
+                                window.alert("Se elimino su producto al carrito adecuadamente");
                             }
                         });
                      })
                 </script>
                 {% endfor %}
-
             </tbody>
         </table>
-         <div class="card-footer">
-            <div align="center"><a href="{% url 'ordencompra-formulario' carrito_id distribuidor_id %}" class="btn btn-success">Continuar</a></div>
-        </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function (){
+        ActualizarBotonesLista();
+    });
+
+    function ActualizarBotonesLista() {
+        var token = '{{csrf_token}}';
+        var formData = new FormData();
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "{% url 'actualizar-filtro-producto' carrito_id %}" ,
+            dataType: 'text', // what to expect back from the server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            type: 'get',
+            success: function (response) {
+                var jsonObj = JSON.parse(response);
+                var lista_producto = jsonObj['id_productos'];
+                var cantidades = jsonObj['cantidad'];
+                for (x in lista_producto){
+                    var agregar = "#agregar" + lista_producto[x];
+                    var quitar = "#quitar" + lista_producto[x];
+                    var cantidad = "#cantidad" + lista_producto[x];
+                    $(cantidad).prop('disabled', true);
+                    $(cantidad).val(cantidades[x])
+                    $(agregar).css("display","none");
+                    $(quitar).css("display","inline");
+                }
+
+                if(lista_producto.length === 0)
+                {
+                    $('#ContinuarBoton').prop('href', '#');
+                }
+                else{
+                    $('#ContinuarBoton').prop('href', "{% url 'ordencompra-formulario' carrito_id distribuidor_id %}");
+                }
+
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+</script>
+
 
 {% endblock content %}

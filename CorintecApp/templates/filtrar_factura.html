@@ -20,32 +20,33 @@
 
 <div class="card">
   <div class="card-header">
-        <h5>Lista de Clientes</h5>
+        <h5>Lista de Facturas</h5>
   </div>
   <div class="card-body">
+
     <table class="table align-items-center mb-0">
       <tbody style="text-align: center">
         {% for article in object_list %}
-        <tr>
-          <td>
-            <img style = "position:relative; bottom:16px" width=70px" height="70px" {% if article.genero == 'M' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-2.jpg' {% endif %} {% if article.genero == 'F' %} src='https://appsrv1-147a1.kxcdn.com/dattaable/images/user/avatar-3.jpg' {% endif %} {% if article.genero == 'O' %} src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png' {% endif %} class="avatar avatar-sm me-3" alt="user1">
-          </td>
-          <td>
-            <h6 class="mb-0 text-sm">{{ article.nombre }} {{ article.apellido }}</h6>
-            <p class="text-xs text-secondary mb-0">{{ article.correo }}</p>
-          </td>
-            <td><a {% if menu_active == "Filtrar Cliente" %}href="{% url 'facturar-producto' carrito_id article.id %}"{% else %} target="new" href="{% url 'cotizacion-pdf' article.id carrito_id %}"{% endif %}  type="button" class="btn btn-primary">Seleccionar</a></td>
-        </tr>
+            <tr>
+                <td><p class="text-xs text-secondary mb-0">{{ article.codigo }}</p></td>
+                <td>
+                    <h6 class="mb-0 text-sm">{{ article.cliente.nombre }} {{ article.cliente.apellido }}</h6>
+                    <p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.cliente.correo }}</p>
+                </td>
+                <td><p style="vertical-align: center" class="text-xs font-weight-bold mb-0">{{ article.t_pago_str }}</p></td>
+                <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha|date:"d/M/Y"}}</p></td>
+                <td><p class="text-xs font-weight-bold mb-0">${{ article.totalPago }}</p></td>
+                <td>{% if article.id in facturas %}<h6 style="margin-left: -15px;margin-top: 3px">Ya fue Devuelto</h6>{% else %}<a id="select{{article.id}}" href="{% url 'create-devoluciones' article.id %}"  type="button" class="btn btn-primary">Seleccionar</a>{% endif %}</td>
+            </tr>
         {% endfor %}
       </tbody>
     </table>
       {% if object_list %}
         {% else %}
             <br>
-            <p align="center">No se ha encontrado resultado. ¿Desea agregarlo?</p>
+            <p align="center">No se ha encontrado resultado.</p>
             <br>
         {% endif %}
-        <a href="{% url 'agregar-cliente' %}" class="btn btn btn-outline-info btn-block" >Agregar</a>
   </div>
 </div>
 

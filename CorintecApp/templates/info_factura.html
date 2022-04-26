@@ -1,0 +1,34 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<div align="center">
+  <div align="left" style="width: 100%" class="card">
+    <div class="card-header">
+        <h5>Informacion del Distribuidor</h5>
+    </div>
+    <div align="center" class="card-body">
+        <div style="width: 100%" class="col-md-12">
+            <img style = "position:relative; bottom:16px" width=100px" height="100px" src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png'>
+            <h6>Codigo: {{factura.codigo}}</h6>
+            <h6>Cliente: {{factura.cliente.nombre}} {{factura.cliente.apellido}}</h6>
+            <h6>Fecha: {{factura.fecha|date:"d/M/Y"}}</h6>
+            <h6>Tipo Pago: {{factura.t_pago_str}} </h6>
+            <h6>SubTotal: {{factura.subTotal}}</h6>
+            <h6>ITBIS: {{factura.ITBIS}}</h6>
+            <h6>Total: {{factura.totalPago}}</h6>
+        <div>
+    </div>
+  </div>
+</div>
+  </div></div>
+
+{% endblock content %}

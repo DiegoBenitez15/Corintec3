@@ -32,47 +32,75 @@
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Codigo</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Distribuidor</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Pedido</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Entrega</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Registrado por</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                 </tr>
             </thead>
             <tbody align="center">
                 {% for article in object_list %}
-                     <tr {% if article.estado == 1 %} style="cursor: pointer;" data-toggle="modal"  data-target="#ClickModal{{article.codigo}}"{% endif %}>
-                          <td><p class="text-xs font-weight-bold mb-0">{{ article.codigo}}</p></td>
-                          <td class="d-flex flex-column justify-content-center">
+                     <tr>
+                          <td data-toggle="modal" data-target="#InfoOrdenCompra{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.codigo}}</p></td>
+                          <td data-toggle="modal" data-target="#InfoDistribuidor{{article.distribuidor.id}}" style="cursor: pointer">
                             <h6 class="mb-0 text-sm">{{ article.distribuidor.nombre }}</h6>
                             <p class="text-xs text-secondary mb-0">{{ article.distribuidor.correo }}</p>
                           </td>
-                          <td><p class="text-xs font-weight-bold mb-0">{{ article.fecha_pedido|date:"d/M/Y"}}</p></td>
-                          <td><p class="text-xs font-weight-bold mb-0">{% if article.fecha_entrega %}{{ article.fecha_entrega|date:"d/M/Y"}}{% endif %}</p></td>
-                          <td><p class="text-xs font-weight-bold mb-0">{{ article.orden_compra_str }}</p></td>
-                          <td><p class="text-xs font-weight-bold mb-0">{{ article.recibido_por }}</p></td>
+                          <td data-toggle="modal" data-target="#InfoOrdenCompra{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.fecha_pedido|date:"d/M/Y"}}</p></td>
+                          <td data-toggle="modal" data-target="#InfoOrdenCompra{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0"></p>{{article.orden_compra_str}}</td>
+                          <td data-toggle="modal" data-target="#InfoOrdenCompra{{article.id}}" style="cursor: pointer"><p class="text-xs font-weight-bold mb-0">{{ article.recibido_por }}</p></td>
+
+                         <td><a href="#" {% if article.estado == 0 %}data-toggle="modal" data-target="#MasOpcionesModal{{article.id}}"{% endif %} class="text-secondary font-weight-bold text-xs">Mas Opciones</a></td>
                      </tr>
 
-                    <div class="modal fade" id="ClickModal{{article.codigo}}" tabindex="-1" role="dialog">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div align="right" style="text-align: center;" class="modal-header">
-                               <a  style="cursor: pointer;text-align: right" data-dismiss="modal" style="float:right;">Cerrar</a>
-                          </div>
-                          <div style="text-align: center;" class="modal-body">
-                              <br>
-                              <h6>¿Que opción desea seleccionar?</h6>
-                              <br>
-                              <a href="{% url 'cancel-ordenCompra' article.codigo user.id %}"  class="btn btn-danger">Cancelar</a>
-                              <a href="{% url 'terminate-ordenCompra' article.codigo user.id %}" class="btn btn-success">Terminar</a>
-                              <br>
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
+                    <div class="modal fade" id="InfoOrdenCompra{{article.id}}" tabindex="-1" role="dialog">
+                        <div  class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div style="text-align: center;" class="modal-body">
+                                    {% with article as ordencompra %}
+                                        {% include 'info_ordencompra.html' %}
+                                    {% endwith %}
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
+                    <div class="modal fade" id="MasOpcionesModal{{article.id}}" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 style="padding-top: 5px;cursor: pointer" data-dismiss="modal">Volver</h6>
+                                </div>
+                                <div style="text-align: center;" class="modal-body">
+                                    <br>
+                                    <h6>Seleccione una de las siguientes opciones</h6>
+                                    <br>
+                                        <a href="{% url 'cancel-ordenCompra' article.id user.id %}"  class="btn btn-light">Cancelar</a>
+                                        <a href="{% url 'terminate-ordenCompra' article.id user.id %}" class="btn btn-light">Terminar</a>
+                                    <br>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
+                    <div class="modal fade" id="InfoDistribuidor{{article.distribuidor.id}}" tabindex="-1" role="dialog">
+                        <div  class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div style="text-align: center;" class="modal-body">
+                                    {% with article.distribuidor as distribuidor %}
+                                        {% include 'info_distribuidor.html' %}
+                                    {% endwith %}
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    </div>
-    </div>
+</div>
+
+
+
 
 {% endblock %}

@@ -19,32 +19,30 @@
         <h5>Productos</h5>
     </div>
     <div class="card-body">
+        {% if carrito.producto_add.all %}
         <table class="table align-items-center justify-content-center mb-0">
             <thead class="center">
               <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descripcion</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descripcion</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
                 <th></th>
               </tr>
             </thead>
             <tbody class="center">
-
-                    {% for article in carrito.carrito_productos.all %}
+                        {% for article in carrito.producto_add.all %}
                         <tr>
+                          <td>
+                            {{article.producto.codigo|upper}}
+                          </td>
                           <td>
                             {{article.producto.nombre|upper}}
                           </td>
                           <td>
                             {{article.producto.precio_venta|upper}}
                           </td>
-                          <td class="align-middle text-center">
-                            <div class="d-flex align-items-center justify-content-center">
-                              {{article.producto.descripcion|upper}}
-                            </div>
-                          </td>
-                            <td class="align-middle">
+                          <td class="align-middle">
                               {{article.cantidad|upper}}
                           </td>
                           <td class="align-middle">
@@ -52,26 +50,29 @@
                           </td>
                         </tr>
                     {% endfor %}
-
             </tbody>
         </table>
+        {% else %}
+            <br>
+            <div align="center"><h6>No hay articulos dentro del carrito de compras.</h6></div>
+            <br>
+        {% endif %}
+
         <br><hr>
         <div class="col-md-12" style="text-align: right">
-
                 {% for carrito in object_list %}
                     <p>Sub Total: {{carrito.subtotal|floatformat:2}}</p>
                     <p>ITBIS: {{carrito.itbis|floatformat:2}}</p>
                     <p>Total: {{carrito.total|floatformat:2}}</p>
                 {% endfor %}
-
         </div>
     </div>
 
 </div>
 
 <div style="text-align: center">
-    <button style="width:400px;" type="button" data-toggle="modal" {% if carrito.carrito_productos.all  %}data-target="#ConfirmarCotizacionModal"{% endif %} class="btn btn-square btn-primary">Cotizar</button>
-    <button style="width:400px;" type="button" data-toggle="modal" {% if carrito.carrito_productos.all  %}data-target="#ConfirmarFacturacionModal"{% endif %} class="btn btn-square btn-success">Facturar</button>
+    <button style="width:400px;" type="button" data-toggle="modal" {% if carrito.producto_add.all  %}data-target="#ConfirmarCotizacionModal"{% endif %} class="btn btn-square btn-primary">Cotizar</button>
+    <button style="width:400px;" type="button" data-toggle="modal" {% if carrito.producto_add.all  %}data-target="#ConfirmarFacturacionModal"{% endif %} class="btn btn-square btn-success">Facturar</button>
 </div>
 
 
@@ -98,7 +99,7 @@
           <h6>¿Esta seguro que quiere cotizar?</h6>
           <br>
           <button data-dismiss="modal" class="btn btn-danger">Volver</button>
-          <a class="btn btn-success">Continuar</a>
+          <a href="{% url 'filtrar-cliente-cotizacion' carrito.pk %}" class="btn btn-success">Continuar</a>
           <br>
       </div>
     </div><!-- /.modal-content -->

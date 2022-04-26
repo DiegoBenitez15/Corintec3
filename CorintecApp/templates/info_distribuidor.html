@@ -1,0 +1,32 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<div align="center">
+  <div align="left" style="width: 100%" class="card">
+    <div class="card-header">
+        <h5>Informacion del Distribuidor</h5>
+    </div>
+    <div align="center" class="card-body">
+        <div style="width: 100%" class="col-md-12">
+            <img style = "position:relative; bottom:16px" width=100px" height="100px" src='https://cdn0.iconfinder.com/data/icons/citycons/150/Citycons_building-256.png'>
+            <h6>Nombre: {{distribuidor.nombre}}</h6>
+            <h6>Identificacion: {{distribuidor.identificacion}}</h6>
+            <h6>Estado: {{distribuidor.estado_str}} </h6>
+            <h6>Telefono: {{distribuidor.telefono}}</h6>
+            <h6>Correo: {{distribuidor.correo}}</h6>
+            <h6>Direccion: {{distribuidor.direccion}}</h6>
+        <div>
+    </div>
+  </div>
+</div>
+  </div></div>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<!--codigo = models.CharField(default=random_string,max_length=10)-->
+<!--    fecha_pedido = models.DateTimeField(auto_now_add=True)-->
+<!--    fecha_entrega = models.DateTimeField(null=True)-->
+<!--    productos = models.ManyToManyField(Lista_Productos)-->
+<!--    distribuidor = models.ForeignKey(Distribuidor, on_delete=models.CASCADE, null=True)-->
+<!--    estado = models.PositiveIntegerField(choices=t_estadoOrdenCompra, null=True)-->
+<!--    recibido_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='recibido')-->
+<!--    registrado_por = models.ForeignKey(User, on_delete=models.CASCADE, null=True,related_name='registrado')-->
+
+
+<div align="center">
+  <div align="left" style="width: 100%" class="card">
+    <div class="card-header">
+        <h5>Informacion de la Orden de Compra</h5>
+    </div>
+    <div align="center" class="card-body">
+        <div style="width: 100%" class="col-md-12">
+             <hr><h5 align="center">Orden de Compra</h5><hr>
+            <h6>Codigo: {{ordencompra.codigo}}</h6>
+            <h6>Distribuidor: {{ordencompra.distribuidor.nombre}}</h6>
+            <h6>Estado: {{ordencompra.orden_compra_str}}</h6>
+            <h6>Fecha Pedido: {{ordencompra.fecha_pedido|date:"d/M/Y"}}</h6>
+            <h6>Fecha Entrega: {{ordencompra.fecha_entrega|date:"d/M/Y"}}</h6>
+            <h6>Recibido Por: {{ordencompra.recibido_por}}</h6>
+            <h6>Registrado Por: {{ordencompra.registrado_por}}</h6>
+        <div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+{% endblock content %}

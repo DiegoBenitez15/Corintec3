@@ -1,0 +1,49 @@
+{% load crispy_forms_tags %}
+
+{% block content %}
+<head>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<!-- codigo = models.CharField(default=random_string, max_length=10)-->
+<!--    fecha = models.DateField(auto_now_add=True,null=True)-->
+<!--    productos = models.ManyToManyField(Lista_Productos)-->
+<!--    totalPago = models.FloatField(null=True)-->
+<!--    subTotal = models.FloatField(null=True)-->
+<!--    ITBIS = models.FloatField(null=True)-->
+<!--    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=True)-->
+<!--    tipoPago = models.PositiveIntegerField(choices=t_pago,null=True)-->
+
+
+<div align="center">
+  <div align="left" style="width: 100%" class="card">
+    <div class="card-header">
+        <h5>Informacion del Pedido</h5>
+    </div>
+    <div style="width: 100%" align="center" class="card-body">
+        <div class="col-md-12">
+                <hr><h5 align="center">Factura</h5><hr>
+                <h6>Codigo: {{pedido.factura.codigo}} </h6>
+                <h6>Fecha: {{pedido.factura.fecha|date:"d/M/Y"}}</h6>
+                <h6>Cliente: {{pedido.factura.cliente.nombre}} {{pedido.factura.cliente.apellido}} </h6>
+                <h6>Tipo de Pago: {{pedido.factura.t_pago_str}}</h6>
+                <h6>SubTotal: {{pedido.factura.subTotal}} </h6>
+                <h6>ITBIS: {{pedido.factura.ITBIS}}</h6>
+                <h6>Total Pago: {{pedido.factura.totalPago}}</h6>
+                <br><hr><h5 align="center">Orden de Envio</h5><hr>
+                <h6>Estado del Envio: {{pedido.orden_envio.orden_envio_str}}</h6>
+                <h6>Fecha del Envio: {{pedido.orden_envio.fecha_envio|date:"d/M/Y"}} </h6>
+                <h6>Registrado Por: {{pedido.orden_envio.registrado_por}}</h6>
+                <h6>Recibido Por: {{pedido.orden_envio.recibido_por}}</h6>
+        <div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock content %}

@@ -2,6 +2,26 @@
 
 {% block content %}
 
+<head>
+    <style>
+        input {
+                align-content: center;
+                width: 80px;
+                height: 30px;
+                margin: 8px 0;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 4px;
+                background-color: #f8f8f8;
+                resize: none;
+            }
+         .search{
+                height: 43px;
+                margin-top: 0px;
+            }
+    </style>
+</head>
+
 <div class="card" style="height: 100px">
     <div class="card-body">
       <form method="GET" action="">
@@ -10,7 +30,7 @@
             <button type="submit" class="btn btn-outline-primary"><i style="padding-left: 10px" class="feather icon-search"></i></button>
           </div>
           <div class="col-md-10 form-group">
-            <input class="form-control mb-4" type="text" name="nombre_producto" placeholder="Search">
+            <input class="form-control mb-4 search" type="text" name="nombre_producto" placeholder="Search">
           </div>
         </div>
       </form>
@@ -27,9 +47,9 @@
         <table class="table align-items-center justify-content-center mb-0">
             <thead style="text-align: center">
               <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Codigo</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Producto</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Precio</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Descricion</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cantidad</th>
                 <th></th>
               </tr>
@@ -38,18 +58,16 @@
                 {% for article in object_list %}
                 <tr>
                   <td>
+                    {{ article.codigo|upper}}
+                  </td>
+                    <td>
                     {{ article.nombre|upper}}
                   </td>
                   <td>
                     ${{ article.precio_venta|upper}}
                   </td>
-                  <td class="align-middle text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                      {{ article.descripcion|upper}}
-                    </div>
-                  </td>
                   <td class="align-middle">
-                    <input id="cantidad{{article.id}}" style="text-align: center" value="1" type="number" class ="form_control"  name="quantity" min="1" max="10">
+                    <input id="cantidad{{article.id}}" style="text-align: center;" {% if article.cantidad == 0 %}disabled="true"{%endif%} value="1" type="number" class ="form_control"  name="quantity" min="1" max="99">
                   </td>
                     <td class="align-middle">
                     {% if article.cantidad %}<a id = "agregar_producto{{article.id}}" class="btn btn-light">Agregar</a>{% else %}<p style="color: red">No hay stock disponible</p>{% endif %}
@@ -57,7 +75,37 @@
                 </tr>
 
                 <script>
-                     $("#agregar_producto{{article.id}}").click(function() {
+                    $('#agregar_producto{{article.id}}').click(function (){
+                        console.log({{article.id}})
+                        var token = '{{csrf_token}}';
+                        var formData = new FormData();
+                        formData.append('cantidad',$('#cantidad{{article.id}}').val());
+                         $.ajax({
+                            headers: { "X-CSRFToken": token },
+                            url: "{% url 'verificar-disponibilidad-producto' article.id %}" ,
+                            dataType: 'text', // what to expect back from the server
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            type: 'post',
+                            success: function (response) {
+                                var jsonObj = JSON.parse(response);
+                                var respuesta = jsonObj['respuesta']
+
+                                if(respuesta === 'si'){
+                                    AgregarProducto{{article.id}}();
+                                }
+                                else{
+                                     window.alert("No hay productos suficientes en inventario");
+                                }
+                            },
+                            error: function (response) {
+                            }
+                        })
+                    })
+
+                     function AgregarProducto{{article.id}}() {
                         window.alert("Se ingreso su producto al carrito adecuadamente");
                         var token = '{{csrf_token}}';
                         var formData = new FormData();
@@ -76,13 +124,46 @@
                             error: function (response) {
                                 $('#cantidad{{article.id}}').val(0)
                             }
-                        });
-                     })
+                        })
+                    }
                 </script>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    $(document).ready(function (){
+        ActualizarBotonesLista();
+    });
+
+    function ActualizarBotonesLista() {
+        var token = '{{csrf_token}}';
+        var formData = new FormData();
+        $.ajax({
+            headers: { "X-CSRFToken": token },
+            url: "{% url 'actualizar-filtro-producto' carrito_id %}" ,
+            dataType: 'text', // what to expect back from the server
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            type: 'get',
+            success: function (response) {
+                var jsonObj = JSON.parse(response);
+                var lista_producto = jsonObj['id_productos'];
+                var cantidades = jsonObj['cantidad'];
+                for (x in lista_producto){
+                    var cantidad = "#cantidad" + lista_producto[x];
+                    $(cantidad).val(cantidades[x])
+                }
+            },
+            error: function (response) {
+            }
+        });
+    }
+
+</script>
 
 {% endblock content %}
