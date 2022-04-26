@@ -62,7 +62,8 @@ class Producto(models.Model):
 class Lista_Productos(models.Model):
     producto = models.ForeignKey(Producto,on_delete=models.CASCADE,null=True)
     cantidad = models.IntegerField(default=0)
-    precio = models.FloatField(default=0)
+    precio_compra = models.FloatField(default=0)
+    precio_venta = models.FloatField(default=0)
 
 class CarritoCompras(models.Model):
     producto_add = models.ManyToManyField(Lista_Productos)
@@ -82,7 +83,7 @@ class CarritoCompras(models.Model):
     def actualizarPrecios_ordenCompra(self):
         suma = 0
         for i in self.producto_add.all():
-            suma += i.precio * i.cantidad
+            suma += i.precio_compra * i.cantidad
         self.subtotal = suma
         self.itbis = suma * 0.18
         self.total = self.subtotal + self.itbis
@@ -107,12 +108,12 @@ class CarritoCompras(models.Model):
             if i.producto.pk == producto_id:
                 c = self.producto_add.get(producto__id=producto_id)
                 c.cantidad = int(cantidad)
-                c.precio = precio
+                c.precio_compra = precio
                 c.save()
                 self.actualizarPrecios_ordenCompra()
                 return
 
-        c = Lista_Productos.objects.create(producto=Producto.objects.get(pk=producto_id), cantidad=cantidad,precio=precio)
+        c = Lista_Productos.objects.create(producto=Producto.objects.get(pk=producto_id), cantidad=cantidad,precio_compra=precio)
         self.producto_add.add(c)
         self.actualizarPrecios_ordenCompra()
         return
@@ -271,7 +272,7 @@ class OrdenCompra(models.Model):
         for i in orden.productos.all():
             producto = Producto.objects.get(pk=i.producto.pk)
             producto.cantidad += i.cantidad
-            producto.precio_venta = i.precio + (i.precio * (producto.ganancia / 100))
+            producto.precio_venta = i.precio_compra + (i.precio_compra * (producto.ganancia / 100))
             producto.save()
 
 class Pedido(models.Model):

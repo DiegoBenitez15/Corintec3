@@ -70,8 +70,8 @@
                     <tr>
                         <td width="55%"><p>{{c.producto.nombre}}</p></td>
                         <td width="15%"><p>x{{c.cantidad}}</p></td>
-                        <td width="15%"><p>DOP {{c.producto.precio_venta}}</p></td>
-                        <td style="background-color: #FFDCAC" width="15%"><p>DOP {% widthratio c.cantidad 1 c.producto.precio_venta %}</p></td>
+                        <td width="15%"><p>DOP {{c.precio_venta}}</p></td>
+                        <td style="background-color: #FFDCAC" width="15%"><p>DOP {% widthratio c.cantidad 1 c.precio_venta %}</p></td>
                     </tr>
                 {% endfor %}
                 </tbody>

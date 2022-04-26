@@ -129,6 +129,8 @@ class RegistrarFacturaForm(forms.ModelForm):
                 producto = Producto.objects.get(pk = i.producto.pk)
                 producto.cantidad -= i.cantidad
                 producto.save()
+                i.precio_venta = producto.precio_venta
+                i.save()
                 factura.productos.add(i)
 
             factura.save()
