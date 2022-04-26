@@ -293,7 +293,12 @@ class ClienteListView(ListView):
         query = self.request.GET.get('nombre_producto')
         qs = qs.filter(estado = 'A')
         if query:
-            return qs.filter(nombre=query)
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(identificacion=query):
+                return qs.filter(identificacion=query)
+            else:
+                return []
         return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
@@ -310,7 +315,12 @@ class BusquedaProductos(ListView):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre__icontains=query)
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(codigo=query):
+                return qs.filter(codigo=query)
+            else:
+                return []
         return qs.order_by('-nombre')[:10:-1]
 
     def get_context_data(self, **kwargs):
@@ -332,8 +342,12 @@ class GestionarProductos(ListView):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre__icontains=query)
-
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(codigo=query):
+                return qs.filter(codigo=query)
+            else:
+                return []
         return qs.order_by('-nombre')[:10:-1]
 
     def get_context_data(self, **kwargs):
@@ -351,9 +365,14 @@ class DistribuidorListView(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
-        qs = qs.filter(estado='A')
+        qs = qs.filter(estado = 'A')
         if query:
-            return qs.filter(nombre=query)
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(identificacion=query):
+                return qs.filter(identificacion=query)
+            else:
+                return []
         return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
@@ -371,7 +390,10 @@ class FacturaListView(ListView):
         qs = super().get_queryset(*args, **kwargs).order_by('-id')
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre=query)
+            if qs.filter(codigo=query):
+                return qs.filter(codigo=query)
+            else:
+                return []
         return qs
 
     def get_context_data(self, **kwargs):
@@ -389,7 +411,10 @@ class PedidoListView(ListView):
         qs = super().get_queryset(*args, **kwargs).order_by('-id')
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre=query)
+            if qs.filter(factura__codigo=query):
+                return qs.filter(factura__codigo=query)
+            else:
+                return []
         return qs
 
     def get_context_data(self, **kwargs):
@@ -449,10 +474,16 @@ class FiltrarCliente(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        query = self.request.GET.get('nombre_cliente')
+        query = self.request.GET.get('nombre_producto')
+        qs = qs.filter(estado='A')
         if query:
-            return qs.filter(nombre__icontains=query)
-        return qs
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(identificacion=query):
+                return qs.filter(identificacion=query)
+            else:
+                return []
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -467,10 +498,13 @@ class FiltrarFactura(ListView):
     paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset(*args, **kwargs)
-        query = self.request.GET.get('nombre_cliente')
+        qs = super().get_queryset(*args, **kwargs).order_by('-id')
+        query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(codigo__icontains=query)
+            if qs.filter(codigo=query):
+                return qs.filter(codigo=query)
+            else:
+                return []
         return qs
 
     def get_context_data(self, **kwargs):
@@ -493,10 +527,16 @@ class FiltrarClienteCotizacion(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        query = self.request.GET.get('nombre_cliente')
+        query = self.request.GET.get('nombre_producto')
+        qs = qs.filter(estado='A')
         if query:
-            return qs.filter(nombre__icontains=query)
-        return qs
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(identificacion=query):
+                return qs.filter(identificacion=query)
+            else:
+                return []
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -512,9 +552,9 @@ class OrdenCompraView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs).order_by('estado')
-        query = self.request.GET.get('nombre_cliente')
+        query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre__icontains=query)
+            return qs.filter(codigo=query)
 
         return qs
 
@@ -526,11 +566,16 @@ class FiltrarDistribuidor(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        query = self.request.GET.get('nombre_cliente')
+        query = self.request.GET.get('nombre_producto')
+        qs = qs.filter(estado='A')
         if query:
-            return qs.filter(nombre__icontains=query)
-
-        return qs
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(identificacion=query):
+                return qs.filter(identificacion=query)
+            else:
+                return []
+        return qs.order_by('-id')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -552,8 +597,13 @@ class FiltarProductos(ListView):
         qs = super().get_queryset(*args, **kwargs)
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(nombre__icontains=query)
-        return qs.order_by('-codigo')[:10:-1]
+            if qs.filter(nombre__icontains=query):
+                return qs.filter(nombre__icontains=query)
+            elif qs.filter(codigo=query):
+                return qs.filter(codigo=query)
+            else:
+                return []
+        return qs.order_by('-nombre')[:10:-1]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -678,7 +728,10 @@ class DevolucionesListView(ListView):
         qs = super().get_queryset(*args, **kwargs).order_by('-id')
         query = self.request.GET.get('nombre_producto')
         if query:
-            return qs.filter(codigo=query)
+            if qs.filter(factura__codigo=query):
+                return qs.filter(factura__codigo=query)
+            else:
+                return []
         return qs
 
     def get_context_data(self, **kwargs):
